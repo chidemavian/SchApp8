@@ -1,0 +1,37 @@
+<!-- Created: 31/08/2011 by NANA -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional/EN">
+<html>
+  <head>
+    <title>Untitled</title>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <meta name="generator" content="PyScripter">
+  </head>
+  <body>
+<table align ="center" style="border:1px solid black;width:100%">
+ <tr>
+              <td align="left" valign="top" style = "width:auto; height:10px;background-color:black;font-size:11px;color:white;"><strong> Old Department</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:black;font-size:11px;color:white"><strong> New Department</strong></td>
+                                      </tr>
+         {% for pincode in gdata %}
+           <tr>
+              <td align="left" valign="top" style = "background-color:gray;font-size:12px;width:auto;color:white"> <strong>{{ pincode.currentdept}}</strong></td>
+              <td align="left" valign="top" style = "background-color:gray;font-size:12px;width:auto;color:white"> <strong>{{ pincode.newdept}}</strong></td>
+
+                         {% endfor %}
+            </tr>
+<tr ><td colspan ="10"> <hr></td></tr>
+<tr>
+              <td align="left" valign="top" style = "width:auto; height:10px;background-color:black;font-size:11px;color:white;"><strong> Old Location</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:black;font-size:11px;color:white;"><strong> New Location</strong></td>
+                                      </tr>
+         {% for pincode1 in glocal %}
+           <tr>
+              <td align="left" valign="top" style = "background-color:gray;font-size:12px;width:auto;color:white"> <strong>{{ pincode1.currentlocation}}</strong></td>
+              <td align="left" valign="top" style = "background-color:gray;font-size:12px;width:auto;color:white"> <strong>{{ pincode1.newlocation}}</strong></td>
+
+                         {% endfor %}
+            </tr>
+</table>
+
+  </body>
+</html>

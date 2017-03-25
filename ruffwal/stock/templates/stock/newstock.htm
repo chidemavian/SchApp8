@@ -1,0 +1,335 @@
+{% extends "stock/base.htm" %}
+{% load humanize %}
+{%block content%}
+<div align ="center" style="background-color:#ccccc0;width:100%;height:25px; font-size:14px;color:white;padding-top:5px;"> <strong>ADD STOCK  </strong> </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+<table align ="center" style="width:100%;background-color:white;">
+<tr>
+    <td colspan="7">
+
+<form action="" method="post" name ="main" id = "form1" onsubmit="disable(this)">
+<table align ="left" style="border:1px;color:green;background-color:white;width:100%">
+<tr>
+    <td colspan="7" style ="border:1px;color:white;background-color:#ccccc0;font-size:14px;text-align:center">
+        <strong>Vendor Details (CR)</strong>
+    </td>
+</tr>
+    <tr>
+        <td>
+            Vendor Name :
+        </td>
+        <td>{{ form.vendorname}}
+        </td>
+        <td colspan = 2>{{ form.vendorname.errors}}
+        </td>
+    </tr>
+<tr>
+        <td>
+Vendor Code :
+        </td>
+<td>{{ form.vendorcode}}
+</td>
+<td colspan = 2>{{ form.vendorcode.errors}}
+</td>
+
+</tr>
+
+<tr>
+        <td>
+Vendor Balance :
+        </td>
+<td>{{ form.vendorbal}}
+</td>
+<td colspan = 2>{{ form.vendorbal.errors}}
+</td>
+</tr>
+
+<tr>
+        <td>
+Transaction Date :
+        </td>
+<td>{{ form.transdate}}
+</td>
+<td colspan = 2>{{ form.transdate.errors}}
+</td>
+</tr>
+<tr>
+        <td>
+Invoice No :
+        </td>
+<td>{{ form.invoiceno}}
+</td>
+<td colspan = 2>{{ form.invoiceno.errors}}
+</td>
+</tr>
+<tr>
+<td colspan = 5 >
+<div align = "center" style ="border:1px;color:white;background-color:#ccccc0;font-size:14px"> <strong>Stock Transaction Details (DR)</strong> </div>
+</td>
+</tr>
+    <tr>
+        <td>
+            Stock Name :
+        </td>
+        <td>{{ form.stockname}}
+        </td>
+        <td colspan = 2>{{ form.stockname.errors}}
+        </td>
+    </tr>
+<tr>
+        <td>
+Stock Code :
+        </td>
+<td>{{ form.stockcode}}
+</td>
+<td colspan = 2>{{ form.stockcode.errors}}
+</td>
+</tr>
+
+
+<tr>
+        <td>
+Description :
+        </td>
+<td>{{ form.particulars}}
+</td>
+<td colspan = 2>{{ form.particulars.errors}}
+</td>
+</tr>
+
+<tr>
+        <td>
+Quantity :
+        </td>
+<td>{{ form.qty}}
+</td>
+<td colspan = 2>{{ form.qty.errors}}
+</td>
+</tr>
+<tr>
+        <td>
+Unit Price :
+        </td>
+<td>{{ form.price}}
+</td>
+<td colspan = 2>{{ form.price.errors}}
+</td>
+</tr>
+<tr >
+<tr>
+ <td></td>
+<td colspan="4">
+
+<input name="submit" type= "submit" value="Submit" style="width:150px;height:25px;">
+ </td>
+</tr>
+</table>
+</form>
+
+    </td>
+</tr>
+
+
+<tr>
+<td colspan = 8>
+
+
+{% if getdetails %}
+
+<table align ="left"  style="width:100%;background-color:white;border-collapse:collapse;">
+
+    <tr>
+        <td colspan="8">
+            <form action="/SchApp/account/stock/addprocess/" method="POST" onsubmit="disable(this)">
+                <input name="submit" type="submit" value="Process" style="width:150px;height:25px;">
+            </form>
+        </td>
+    </tr>
+<tr>
+             <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong></strong></td>
+             <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong></strong></td>
+              <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong></strong></td>
+              <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle" colspan = 2><strong>Total Price</strong></td>
+
+              <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle" colspan = 5> <strong> {{vardebit|intcomma}}</strong></td>
+
+
+       </tr>
+ <tr>
+             <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong>Stock Code </strong></td>
+             <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong>Stock Name</strong></td>
+              <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Description</strong></td>
+              <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Trans. Date</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Quantity</strong></td>
+              <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Unit Price</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Total Price</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Invoice No</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Vendor Code</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Vendor Name</strong></td>
+       </tr>
+
+         {% for pincode in getdetails %}
+
+           <tr>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"><strong> {{ pincode.stockcode|upper }}</strong></td>
+            <!--  <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="/stock/deletestock/{{ pincode.id }}/" style ="color:red" title="Delete This Stock"> {{ pincode.stockname|upper }} </a></strong></td>-->
+
+             <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="#" style ="color:red" title="Delete This Stock" onClick= "getdialogtry({{ pincode.id}});"> {{ pincode.stockname|upper }} </a></strong></td>
+
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.particulars}}</strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.transdate|date:"d-m-Y"}}</strong></td>
+
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.qty|intcomma}}</strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.unitprice|intcomma}}</strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.totalprice|intcomma}}</strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.invoiceno|upper}}</strong></td>
+               <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.vendorcode|upper}}</strong></td>
+                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.vendorname|upper}}</strong></td>
+           {% endfor %}
+            </tr>
+</table>
+{% endif %}
+</td>
+</tr>
+</table >
+    <div id="myDialog" title="Edit Account">
+    </div>
+<script type="text/javascript">
+$(document).ready(function() {
+    var pickerOpts = {
+        //appendText: "mm/dd/yy",
+        //defaultDate: "+5",
+        showOtherMonths: true,
+        changeMonth: true,
+        changeYear: true,
+        dateFormat:"mm/dd/yy"
+    };
+         $("#id_transdate").datepicker(pickerOpts);
+         //alert("welcome");
+         $("#id_vendorname").focus();
+});
+</script>
+    <script>
+        $(document).ready(function() {
+            $("#id_vendorname").focus();
+            autocomplete();
+            autocompleteinv();
+        });
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        function autocomplete(){
+            $("#id_vendorname").autocomplete({
+                //minLength: 0
+                source: "/SchApp/account/stock/getcr/",
+
+                select: function( event, ui ) {
+                    $( "#id_vendorcode" ).val( ui.item.acccode );
+                    $( "#id_vendorname" ).val( ui.item.accname );
+                    $( "#id_vendorbal" ).val( ui.item.accbal );
+                    return false;
+                }
+            })
+                    .data( "autocomplete" )._renderItem = function( ul, item ) {
+                return $( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( "<a>" + item.label + "</a>" )
+                        .appendTo( ul );
+            };
+
+        }
+
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        function autocompleteinv(){
+            $("#id_stockname").autocomplete({
+                source: "/SchApp/account/stock/getdr/",
+
+                select: function( event, ui ) {
+                    $( "#id_stockcode" ).val( ui.item.acccode );
+                    $( "#id_stockname" ).val( ui.item.accname );
+                    // $( "#id_cusbal" ).val( ui.item.accbal );
+                    return false;
+                }
+            })
+                    .data( "autocomplete" )._renderItem = function( ul, item ) {
+                return $( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( "<a>" + item.label + "</a>" )
+                        .appendTo( ul );
+            };
+
+        }
+
+    </script>
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#id_vendorname").keyup(function () {
+                $( "#id_vendorcode" ).val("");
+                $( "#id_vendorbal" ).val("");
+            });
+            $("#id_stockname").keyup(function () {
+                // $( "#id_acccode" ).val("");
+                $( "#id_stockcode" ).val("");
+            });
+        });
+    </script>
+
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#myDialog").hide();
+        });
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialogtry(vid){
+            //alert(vid);
+            var state = vid;
+            var url = "/SchApp/account/stock/getstockadd/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialog").html(html);
+                    getdialog();
+                }
+            });
+            return false;
+        }
+
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialog(){
+            var dialogOpts = {
+                autoOpen:true,
+                modal:true,
+                position: ["center", "middle"],
+                height:200,
+                width:490,
+                title:'Delete Stock',
+                closeOnEscape:true,
+                show: true,
+                hide: true,
+                bgiframe: true
+            };
+            $("#myDialog").dialog(dialogOpts);
+        }
+
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+
+
+{%endblock%}

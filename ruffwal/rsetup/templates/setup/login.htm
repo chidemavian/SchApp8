@@ -1,0 +1,59 @@
+{% extends "setup/base.htm" %}
+{%block title %}{%endblock%}
+{%block content%}
+<div class="foot1">
+<div align="center" style="color:white;font-size:20px;background-color:black"> User Login</div>
+<form action="/login/" method="post" onsubmit="disable(this)">
+<table align ="center" style="width:100%">
+<tr>
+        <td style="text-align:right;">
+            Username
+        </td>
+        <td>
+
+                       {{form.username}}
+        </td>
+<td>
+            {{form.username.errors}}
+                        </td>
+    </tr>
+     <tr>
+
+        <td style="text-align:right;">
+            Password</td>
+        <td>
+                        {{form.password}}
+            </td>
+ <td>
+            {{form.password.errors}}
+                       </td>
+    </tr>
+   <tr>
+             <td colspan="2" style="text-align:center;">
+            <input name="submit" type= "submit" value="   Login  " >
+            </td>
+    </tr>
+    <tr>
+        <td align="center" style="color:red;font-size:17px;text-decoration:blink;width:100%" colspan="2">
+            {{varerr}}
+        </td>
+    </tr>
+</table>
+</form>
+</div>
+<script type="text/javascript" >
+        $(document).ready(function() {
+            $("#id_username").focus();
+        });
+</script>
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+ {%endblock%}

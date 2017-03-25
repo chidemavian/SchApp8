@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title></title>
+</head>
+{% load humanize %}
+<body>
+<table align ="center" style="width:100%;background-color:white;border-collapse:collapse;">
+
+    <tr>
+        <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">S/N</td>
+        <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"> Class</td>
+        <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"> Bill Description</td>
+        <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Bill Amount</td>
+        <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"> GL Account Code</td>
+        <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"> Day/Boarding</td>
+        <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Term</td>
+        <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Edit</td>
+    </tr>
+    {% if data %}
+        {% for pincode in data %}
+            <tr>
+
+            <td align="left" valign="top" style = "background-color:#ccccc0;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ forloop.counter }}</td>
+            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.klass }}</td>
+            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  {{ pincode.desc }}</td>
+            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ pincode.billamount|intcomma }}</td>
+            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.acccode}}</td>
+            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.dayboarding}}</td>
+            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.term}}</td>
+            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="/bill/deletebillajax/{{ pincode.id }}/" style ="color:blue;" title="Delete This BillInfo"> Remove This Bill </a></td>
+
+        {% endfor %}
+    {% else %}
+        <td colspan="7" align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  .......No Record Found.</td>
+    {% endif %}
+    </tr>
+
+</table>
+
+</body>
+</html>

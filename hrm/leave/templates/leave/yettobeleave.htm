@@ -1,0 +1,126 @@
+{% extends "leave/base.htm" %}
+{%block head %}
+{%block title %}{%endblock%}
+{%endblock %}
+{%block content%}
+<div class="pmiddle">
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="left" style="border:1px solid black;width:100%;heigth:10%;font-family:verdana;font-size:11px;color:black">
+<div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%;height:3%; font-size:14px;color:black">STAFF YET TO GO ON LEAVE </div>
+<div align="center" style="color:red;font-family:verdana;font-size:16px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+<table  style = "font-family:verdana;font-size:12px;width:100%">
+
+                    <tr>
+
+                        <td colspan="2" >
+                            <form action="" method="post" name ="main" >
+<table align ="left" style="border:0px solid black;width:auto;">
+<tr>
+        <td align ="left" style="width:auto">
+Leave Type :
+        </td>
+<td align ="left" style="width:auto" >{{ form.typeoftrain}}
+</td>
+        <td align ="left" style="width:auto">
+Year Of Leave :
+        </td>
+<td align ="left" style="width:auto" >{{ form.trainyear}}
+</td>
+<td align ="left" style="width:auto">
+
+<input name="submit" type= "submit" value="Submit" class = "submit">
+ </td>
+</tr>
+</table>
+</form>
+<tr>
+    <td colspan="10">
+        <table align ="center" style="border:0px solid black;width:100%;background-color:white">
+            <tr>
+                <td colspan="7">
+                    <input name="submit" type= "submit" value="Print Report" class = "submit" onclick = "openrec();">
+                </td>
+            </tr>
+            <tr>
+                <td colspan="7">
+                    <div class="printable">
+                        <table style="border:0px solid black;width:100%;background-color:white">
+
+                            <tr>
+                                <td colspan="7">
+
+                                    <table align ="left" style="border:0px solid black;width:100%;background-color:white">
+
+
+                 <tr>
+                    <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:9px"><strong> </strong></td>
+                     <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:9px"><strong></strong></td>
+                   <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px" colspan = "3"><img align ="center" style = "left:10%;float:left;padding:5px;border:0px;width:45px;height:45px" src ="/static/{{comp.picture}}" > {{comp.name}}<br>{{comp.address}}</td>
+
+                </tr>
+               <tr><td colspan ="15" align ="center"> STAFF YET TO GO ON {{tra}} LEAVE FOR {{tye}}</td>
+                   <td style="float:right;font-size:10px;">{{ printdate }}</td>
+               </tr>
+              </table>
+              </td>
+              </tr>
+<tr>
+    <td colspan = "10">
+    <table style="width:100%;color:black;border-collapse:collapse;">
+<tr>
+              <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"> S/N</td>
+              <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"> Staff Id</td>
+              <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"> Name</td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black">Sex</td>
+                <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black">Designation</td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black">Department</td>
+                <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"> Branch</td>
+                         </tr>
+
+         {% for pincode in staffdata1 %}
+           <tr>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ forloop.counter }} </td><td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.staffid }} </td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.name|title }}</td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  {{ pincode.sex }} </td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  {{ pincode.designation }} </td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  {{ pincode.department }} </td>
+              <td align="left" valign="top"style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  {{ pincode.branch }}</td>
+
+                                     {% endfor %}
+        </tr>
+    </table>
+
+    </td>
+</tr>
+
+                        </table>
+                    </div>
+
+
+
+                </td>
+            </tr>
+        </table>
+    </td>
+</tr>
+</table>
+</div>
+</div>
+<!-- parti-->
+<script>
+$(document).ready(function() {
+                 $("#id_trainyear").focus();
+
+});
+</script>
+<script language="javascript" type="text/javascript">
+function openrec()
+{
+  //alert("welcome");
+   $( ".printable" ).print();
+
+
+}
+</script>
+
+ {%endblock%}

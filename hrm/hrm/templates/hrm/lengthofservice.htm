@@ -1,0 +1,140 @@
+{% extends "hrm/base.htm" %}
+{%block content%}
+    <div class="pmiddle">
+    <!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+    <div align ="center" style="border:1px solid black;width:100%;font-family: verdana;color:black">
+        <div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%; font-size:12px;color:black"> LENGTH OF SERVICE REPORT </div>
+        <div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+         <table style="width:100%;">
+             <tr>
+                 <td colspan="6">
+
+
+
+        <form action="" method="post" name ="main" onsubmit="disable(this)">
+            <table align ="left" style="width:auto;">
+                <tr>
+                    <td align ="left" style="width:auto">
+                        {{ form.yearvalue.label }} &nbsp;{{ form.yearvalue }}<br>{{ form.yearvalue.errors }}
+                    </td>
+                    <td align ="left" style="width:auto">{{ form.caldate.label}}&nbsp;{{ form.caldate }}
+                    </td>
+                    <td align ="left" style="width:auto">{{ form.age.label}}&nbsp;{{ form.age }}
+                    </td>
+
+                    <td align ="left" style="width:auto"><input name="submit" type= "submit" value="View Report" >
+                    </td>
+                    <td align ="left" style="width:auto">
+                    </td>
+                </tr>
+            </table>
+           </form>
+                 </td>
+             </tr>
+             <tr>
+                 <td colspan="6">
+
+                     {% if staff_list %}
+                     <input name="submitprint" type= "submit" value="Print Report"  onclick = "openrecprint();">
+
+                     <div class="printable">
+                         <table align ="center" style="border:0px solid black;width:100%;background-color:white">
+                             <tr>
+                                 <td>
+                                     <table align ="left" style="border:0px solid black;width:100%;background-color:white">
+                                         <tr>
+                                         <td align="left" valign="top" style = "width:auto;background-color:white;font-size:12px" colspan = "3"><img align ="center" style = "left:10%;float:left;padding:5px;border:0px;width:55px;heigth:55px" src ="/static/{{comp.picture}}" > {{comp.name}}<br>{{comp.address}}</td>
+
+                                         </tr>
+                                         <tr><td colspan ="15" align ="center">{{tra}} LENGTH OF SERVICE REPORT</td>
+                                          <td style="float:right;font-size:10px;">{{ printdate }}</td>
+                                         </tr>
+
+                                     </table>
+                                 </td></tr>
+                             <tr>
+                                 <td>
+
+
+                                     <table align ="left" style="width:100%;color:black;border-collapse:collapse;">
+                                         <tr>
+                                             <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong>S/N</strong></td>
+                                             <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong>Staff Id</strong></td>
+                                             <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Staff Name</strong></td>
+                                             <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Designation</strong></td>
+                                             <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong>Department</strong></td>
+                                             <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> {{ getdate }}</strong></td>
+                                             <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> {{ getyage }}</strong></td>
+                                          </tr>
+
+                                        <!--
+                                         <tr>
+                                             <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ gdept.name}}</strong></td>
+                                         </tr>-->
+                                         {% for pincode in staff_list %}
+                                             <tr>
+                                             <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ forloop.counter}}</td>
+                                             <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.staffid}}</td>
+                                             <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.staffname|title}}</td>
+                                             <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.designation}}</td>
+                                             <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.department}}</td>
+                                             <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.dateofresumption|date:"d-m-Y"}}</td>
+                                             <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.year}}</td>
+
+                                         {% endfor %}
+                                         </tr>
+
+
+                                     </table>
+
+
+                                 </td></tr>
+                         </table>
+
+                     </div>
+                    {% endif %}
+
+                 </td>
+             </tr>
+            </table>
+
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            var pickerOpts = {
+                //appendText: "mm/dd/yy",
+                //defaultDate: "+5",
+                showOtherMonths: true,
+                changeMonth: true,
+                changeYear: true,
+                showButtonPanel: true
+                // showOn: "button"
+            };
+            $("#id_caldate").datepicker(pickerOpts);
+            //alert("welcome");
+            // $("#id_staffid").focus();
+            //$(".box").hide();
+           // getdeduction();
+        });
+    </script>
+
+        <script language="javascript" type="text/javascript">
+            function openrecprint()
+            {
+                //alert("welcome");
+                $( ".printable" ).print();
+
+            }
+        </script>
+        <script language="javascript" type="text/javascript">
+            function disable(f)
+            {
+                var button = f.elements['submit'];
+                button.value = 'Processing ...';
+                button.disabled = 'true';
+                return true;
+            }
+        </script>
+    </div>
+{%endblock%}

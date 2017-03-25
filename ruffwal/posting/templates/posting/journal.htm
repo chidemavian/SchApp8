@@ -1,0 +1,310 @@
+{% extends "posting/baseposting.htm" %}
+{% load humanize %}
+{%block content%}
+<div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%;height:25px; font-size:14px;color:white;padding-top:5px;"> <strong>JOURNAL ENTRY  </strong> </div>
+<div align="center" style="color:red;font-family:courier;font-size:16px;text-decoration:blink;" > {{varerr}}</div>
+
+<table align ="left" style="width:100%">
+<tr><td style="vertical-align:top;">
+
+    <form action="/SchApp/account/posting/generaljournal1/" method="post" name ="main" id = "form1" onsubmit="disable(this)">
+        <table align ="left" style="border:1px solid black;color:#000000;width:100%;vertical-align:top;">
+            <tr>
+                <td colspan="3" style ="border:1px;color:white;background-color:#ccccc0;font-size:16px;text-align:center;">
+                    <strong>Debit</strong>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Account Name :
+                </td>
+                <td>{{ form.draccname}}
+                </td>
+                <td colspan = 2>{{ form.draccname.errors}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Account Code :
+                </td>
+                <td>{{ form.dracccode}}
+                </td>
+                <td colspan = 2>{{ form.dracccode.errors}}
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+                    Amount :
+                </td>
+                <td>{{ form.dramount}}
+                </td>
+                <td colspan = 2>{{ form.dramount.errors}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Particular :
+                </td>
+                <td>{{ form.drparticulars}}
+                </td>
+                <td colspan = 2>{{ form.drparticulars.errors}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Reference No :
+                </td>
+                <td>{{ form.drrefno}}
+                </td>
+                <td colspan = 2>{{ form.drrefno.errors}}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Transaction Date :
+                </td>
+                <td>{{ form.drtransdate}}
+                </td>
+                <td colspan = 2>{{ form.drtransdate.errors}}
+                </td>
+            </tr>
+            <tr>
+
+                <td style="text-align:center" colspan="2">
+
+                    <input name="submit" type= "submit" value="  Submit Debit  " >
+                </td>
+
+            </tr>
+        </table>
+    </form>
+
+    </td>
+<td style="vertical-align:top;">
+
+
+    <form action="/SchApp/account/posting/generaljournal2/" method="post" name ="main" id = "form2" onsubmit="disable(this)">
+    <table align ="left" style="border:1px solid black;color:#000000;width:100%;vertical-align:top;">
+ <tr>
+     <td style ="border:1px;color:white;background-color:#ccccc0;font-size:16px;text-align:center" colspan="3"> <strong>Credit</strong>
+
+     </td>
+ </tr>
+ <tr>
+            <td>
+                Account Name :
+            </td>
+            <td>{{ form2.craccname}}
+            </td>
+            <td colspan = 2>{{ form2.craccname.errors}}
+            </td>
+ </tr>
+
+<tr>
+        <td>
+Account Code :
+        </td>
+<td>{{ form2.cracccode}}
+</td>
+<td colspan = 2>{{ form2.cracccode.errors}}
+</td>
+</tr>
+
+
+<tr>
+        <td>
+Amount :
+        </td>
+<td>{{ form2.cramount}}
+</td>
+<td colspan = 2>{{ form2.cramount.errors}}
+</td>
+</tr>
+
+<tr>
+        <td>
+Particular :
+        </td>
+<td>{{ form2.crparticulars}}
+</td>
+<td colspan = 2>{{ form2.crparticulars.errors}}
+</td>
+</tr>
+<tr>
+        <td>
+Reference No :
+        </td>
+<td>{{ form2.crrefno}}
+</td>
+<td colspan = 2>{{ form2.crrefno.errors}}
+</td>
+</tr>
+
+<tr>
+        <td>
+Transaction Date :
+        </td>
+<td>{{ form2.crtransdate}}
+</td>
+<td colspan = 2>{{ form2.crtransdate.errors}}
+</td>
+</tr>
+<tr>
+
+<td style="text-align:center" colspan="2">
+
+<input name="submit" type= "submit" value="  Submit Credit  ">
+
+</table>
+</form>
+</td>
+<tr></tr>
+<tr>
+<td>
+{% if getdetails %}
+<table align ="center" style="width:100%;background-color:white;border-collapse:collapse;">
+<tr>
+    <td colspan="7">
+        <form action="/SchApp/account/posting/journalprocess/" method="POST" onsubmit="disable(this)">
+            <input name="submit" type="submit" value="Process JOURNAL">
+        </form>
+    </td>
+</tr>
+<tr>
+             <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong></strong></td>
+             <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong></strong></td>
+              <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> </strong></td>
+              <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Total</strong></td>
+               <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> {{vardebit|intcomma}}</strong></td>
+              <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> {{varcredit|intcomma}}</strong></td>
+              <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> </strong></td>
+               </tr>
+ <tr>
+             <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong>Acc Code </strong></td>
+             <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong>Acc Name</strong></td>
+              <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Particular</strong></td>
+              <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Trans. Date</strong></td>
+               <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle;text-align:right;"><strong> DR</strong></td>
+              <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle;text-align:right;"><strong> CR</strong></td>
+              <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Ref.No</strong></td>
+               </tr>
+
+         {% for pincode in getdetails %}
+
+           <tr>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"><strong> {{ pincode.acccode|upper }}</strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="/SchApp/account/posting/editjournal/{{ pincode.id }}/" style ="color:red" title="Delete This Entry"> {{ pincode.accname|upper }} </a></strong></td>
+
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.particular}}</strong></td>
+             <td align="left" valign="top" style =  "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.transdate|date:"d-m-Y"}}</strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;text-align:right;"> <strong>{{ pincode.dr|intcomma}}</strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;text-align:right;"> <strong>{{ pincode.cr|intcomma}}</strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.refno|upper}}</strong></td>
+           {% endfor %}
+            </tr>
+</table>
+{% endif %}
+
+</td>
+</tr>
+</table >
+<script>
+    $(document).ready(function() {
+        var pickerOpts = {
+            //appendText: "mm/dd/yy",
+            //defaultDate: "+5",
+            showOtherMonths: true,
+            changeMonth: true,
+            changeYear: true,
+            dateFormat:"mm/dd/yy"
+        };
+         $("#id_drtransdate").datepicker(pickerOpts);
+         $("#id_crtransdate").datepicker(pickerOpts);
+         $("#id_draccname").focus();
+        autocomplete();
+        autocompleteinv();
+});
+
+</script>
+
+
+    <script type="text/javascript" language="javascript">
+        function autocomplete(){
+            $("#id_draccname").autocomplete({
+                //minLength: 0
+                source: "/SchApp/account/posting/getaccbankall/",
+
+                select: function( event, ui ) {
+                    $( "#id_dracccode" ).val( ui.item.acccode );
+                    $( "#id_draccname" ).val( ui.item.accname );
+                   // $( "#id_cusbal" ).val( ui.item.accbal );
+                    return false;
+                }
+            })
+                    .data( "autocomplete" )._renderItem = function( ul, item ) {
+                return $( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( "<a>" + item.label + "</a>" )
+                        .appendTo( ul );
+            };
+
+        }
+
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        function autocompleteinv(){
+            $("#id_craccname").autocomplete({
+                source: "/SchApp/account/posting/getaccbankall/",
+
+                select: function( event, ui ) {
+                    $( "#id_cracccode" ).val( ui.item.acccode );
+                    $( "#id_craccname" ).val( ui.item.accname );
+                    // $( "#id_cusbal" ).val( ui.item.accbal );
+                    return false;
+                }
+
+            })
+                    .data( "autocomplete" )._renderItem = function( ul, item ) {
+                return $( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( "<a>" + item.label + "</a>" )
+                        .appendTo( ul );
+            };
+
+        }
+
+    </script>
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#id_draccname").keyup(function () {
+                $( "#id_dracccode" ).val("");
+               // $( "#id_cusbal" ).val("");
+            });
+            $("#id_craccname").keyup(function () {
+                // $( "#id_acccode" ).val("");
+                $( "#id_cracccode" ).val("");
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        function disbutton(){
+            $("input[type=submit]").attr("disabled", "disabled");
+            return false;
+        }
+
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+
+{%endblock%}

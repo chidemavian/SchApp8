@@ -1,0 +1,92 @@
+
+<table align ="center" style="border:0px solid black;width:100%;color:black;background-color:white;">
+    <tr>
+        <td colspan="5">
+            <table align ="left" style="border:0px solid black;width:100%;background-color:white">
+                <tr>
+                    <td align="left" valign="top" style = "width:auto;background-color:white;font-size:12px" colspan = "3"><img align ="center" style = "left:10%;float:left;padding:5px;border:0px;width:55px;heigth:55px" src ="/static/{{comp.picture}}" > {{comp.name}}<br>{{comp.address}}</td>
+
+                </tr>
+                <tr><td colspan ="15" align ="center">{{ hmo }} - PENSION REPORT</td>
+                    <td style="float:right;font-size:10px;">{{ printdate }}</td>
+                </tr>
+
+            </table>
+        </td></tr>
+<tr>
+    <td colspan="5">
+    <table style="width:100%;color:black;border-collapse:collapse;">
+    <tr>
+        <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong>S/N</strong></td>
+        <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Staff Id</strong></td>
+        <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Staff Name</strong></td>
+        <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Pension Number</strong></td>
+    </tr>
+
+    {% if staff_list %}
+    {% for pincode in staff_list %}
+                <tr>
+
+                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ forloop.counter }}</td>
+                <td align="left" valign="top"style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.staffid }}</td>
+                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.staffname|title }}</td>
+                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="#" style ="color:blue;" title="Delete {{ pincode.staffname}} Pension Info." onclick="admno({{ pincode.id }});">{{ pincode.accno}}</a></td>
+      <!--  <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="/hrm/deletestaffpfa/{{ pincode.id }}/" style ="color:blue;" title="Delete {{ pincode.staffname}} Pension Info.">{{ pincode.accno}}</a></td>-->
+
+            {% endfor %}
+        {% else %}
+            <td colspan="5" align="left" valign="top"style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  .......No Staff Found Here.</td>
+        {% endif %}
+    </tr>
+</table>
+    </td>
+</tr>
+</table>
+<div id="myDialog">
+</div>
+<script type="text/javascript" >
+    $(document).ready(function() {
+        $("#myDialog").hide();
+    });
+</script>
+<script type="text/javascript" language="javascript">
+    function admno(vid){
+        //alert(vid);
+        var state = vid;
+        var url = "/humanresources/hrm/getstaffpfa/";
+        var i = 0;
+        var data='userid='+state;
+        $.ajax({
+            type:"POST",
+            url:url,
+            data:data,
+            success:function(html) {
+                //$("#myDialog").show();
+                $("#myDialog").html(html);
+                getdialog();
+            }
+        });
+        return false;
+    }
+
+</script>
+<script type="text/javascript" language="javascript">
+    function getdialog(){
+        var dialogOpts = {
+            autoOpen:true,
+            modal:true,
+            position: ["center", "middle"],
+            height:"auto",
+            width:490,
+            title:'Edit Staff Pension ',
+            closeOnEscape:true,
+            show: true,
+            hide: true,
+            bgiframe: true
+        };
+        $("#myDialog").dialog(dialogOpts);
+    }
+
+</script>
+
+

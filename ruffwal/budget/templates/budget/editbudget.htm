@@ -1,0 +1,68 @@
+{% extends "budget/base.htm" %}
+{% load humanize %}
+{%block content%}
+    <div align ="center" style="background-color:#000000;width:100%;height:25px; font-size:14px;color:white;vertical-align:middle;text-align:center;padding-top:10px;"> <strong>BUDGET CREATION  </strong> </div>
+    <div align="center" style="color:red;font-family:verdana;font-size:14px;text-decoration:blink;" > {{varerr}}</div>
+    <table align ="center" style="width:100%">
+        <tr>
+            <td colspan="8">
+                <form action="" method="post" name ="main" id = "form1" onsubmit="disable(this)">
+                    <table align ="left" style="border:1px;color:green;background-color:white;width:auto;font-size:12px">
+                        <tr>
+                            <td>
+                                Account Name :
+                            </td>
+                            <td><input name="accname" maxlength="240" id="id_accname" type="text" class="loginTxtbox" size="40" readonly="readonly" value="{{ getdetails.acccode.accname }}" />
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Account Code :
+                            </td>
+                            <td><input readonly="readonly" name="acccode" maxlength="20" id="id_acccode" type="text" class="loginTxtbox" size="35" value="{{ getdetails.acccode.acccode }}" />
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Account Type :
+                            </td>
+                            <td><input readonly="readonly" name="acctype" maxlength="20" id="id_acctype" type="text" class="loginTxtbox" size="35" value="{{ getdetails.acctype }}" />
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Budget Value :
+                            </td>
+                            <td><input id="id_amount" type="text" class="loginTxtbox" name="amount"  value="{{ getdetails.amount }}"/>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="text-align:center;">
+
+                                <input name="submit" type= "submit" value="Edit Budget" >
+                            </td>
+
+                        </tr>
+                    </table>
+                </form>
+    </table >
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function() {
+            $("#id_amount").focus();
+
+
+        });
+    </script>
+
+
+{%endblock%}

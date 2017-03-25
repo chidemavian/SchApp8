@@ -1,0 +1,38 @@
+{% load humanize %}
+<table style="width:100%">
+    <tr>
+        <td colspan="6">
+            <div align="left" style="width:100%;float:left;font-size:20px;font-weight:bold;color:#ffffff;">  </div>
+        </td>
+    </tr>
+    <tr valign="top">
+        <td colspan="6">
+            <div align="left" style="width:100%;float:left;font-size:12px;font-weight:bold;color:#ffffff;font-style:italic;">ACCOUNTING SOLUTIONS </div>
+        </td>
+        <td>
+            <div align="right" style="width:100%;float:right;font-size:14px;font-weight:bold;">UserName ::<span style="color:white;font-size:13px"> {{ useracc.username|upper }}</span></div>
+
+        </td>
+        <td>
+            <div align="right" style="width:100%;float:right;font-size:14px;font-weight:bold;color:white;"><a href="" style="color:white;">Account Search</a></div>
+
+        </td>
+
+        <td>
+            <div align="right" style="width:100%;float:right;font-size:14px;font-weight:bold;color:white;"><a href="/changepassword/" style ="color:white;"> Change Password </a></div>
+
+        </td>
+        <td>
+            <div align="right" style="width:100%;float:right;font-size:14px;font-weight:bold;color:white;"><a href="/logout/" style="color:white;">Log Out</a>   </div>
+
+        </td>
+        <td>
+            <div align="right" style="width:100%;float:right;font-size:14px;font-weight:bold;">FeedBack </div>
+
+        </td>
+        <!--
+        <td>
+            <div align="right" style="width:100%;float:right;font-size:14px;font-weight:bold;">Licenced To <br><span style="color:blue;font-size:19px"> {{ schinfo.name }}</span><br> <span style="color:red;font-size:13px">{{ schinfo.address }} </span></div>
+        </td>-->
+    </tr>
+</table>

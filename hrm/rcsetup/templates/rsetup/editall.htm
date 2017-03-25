@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional/EN">
+<html>
+<head>
+    <title> </title>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+    <style type="text/css">
+        .error { color: red; }
+        .error1 { color: red; }
+        .error2 { color: red; }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error').hide();
+            $('.submit').click(function(event){
+                var data=$("#amt").val();
+                var len=data.length;
+                if (len <= 0){
+                    $('.error').show();
+                    $("#amt").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error').hide();
+                }
+                //*********************************************************
+                if (jQuery.isNumeric(data) == true){
+
+                }
+                else
+                {
+                    //alert('A valid Amount is required');
+                    $('.error').show();
+                    $("#amt").focus();
+                    event.preventDefault();
+                }
+                //**********************************************************
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#duration").focus();
+            $('.error1').hide();
+            $('.submit').click(function(event){
+                var data1=$("#desc").val();
+                var len=data1.length;
+                if (len <= 0){
+                    $('.error1').show();
+                    $("#desc").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error1').hide();
+                }
+
+
+            });
+        });
+    </script>
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#amt").keyup(function () {
+                $('.error').hide();
+            });
+            $("#desc").keyup(function () {
+                $('.error1').hide();
+            });
+        });
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+
+    <style type="text/css">
+        .loginTxtbox
+        {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            color: #000;
+            text-align: left;
+            border: #4772A9 1px solid;
+            height: 16px;
+        }
+    </style>
+
+</head>
+<body>
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="left" style="border:0px solid black;width:100%;font-family: verdana;color:black">
+<div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%;font-size:12px;color:black"> EDIT ALLOWANCE </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+<form action="/hrm/editall/{{ getdetails.id }}/" method="post" name ="main" onsubmit="disable(this)">
+<table align ="left" style="border:0px solid black;width:100%">
+    <tr>
+        <td colspan="3" style="background-color:white;width:100%;font-size:12px;color:red;font-style:italic;text-align:center">
+            <strong>Press ESC to close  </strong>
+        </td>
+    </tr>
+
+<!--
+    <tr>
+        <td>
+Designation Code:
+        </td>
+<td><input type ="text" id="accname" size="35" name="accname" value ="{{getdetails.desgcode}}" readonly = "readonly">
+</td>
+</tr>
+-->
+<tr>
+<td>
+Level/Step :
+</td>
+<td>
+<input type ="text" id="acccode" size="15" name="acccode" value ="{{getdetails.desc}}" readonly = "readonly" class="loginTxtbox">
+</td>
+</tr>
+<tr>
+        <td>
+All. Amount:
+        </td>
+<td><input type ="text" id="amt" size="15" name="amt" value ="{{getdetails.amount}}" class="loginTxtbox" >
+    &nbsp;<span class="error">Valid Amount is required</span>
+</td>
+</tr>
+<tr>
+<td>
+All. Description :
+</td>
+<td>
+<input type ="text" id="desc" size="25" name="desc" value ="{{getdetails.paydes}}" class="loginTxtbox">
+    &nbsp;<span class="error1"> Desription is required</span>
+</td>
+</tr>
+<tr>
+    <td >
+        <input type="hidden" name="hcode"
+               value="{{getdetails.id}}">
+    </td>
+<td>
+<input name="submit" type= "submit" value="  Update ALLOWANCE " >
+ </td>
+<td>
+
+<a  href ="/hrm/deleteall/{{getdetails.id}}" style ="color:Black;;font-size:9px"> <img style ="width:25px;height:25px" src ="/static/imgs/editdelete.png" >  </a>Delete Record </td>
+
+</tr>
+ </table>
+ </form>
+</div>
+</body>
+</html>

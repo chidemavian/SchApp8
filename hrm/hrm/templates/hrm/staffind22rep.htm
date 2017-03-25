@@ -1,0 +1,283 @@
+{% extends "hrm/base.htm" %}
+{%block head %}
+{%block title %}Solutions{%endblock%}
+{%endblock %}
+{%block content%}
+<div class="pmiddle">
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+
+<div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%;heigth:10%; font-size:12px;color:black">Staff Individual Report</div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+
+<table align ="left" style="border:0px solid black;width:100%">
+<tr>
+<td>
+<table align ="left" style="border:0px solid black;width:100%">
+<input name="submitprint" type= "submit" value="Print Report"  onclick = "openrecprint();">
+<tr>
+<td colspan ="30">
+<div class="printable">
+   <table align ="center" style="border:0px solid black;width:100%;background-color:white">
+
+<tr>
+<td>
+       <table align ="left" style="border:0px solid black;width:60%;background-color:white">
+             {% for pincode in l %}
+           <tr>
+  <td>
+   <table align ="left" style="border:0px solid black;width:100%;background-color:white">
+       <td align="left" valign="top" style = "width=auto;background-color:white;font-size:9px"><strong> </strong></td>
+              <td align="left" valign="top" style = "width=auto;background-color:white;font-size:9px"><strong></strong></td>
+             <td align="left" valign="top" style = "width=auto;background-color:white;font-size:12px" colspan = "3"><img align ="center" style = "left:10%;float:left;padding:5px;border:0px;width:45px;heigth:45px" src ="/static/{{comp.picture}}" > {{comp.name}}<br>{{comp.address}}</td>
+                          </tr>
+               <tr><td colspan ="15" align ="center"> STAFF REPORT</td> </tr>
+     </table>
+</td></tr>
+          <tr>
+               <td align="center" valign="top" style = "width=auto; height=10px;background-color:white;font-size:13px"><strong><img align ="center" style = "left:65%;padding:5px;border:0px;width:50px;heigth:35px" src ="/static/{{pincode.bio.picture}}" ></strong></td>
+</tr>
+<tr>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:10px"><strong> STAFF ID:</strong></td>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:9px"><strong>  {{ pincode.bio.oracleno }}</strong></td>
+</tr><tr>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:10px"><strong>STAFF NAME :</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:9px"><strong>{{ pincode.bio.name}}</strong></td>
+</tr>
+<tr>
+           <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:10px"><strong>SEX :</strong></td>
+      <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:9px"><strong>{{ pincode.bio.sex}}</strong></td>
+</tr>
+<tr>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:10px"><strong>ADDRESS :</strong></td>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:9px"><strong>{{ pincode.bio.address}}</strong></td>
+</tr>
+<tr>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:10px"><strong>DATE OF BIRTH :</strong></td>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:9px"><strong>{{ pincode.bio.dateofbirth|date:"d-m-Y"}}</strong></td>
+
+            </tr>
+           <tr>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:10px"><strong>NATIONALITY :</strong></td>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:9px"><strong>{{ pincode.bio.nationality}}</strong></td>
+            </tr>
+        <tr>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:10px"><strong>STATE OF ORIGIN :</strong></td>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:9px"><strong>{{ pincode.bio.stateoforigin}}</strong></td>
+            </tr>
+        <tr>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:10px"><strong>LOCAL GOVT. AREA :</strong></td>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:9px"><strong>{{ pincode.bio.lgscno}}</strong></td>
+            </tr>
+<tr>               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:10px"><strong>FIRST APPOINTMENT :</strong></td>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:9px"><strong>{{ pincode.bio.dateofresum|date:"b d,Y"}}</strong></td>
+            </tr>
+<tr>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:10px"><strong>LOCAL GOVT. FILE NO :</strong></td>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:9px"><strong>{{ pincode.bio.staffid}}</strong></td>
+            </tr>
+<tr>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:10px"><strong>SERVICE COMM. NO :</strong></td>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:9px"><strong>{{ pincode.bio.commno}}</strong></td>
+            </tr>
+<tr>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:10px"><strong>JOB AS AT 1ST APP :</strong></td>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:9px"><strong>{{ pincode.bio.jobasat}}</strong></td>
+            </tr>
+        <tr>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:10px"><strong>PRESENT LEVEL/STEP :</strong></td>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:9px"><strong>LEVEL {{ pincode.bio.level}} STEP {{ pincode.step}}</strong></td>
+            </tr>
+               <tr>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:10px"><strong>DUTY POST :</strong></td>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:9px"><strong>{{ pincode.bio.localgovtarea}} </strong></td>
+            </tr>
+          <tr>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:10px"><strong>PFA NAME :</strong></td>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:9px"><strong>{{ pincode.bio.pfa}} </strong></td>
+            </tr>
+           <tr>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:10px"><strong>PFA PIN :</strong></td>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:9px"><strong>{{ pincode.bio.pensionno}} </strong></td>
+            </tr>
+
+      <tr> <td colspan = "15">
+ <table align ="left" style="border:0px; solid black;width:100%;background-color:white">
+<tr><td style = "font-size:13px;width:auto;color:black"> MINISTRY DEPLOYMENT </td></tr>
+<tr>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>OLD POST</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>NEW POST</strong></td>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong> DATE</strong></td>
+          </tr>
+ {% for f in pincode.srel %}
+
+           <tr>
+               <td align="left" valign="top" style = "font-size:9px;width:auto;color:black"> <strong>{{ f.currentlocation}}</strong></td>
+              <td align="left" valign="top" style = "font-size:9px;width:auto;color:black"> <strong>{{ f.newlocation}}</strong></td>
+              <td align="left" valign="top" style = "font-size:9px;width:auto;color:black"> <strong>{{ f.recdate|date:"d-m-Y"}}</strong></td>
+             {% endfor %}
+            </tr>
+</table>
+</td></tr>
+
+<tr> <td colspan = "15">
+ <table align ="left" style="border:0px; solid black;width:100%;background-color:white">
+<tr><td style = "font-size:13px;width:auto;color:black"> CARRER PROGRESSION </td></tr>
+<tr>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>JOB TITLE</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>GRADE</strong></td>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong> DATE</strong></td>
+          </tr>
+ {% for k in pincode.spromo %}
+            <tr>
+               <td align="left" valign="top" style = "font-size:9px;width:auto;color:black"> <strong>{{ k.newdesignation}}</strong></td>
+              <td align="left" valign="top" style = "font-size:9px;width:auto;color:black"> <strong>{{ k.newlevel}}</strong></td>
+              <td align="left" valign="top" style = "font-size:9px;width:auto;color:black"> <strong>{{ k.recdate|date:"d-m-Y"}}</strong></td>
+             {% endfor %}
+            </tr>
+</table>
+</td></tr>
+
+    <td colspan = "10">
+     <table align ="left" style="border:0px; solid black;width:100%;background-color:white">
+<tr><td colspan = "25" style = "font-size:13px;width:auto;color:black"> SCHOOL ATTENDED </td></tr>
+<tr>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>NAME OF SCHOOL</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>COURSE OF STUDIED</strong></td>
+               <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong> CERTIFICATE OBTAINED</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong> GRADE OBTAINED</strong></td>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong> YEAR OF GRADUATION</strong></td>
+          </tr>
+ {% for s in pincode.edu %}
+           <tr>
+               <td align="left" valign="top" style = "font-size:9px;width:auto;color:black"> <strong>{{ s.nameofsch}}</strong></td>
+              <td align="left" valign="top" style = "font-size:9px;width:auto;color:black"> <strong>{{ s.courseofstu}}</strong></td>
+              <td align="left" valign="top" style = "font-size:9px;width:auto;color:black"> <strong>{{ s.certificateob}}</strong></td>
+              <td align="left" valign="top" style = "font-size:9px;width:auto;color:black"> <strong>{{ s.gradeobtained}}</strong></td>
+              <td align="left" valign="top" style = "font-size:9px;width:auto;color:black"> <strong>{{ s.exityear}}</strong></td>
+                           {% endfor %}
+            </tr>
+</table>
+</td></tr>
+
+
+<tr>
+    <td colspan = "10">
+     <table align ="left" style="border:0px; solid black;width:100%;background-color:white">
+<tr><td colspan = "25" style = "font-size:13px;width:auto;color:black"> MEMBER OF PROFEESIONAL BODY </td></tr>
+<tr>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>BODY NAME</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>QUALIFICATION</strong></td>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong> YEAR OF QUALIFICATION</strong></td>
+          </tr>
+ {% for f1 in pincode.pedu %}
+           <tr>
+               <td align="left" valign="top" style = "font-size:9px;width:auto;color:black"> <strong>{{ f1.bodyname}}</strong></td>
+              <td align="left" valign="top" style = "font-size:9px;width:auto;color:black"> <strong>{{ f1.qualification}}</strong></td>
+              <td align="left" valign="top" style = "font-size:9px;width:auto;color:black"> <strong>{{ f1.exityear}}</strong></td>
+                                     {% endfor %}
+            </tr>
+</table>
+</td></tr>
+
+<tr>
+    <td colspan = "10">
+    <table align ="left" style="border:0px; solid black;width:80%;background-color:white">
+<tr><td colspan = "25" style = "font-size:13px;width:auto;color:black"> NEXT OF KIN </td></tr>
+<tr>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>RELATIONSHIP</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>{{ pincode.bio.reltype}}</strong></td>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong> RELATIONSHIP</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>{{ pincode.bio.reltype1}}</strong></td>
+          </tr>
+      <tr>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>NAME</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>{{ pincode.bio.relname}}</strong></td>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong> NAME</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>{{ pincode.bio.relname1}}</strong></td>
+          </tr>
+           <tr>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>PHONE NO</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>{{ pincode.bio.relno}}</strong></td>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong> PHONE NO</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>{{ pincode.bio.relno1}}</strong></td>
+          </tr>
+              <tr>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>ADDRESS</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>{{ pincode.bio.reladd}}</strong></td>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong> ADDRESS</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>{{ pincode.bio.reladd}}</strong></td>
+          </tr>
+ </table>
+ </td></tr>
+ <tr>
+    <td colspan = "10">
+     <table align ="left" style="border:0px; solid black;width:80%;background-color:white">
+<tr><td colspan = "25" style = "font-size:13px;width:auto;color:black"> SPOUSE INFORMATION </td></tr>
+<tr>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>NAME</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>{{ pincode.bio.spouse}}</strong></td>
+                   </tr>
+      <tr>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>ADDRESS</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>{{ pincode.bio.spouseadd}}</strong></td>
+                      </tr>
+           <tr>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>PHONE NO</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>{{ pincode.bio.spouseno}}</strong></td>
+                  </tr>
+ </table>
+ </td></tr>
+ <tr>
+    <td colspan = "10">
+     <table align ="left" style="border:0px; solid black;width:80%;background-color:white">
+<tr><td colspan = "25" style = "font-size:13px;width:auto;color:black"> CHILDREN INFORMATION </td></tr>
+<tr>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>NAME</strong></td>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong> SEX</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>PHONE NUMBER</strong></td>
+          </tr>
+        <tr>
+                <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>{{ pincode.bio.chilname}}</strong></td>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong> {{ pincode.bio.chilsex}}</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>{{ pincode.bio.chilno}}</strong></td>
+          </tr>
+       <tr>
+                <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>{{ pincode.bio.chilname1}}</strong></td>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong> {{ pincode.bio.chilsex1}}</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>{{ pincode.bio.chilno1}}</strong></td>
+          </tr>
+        <tr>
+                <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>{{ pincode.bio.chilname2}}</strong></td>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong> {{ pincode.bio.chilsex2}}</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>{{ pincode.bio.chilno2}}</strong></td>
+          </tr>
+        <tr>
+                <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>{{ pincode.bio.chilname3}}</strong></td>
+             <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong> {{ pincode.bio.chilsex3}}</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:white;font-size:8px"><strong>{{ pincode.bio.chilno3}}</strong></td>
+          </tr>
+ </table>
+ </td></tr>
+<tr><td colspan = "25"> <hr></td></tr>
+
+{% endfor %}
+ </table>
+   </td></tr>
+</table>
+
+</div>
+</td>
+</tr>
+</table>
+</div>
+
+<script language="javascript" type="text/javascript">
+function openrecprint()
+{
+  //alert("welcome");
+   $( ".printable" ).print();
+
+
+}
+</script>
+{%endblock%}

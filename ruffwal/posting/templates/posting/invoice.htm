@@ -1,0 +1,38 @@
+{% extends "posting/baseposting.htm" %}
+{% load humanize %}
+{%block content%}
+<div align ="center" style="background-color:#cccccc;width:100%;height:3%; font-size:14px;color:black;vertical-align:middle;text-align: center">Post Student Bill</div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+<table align ="center" style="width:100%">
+<tr><td>
+<form action="" method="post" name ="main" id = "form1" onsubmit="disable(this)">
+<table align ="left" style="border:1px;color:#2e6e9e;background-color:white;width:auto;font-size:12px">
+<tr>
+        <td>Session :</td>
+        <td>{{ form.session}}</td>
+        <td>Class :</td>
+        <td>{{ form.klass}}</td>
+        <td>Term :</td>
+        <td>{{ form.term}}</td>
+        <td><input name="submit" type= "submit" value="View Report"></td>
+</tr>
+</table>
+    </form>
+
+<tr>
+<td colspan = 8></td>
+</tr>
+
+</table >
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+{%endblock%}

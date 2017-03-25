@@ -1,0 +1,22 @@
+
+{% extends 'lesson/base.htm' %}
+{% block sectionTitle %}{% endblock %}
+{%load humanize}
+{% block content %}
+
+
+<div id = "submenu_cont">
+<table>
+        <tr>
+            <td colspan="20" style="padding-top:1px;text-align:left;color:red;font-size:18px">
+                  Lesson Notes Module
+            </td>
+        </tr>
+        <tr class ="submenu">
+            <td width="81"><a title = "Set Up Subject Topic" href="/lesson/setupall/"> Upload file</a></td>
+            <td width="146"><a title = "Set Up Sub-Topic" href="/lesson/setuspall/"> Download file</a></td>
+            <td width="136"><a title = "Set Up Instructional Resource" href="/lesson/setupall/"> Edit Lesson Note</a></td>
+        </tr>  
+</table>  
+</div>
+{% endblock %}

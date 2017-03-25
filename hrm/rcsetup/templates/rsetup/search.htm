@@ -1,0 +1,70 @@
+{% extends "rsetup/basesetup.htm" %}
+
+{%block head %}
+    {%block title %}{%endblock%}
+{%endblock %}
+{%block content%}
+
+        <!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+        <div align ="left" style="border:0px solid black;width:100%;font-family: verdana;color:black">
+            <div align ="center" style="background-color:#000000;border:0px solid black;width:100%; font-size:12px;color:white"> <strong>Staff Search </strong> </div>
+            <div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+            <form action="" method="post" name ="main">
+                {{ form.as_table }}
+            </form>
+            <div class = "listbox1">
+                <div class="nameslist1"></div>
+            </div>
+        </div>
+
+
+    <!-- parti-->
+       <script>
+        $(document).ready(function() {
+            $("#id_name").focus();
+            $(".listbox1").hide();
+            $("#id_name").keyup(function () {
+                //alert("welcome");
+                //$("#id_desname").val("");
+                //$("#id_accbal").val("");
+                var uid = $("#id_name").val();
+                var data='userid='+uid;
+
+                //alert(data);
+                $.ajax({
+                    type:"POST",
+                    url:"/hrmes/ajaxsearchstaff/",
+                    data:data,
+                    success:function(html) {
+                        $(".listbox1").show();
+                        $(".nameslist1").html(html);
+                        //$("#test").html(html);
+                        $('li').hover(function(){
+                            $(this).addClass('hover');
+                        },function(){
+                            $(this).removeClass('hover');
+                        });
+                        $('li').click(function(){
+                            var newdata = $(this).text();
+                            var commsep = newdata.split(",");
+                            //$("#id_cusname").val($(this).text()); cusbal
+                            // $("#id_desname").val(commsep[1]);
+                            //$("#id_descode").val(commsep[0]);
+                            //$("#id_accbal").val(commsep[2]);
+                            //$('.listbox').hide();
+                            //
+
+
+
+                        });
+
+                    }
+                });
+                //alert("error");
+                return false;
+            });
+        });
+
+    </script>
+
+{%endblock%}

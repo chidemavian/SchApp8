@@ -1,0 +1,93 @@
+{% extends "hrm/base.htm" %}
+{%block head %}
+{%block title %}LYXNEDGE Solutions{%endblock%}
+{% load humanize %}
+{%endblock %}
+{%block content%}
+<div class="pmiddle">
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="left" style="border:1px solid black;width:100%;heigth:10%;font-family: verdana;color:black">
+<div align ="center" style="background-color:black;border:0px solid black;width:100%;heigth:10%; font-size:12px;color:white"> <strong>EDIT SPECIAL DEDUCTION  </strong> </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+<table align ="center" style="border:0px solid black;width:100%">
+<form action="" method="post" name ="main" onsubmit="disable(this)">
+<tr>
+        <td align ="left" style="width:30%">
+Staff Id :
+        </td>
+<td align ="left" style="width:30%"><input id="id_staffid" type="text" name="staffid" maxlength="50" value = "{{getdetails.staffid}}" readonly="readonly" >
+</td>
+<td align ="left" style="width:30%">
+</td>
+</tr>
+<tr>
+        <td align ="left" style="width:30%">
+Staff Name :
+        </td>
+<td align ="left" style="width:30%"><input id="id_staffname" readonly="readonly" type="text" name="staffname" maxlength="310" value = "{{getdetails.staffname}}">
+</td>
+<td align ="left" style="width:30%">
+</td>
+</tr>
+<tr>
+        <td>
+Amount :
+        </td>
+<td><input type="text" name="amount" id="id_amount" value = "{{getdetails.amount}}">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+        <td align ="left" style="width:30%">
+Description :
+        </td>
+<td align ="left" style="width:30%"><input id="id_paydesc" type="text" name="paydesc" maxlength="280" value = "{{getdetails.paydes}}">
+</td>
+<td align ="left" style="width:30%">
+</td>
+
+</tr>
+
+<tr>
+        <td align ="left" style="width:30%">
+<a  href ="/humanresources/hrm/deletespded/{{getdetails.id}}/" style ="color:Black;;font-size:9px"> <img style ="width:25px;heigth:25px" src ="/static/imgs/editdelete.png" >  </a>Delete </td>
+
+                        </td>
+<td align ="left" style="width:30%">
+
+<input name="submit" type= "submit" value="Update Special Deduction">
+ </td>
+<td align ="left" style="width:30%">
+ </td>
+<td>
+</td>
+</tr>
+</form>
+</table>
+</div>
+
+<!-- parti-->
+
+<script>
+$(document).ready(function() {
+        // $("#id_transdate").datepicker();
+         //alert("welcome");
+         $("#id_amount").focus();
+         //$(".box").hide();
+});
+</script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+
+ {%endblock%}

@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>SchApp 8.0 Enterprise School Software</title>
+
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Please wait...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+
+
+<style type="text/css">
+<!--
+.style11 {
+	font-size: 100px;
+	color: #FF3300;
+}
+.style1 {
+	color: #990000;
+	font-weight: bold;
+}
+-->
+</style>
+</head>
+
+<body>
+
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<div align="center"><table width="8.0">
+        <td width="90" align="center"><span class="style11">SchApp</span></td>
+   <form  action="" method="post" name ="main" id ="main" onsubmit="disable(this)">
+  <tr>
+    <td><table width= "714"><tr>
+      <br/>
+      <td width="200" align="left"><span class="style1">User Login &gt;&gt;&gt; </span></td>
+          <td width="5"><span class="labeltax">{{ form.username.label }}</span></td>
+          <td width="93">{{ form.username }}</td>
+          <td width="103">{{ form1.username.lbel }}</td>
+          <td width="5"><span class="labeltax">{{ form.password.label }}</span></td>
+          <td width="93">{{ form.password }}</td>
+          <td width="100"><input name="submit" type= "submit" value=" Enter "id="submit" style="width:100px;height:25px;"/></td>
+    </table>
+      
+    <tr>
+    <td align="center"style="background-color:#ffffff;font-size:13px;color:Red;font-weight:bold;text-decoration:blink;">{{ varerr }}</td>
+  </table> 
+
+   <script type="text/javascript">
+    document.getElementById('id_username').focus()
+</script> 
+  
+<script type="text/javascript">
+    $(document).ready(function() {
+    $('#submit').click(function(){
+          });
+    });
+</script>
+</div>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+</body>
+<footer><div align="center">Enterprise School Application Software V6.0
+  </div></footer>
+</html>

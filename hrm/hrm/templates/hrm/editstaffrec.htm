@@ -1,0 +1,130 @@
+{% extends "hrm/base.htm" %}
+{%block head %}
+{%block title %}{%endblock%}
+{%endblock %}
+{%block content%}
+<div class="pmiddle">
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+  <div align ="left" style="width:100%;font-family:verdana;color:black">
+   <div align ="center" style="background-color:#ccccc0;width:100%; font-size:12px;color:black"> Edit Staff Record  </div>
+     <div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:b;" > {{varerr}}</div>
+       <table style="width:100%">
+         <tr>
+          <td colspan="8">
+           <form action="" method="post" name ="main">
+             <table align ="left" style="width:auto;">
+                <tr>
+                  <td>Staff Name :</td>
+                  <td>{{ form.staffname}}</td>
+                  <td>{{ form.staffname.errors}}</td>
+                </tr>
+             </table>
+           </form>
+         </td>
+     </tr>
+     <tr>
+      <td  colspan ="8" align ="left" valign = "Top" >
+        <div class = "listbox1">
+          <div class="nameslist1"></div>
+        </div>
+      </td>
+      </tr>
+     </table>
+  </div>
+</div>
+<!-- parti-->
+
+<script language="javascript" type="text/javascript">
+function openrec()
+{
+  //alert("welcome");
+   var uid = $("#id_staffname").val();
+   var data='userid='+uid;
+
+   //alert(data);
+   $.ajax({
+    type:"POST",
+    url:"/hrm/hrm/ajaxall/",
+    data:data,
+    success:function(html) {
+         $(".box").show();
+         $(".box").html(html);
+
+    }
+
+ });
+  // alert("error");
+   return false;
+
+}
+</script>
+<script>
+$(document).ready(function() {
+        // $("#id_transdate").datepicker();
+         //alert("welcome");
+         $("#id_staffname").focus();
+         //$(".box").hide();
+});
+</script>
+<script>
+$(document).ready(function() {
+  $(".listbox1").hide();
+  $("#id_staffname").keyup(function () {
+          //alert("welcome");
+   //$("#id_desname").val("");
+   //$("#id_accbal").val("");
+   var uid = $("#id_staffname").val();
+   var data='userid='+uid;
+
+   //alert(data);
+   $.ajax({
+    type:"POST",
+    url:"/hrm/hrm/ajaxstaff/",
+    data:data,
+    success:function(html) {
+         $(".listbox1").show();
+         $(".nameslist1").html(html);
+         //$("#test").html(html);
+         $('li').hover(function(){
+         $(this).addClass('hover');
+          },function(){
+         $(this).removeClass('hover');
+          });
+         $('li').click(function(){
+         var newdata = $(this).text();
+         var commsep = newdata.split(",");
+         //$("#id_cusname").val($(this).text()); cusbal
+        // $("#id_desname").val(commsep[1]);
+         //$("#id_descode").val(commsep[0]);
+         //$("#id_accbal").val(commsep[2]);
+         //$('.listbox').hide();
+         //
+          });
+    }
+});
+   //alert("error");
+   return false;
+});
+});
+
+</script>
+
+<script language="javascript" type="text/javascript">
+    function openrec()
+    {
+        var data='userid='+'test';
+        $.ajax({
+            type:"POST",
+            url:"/header/",
+            data:data,
+            success:function(html) {
+                $(".boxnn").show();
+                $(".boxnn").html(html);
+            }
+        });
+        return false;
+    }
+</script>
+
+
+ {%endblock%}

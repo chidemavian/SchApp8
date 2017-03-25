@@ -1,0 +1,63 @@
+{% extends "contract/base.htm" %}
+{%block head %}
+    {%block title %}Solutions{%endblock%}
+{%endblock %}
+{%block content%}
+    <div class="pmiddle">
+        <!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+        <div align ="left" style="border:1px solid black;width:100%;heigth:10%;font-family: verdana;color:black">
+            <div align ="center" style="background-color:black;border:0px solid black;width:100%; font-size:12px;color:white"> <strong>COMPUTE CONTRACT STAFF PAYROLL  </strong> </div>
+            <div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+            <form action="" method="post" name ="main" onsubmit="disable(this)">
+                <table align ="left" style="border:1px solid black;width:auto;background-color:gray;">
+
+                    <tr>
+                        <td>
+                            Select Date :
+                        </td>
+                        <td>{{ form.caldate}}
+                        </td>
+                        <td>{{ form.caldate.errors}}
+                        </td>
+                        <td colspan="3" style="text-align:center;">
+                            <input name="submit" type= "submit" value="Compute Payroll">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- parti-->
+    <script>
+        $(document).ready(function() {
+
+            var pickerOpts = {
+                //appendText: "mm/dd/yy",
+                //defaultDate: "+5",
+                showOtherMonths: true,
+                changeMonth: true,
+                changeYear: true,
+                dateFormat:"mm/dd/yy"
+                //showButtonPanel: true
+                // showOn: "button"
+            };
+            $("#id_caldate").datepicker(pickerOpts);
+            //alert("welcome");
+            // $("#id_staffid").focus();
+            //$(".box").hide();
+        });
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+{%endblock%}

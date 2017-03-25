@@ -1,0 +1,118 @@
+{% extends "query/base.htm" %}
+{%block head %}
+    {%block title %}{%endblock%}
+{%endblock %}
+{%block content%}
+    <div class="pmiddle">
+        <!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+        <div align ="left" style="border:0px solid black;width:100%;height:10%;font-family:verdana;font-size:11px;color:black">
+            <div align ="center" style="background-color:black;border:0px solid black;width:100%;height:10%; font-size:12px;color:white"> <strong>QUERY SETUP </strong> </div>
+            <div align="center" style="color:red;font-family:verdana;font-size:16px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+            <table  style = "font-family:verdana;font-size:12px;width:85%">
+                <tr>
+
+                    <td colspan="12">
+                        <form action="" method="post" name ="main" >
+                            <table align ="left" style="border:1px solid black;width:auto;background-color:gray;">
+                                <tr>
+                                    <td>
+                                        Query Name :
+                                    </td>
+                                    <td>{{ form.name}}
+                                    </td>
+                                    <td>
+                                        <input name="submit" type= "submit" value="Create Query" class = "submit">
+                                    </td>
+
+                                </tr>
+                            </table>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan = "12">
+                        <input name="submitprint" type= "submit" value="Print Report" class = "submit" onclick = "openrecprint();">
+                        <div class="printable">
+                            <table style="width:auto;color:black;border-collapse:collapse;">
+                                <tr>
+                                    <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> S/N</strong></td>
+                                    <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> QUERY Name</strong></td>
+                                </tr>
+                                {% for pincode in getdetails %}
+                                    <tr>
+                                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong> {{ forloop.counter }} </strong></td>
+                                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="#" style ="color:red" onclick="admno({{ pincode.id }});" title="Edit This Query"> {{ pincode.name }} </a></strong></td>
+                                  <!--  <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="/query/editquery/{{ pincode.id }}/" style ="color:red" onclick="admno({{ pincode.id }});" title="Edit This Query"> {{ pincode.name }} </a></strong></td>-->
+                                {% endfor %}
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+        <!-- parti-->
+        <script>
+            $(document).ready(function() {
+                $("#id_name").focus();
+
+            });
+        </script>
+        <script language="javascript" type="text/javascript">
+            function openrecprint()
+            {
+                //alert("welcome");
+                $( ".printable" ).print();
+            }
+        </script>
+
+        <div id="myDialog" >
+        </div>
+        <script type="text/javascript" >
+            $(document).ready(function() {
+                $("#myDialog").hide();
+            });
+        </script>
+        <script type="text/javascript" language="javascript">
+            function admno(vid){
+                //alert(vid);
+                var state = vid;
+                var url = "/hrmes/query/getquerysetup/";
+                var i = 0;
+                var data='userid='+state;
+                $.ajax({
+                    type:"POST",
+                    url:url,
+                    data:data,
+                    success:function(html) {
+                        //$("#myDialog").show();
+                        $("#myDialog").html(html);
+                        getdialog();
+                    }
+                });
+                return false;
+            }
+
+        </script>
+        <script type="text/javascript" language="javascript">
+            function getdialog(){
+                var dialogOpts = {
+                    autoOpen:true,
+                    modal:true,
+                    position: ["center", "middle"],
+                    height:"auto",
+                    width:"auto",
+                    title:'Edit Query Setup',
+                    closeOnEscape:true,
+                    show: true,
+                    hide: true,
+                    bgiframe: true
+                };
+                $("#myDialog").dialog(dialogOpts);
+            }
+
+        </script>
+    </div>
+{%endblock%}

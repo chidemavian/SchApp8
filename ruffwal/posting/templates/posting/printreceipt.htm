@@ -1,0 +1,119 @@
+{% extends "posting/baseposting.htm" %}
+{%block content%}
+    <table style="width:auto;vertical-align:top;" >
+    <tr style="vertical-align:top;">
+    <td colspan="50">
+    <input name="submitprint" type= "submit" value="Print Report" onclick = "openrecprint();">
+    <div class="printable">
+        <table style="width:600px;vertical-align:top;" border="1">
+        <tr style="vertical-align:top">
+        <td colspan="10">
+        <table style="width:100%;vertical-align:top;" border="0">
+        <tr>
+            <td style=" text-align: right;vertical-align:top;" rowspan="3">
+                <img style="width: 80px; height: 80px;" src="/static/{{ school.picture }}" alt="{{ school.name }}">
+            </td>
+            <td style=" text-align: left; vertical-align:top;">
+                <span style="font-size:20px;color: #8b0000;font-weight:bold;">{{ school.name }}</span><br>
+                {{ school.address }} <br>
+                {{ school.website }} <br>
+                {{ school.phonenumber }}
+            </td>
+        </tr>
+
+
+            <tr>
+                <td>
+                    <br>
+                    <br>
+                </td>
+            </tr>
+
+        <tr>
+            <td>
+                <br>
+            </td>
+        </tr>
+            <tr>
+                <td style="text-align:center;font-size:25px;color:white;font-weight:bold;background-color:black;height:25px;" colspan="2"> Official Receipt </td>
+
+            </tr>
+        <tr>
+            <td>
+                <span style="font-weight:bold;">Date :</span>  {{ vdate }}
+            </td>
+            <td style="text-align:right;"><span style="font-weight:bold;">NO.</span>  <span style="font-style:italic;">{{ vartransid }}</span> </td>
+        </tr>
+        <tr>
+            <td colspan="10">
+               <span style="font-style:italic;font-weight:bold;">Received From :</span> {{ cusname }}
+            </td>
+        </tr>
+            <tr>
+                <td>
+                    <br>
+
+                </td>
+            </tr>
+        <tr>
+            <td colspan="10">
+                <span style="font-style:italic;font-weight:bold;">The Sum Of :</span>    {{ fig2wd }}
+
+            </td>
+        </tr>
+            <tr>
+                <td>
+                    <br>
+
+                </td>
+            </tr>
+            <tr>
+                <td colspan="10">
+                    <span style="font-style:italic;font-weight:bold;">Being Payment For :</span>   {{ particulars }}
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <br>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="10">
+                    <span style="font-style:italic;font-weight:bold;">Teller/Cheque No :</span>   {{ refno }}
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <br>
+                </td>
+            </tr>
+
+        <tr>
+            <td style="text-align:left;">
+                <strong>=N= {{ amount }} K</strong>
+
+            </td>
+            <td style="text-align:right;">
+                <strong> For : {{ school.name }} </strong>
+            </td>
+        </tr>
+        </table>
+
+        </td>
+        </tr>
+        </table>
+    </div>
+    </td>
+    </tr>
+    </table>
+    <script language="javascript" type="text/javascript">
+        function openrecprint()
+        {
+            //alert("welcome");
+            $( ".printable" ).print();
+        }
+    </script>
+
+{% endblock %}

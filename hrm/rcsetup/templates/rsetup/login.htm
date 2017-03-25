@@ -1,0 +1,88 @@
+{% extends "rsetup/base.htm" %}
+{%block title %}{%endblock%}
+{%block content%}
+    <!--
+    <div class="adv11"> click here for your login details</div>
+
+    <div class="adv1">
+     <form action="/passwordrequest/" method="POST" name="form2">
+        <table>
+            <tr>
+                <td colspan="4" style="color:red;text-align: center">For Your Login Details</td>
+            </tr>
+            <tr>
+                <td>{{ form2.email.label }}</td>
+                <td>{{ form2.email }}</td>
+                <td>  <input name="submit" type= "submit" value=" Submit  " class = "submit"></td>
+                <td>{{ form2.email.errors }}</td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    {{ varerr2 }}
+
+                </td>
+            </tr>
+        </table>
+
+     </form>
+    </div>-->
+<div class="foot1">
+<div align="center" style="color:white;font-family:verdana;font-size:20px;background-color:black"> User Login</div>
+
+    <form action="/login/" method="post">
+    <table align ="center" style="border:0px solid black;width:100%">
+      <tr>
+        <td style="width: 60px;font-weight:normal;font-size:11px;color:#000000;">
+            Username
+            </td>
+        <td style="width: 60px">
+
+                       {{form.username}}
+                        </td>
+<td style="width:auto">
+
+            {{form.username.errors}}
+
+                        </td>
+    </tr>
+     <tr>
+
+        <td style="width: 65px;font-weight:normal;font-size:11px;color:#000000;">
+            Password</td>
+        <td style="width: 65px">
+                        {{form.password}}
+            </td>
+ <td style="width:auto">
+            {{form.password.errors}}
+                       </td>
+    </tr>
+   <tr>
+              <td style="width: 80px">
+            </td>  <td style="width: 80px">
+            <input name="submit" type= "submit" value="   Login  " class = "submit">
+            </td>
+    </tr>
+        <tr>
+            <td colspan="7" align="center" style="color:red;font-size:20px;text-decoration:blink;text-align:center">
+                {{varerr}}
+            </td>
+
+        <tr>
+
+</table> </form>
+</div>
+<script type="text/javascript">
+document.getElementById('id_username').focus()
+</script>
+
+<script>
+  $(document).ready(function() {
+     // $(".adv1").hide();
+     // $(".adv11").click(function () {
+       //   $(".adv1").show();
+      //});
+
+     });
+
+</script>
+ {%endblock%}

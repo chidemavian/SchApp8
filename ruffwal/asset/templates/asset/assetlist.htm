@@ -1,0 +1,126 @@
+{% extends "asset/base.htm" %}
+{%block content%}
+<div align ="center" style="background-color:#ccccc0;width:100%;height:15px; font-size:12px;color:white;padding-top:10px;"> <strong>ASSETS LIST  </strong> </div>
+<div align="center" style="color:red;font-family:courier;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+
+<table align ="left" style="width:auto;">
+    <tr>
+        <td colspan="10" >
+
+
+            <form action="" method="post" name ="main" onsubmit="disable(this)">
+                <table align ="left" style="width:100%;border: 1px solid #000;">
+
+                    <tr>
+                        <td>
+                            {{ form.subgrname.label}}
+                        </td>
+                        <td>{{ form.subgrname}}
+                        </td>
+                        <td>
+                            {{ form.allasset.label}}
+                        </td>
+                        <td>{{ form.allasset}}
+                        </td>
+
+                        <td>
+                            <input name="submit" type= "submit" value="   View List  " >
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="10">
+            {% if all %}
+            <div style="width:100%;"><input name="submit" type= "submit" value="Print List  " onclick="openrecprint();"></div>
+            <div class="printable">
+
+            <table style="width:100%;border-collapse:collapse;background-color:white">
+                <tr>
+                    <td colspan="1" rowspan="3" style="vertical-align:top">
+                        <img  style = "vertical-align:top;left:10%;padding:5px;border:0px;width:60px;height:60px;float:left;" src ="/static/{{ logo }}" >
+                    </td>
+                    <td colspan="4" style="font-weight:bold;font-size:19px;color:#000;text-align:left;">
+                        {{ comp }}
+                    </td>
+
+                </tr>
+                <tr>
+                    <td colspan="6" style="font-weight:bold;font-size:14px;color:#000000;text-align:left;font-style:italic;">
+                        {{ address }}
+                    </td>
+
+                </tr>
+                <tr>
+                    <td colspan="6" style="font-weight:bold;font-size:14px;color:#000000;text-align:left;">
+                     ASSETS LISTS
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="7" style="font-weight:bold;font-size:14px;color:#000000;text-align:center;">
+                        <hr>
+                    </td>
+
+                </tr>
+                {% for j in all %}
+                <tr>
+                    <td colspan="7" style="font-weight:bold;font-size:11px;color:#000000;text-align:left;font-style:italic;">
+                        {{j.sub }}
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black"><strong> S/N</strong></td>
+                    <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black"><strong>Name</strong></td>
+                    <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black"><strong>Code</strong></td>
+                    <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black"><strong>Date Of Purchase</strong></td>
+                    <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black"><strong>Life Span</strong></td>
+
+                </tr>
+                {% for pincode in j.getdetails %}
+
+                <tr>
+                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;text-align:center;"> {{ forloop.counter }}</td>
+                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.name|upper }}</td>
+                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.acccode|upper }}</td>
+                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.datepurchase|date:"d-m-Y" }}</td>
+                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.span }}</td>
+
+
+                    {% endfor %}
+
+
+                </tr>
+                {% endfor %}
+
+            </table>
+            </div>
+            {% endif %}
+        </td>
+    </tr>
+</table>
+
+<script language="javascript" type="text/javascript">
+    function openrecprint()
+    {
+        $( ".printable" ).print();
+    }
+</script>
+
+
+<script language="javascript" type="text/javascript">
+    function disable(f)
+    {
+        var button = f.elements['submit'];
+        button.value = 'Processing';
+        button.disabled = 'true';
+        return true;
+    }
+</script>
+
+
+
+{%endblock%}

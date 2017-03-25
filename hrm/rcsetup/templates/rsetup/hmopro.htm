@@ -1,0 +1,20 @@
+{% load humanize %}
+{%block content%}
+
+    <table align ="center"style="width:100%;color:black;border-collapse:collapse;">
+        <tr>
+            <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"> HMO </td>
+            <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black">PROVIDER NAME</td>
+            <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black">PROVIDER ADDRESS</td>
+        </tr>
+        {% for pincode in data %}
+
+            <tr>
+            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.hmo}}</td>
+            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="/hrm/deletehmoprovidercode/{{ pincode.id }}/" style ="color:red" title="Click here to delete this provider"> {{ pincode.name }} </a></td>
+            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ pincode.address}}</td>
+        {% endfor %}
+        </tr>
+    </table>
+
+{%endblock%}

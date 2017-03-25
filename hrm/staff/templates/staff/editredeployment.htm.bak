@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional/EN">
+<html>
+<head>
+<title> CapitalExpert :- Human Resources And Payroll </title>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+    .error { color: red; }
+
+</style>
+<script type="text/javascript">
+    $(document).ready(function() {
+        //$("#accname").focus();
+        $('.error').hide();
+        $('.submit').click(function(event){
+            var data=$("#dateofred").val();
+            var len=data.length;
+            if (len <= 0){
+                $('.error').show();
+                $("#dateofred").focus();
+                //$('.error').show();
+                event.preventDefault();
+            }
+            else
+            {
+                $('.error').hide();
+            }
+        });
+    });
+</script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+
+<style type="text/css">
+    .loginTxtbox
+    {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        color: #000;
+        text-align: left;
+        border: #4772A9 1px solid;
+        height: 16px;
+    }
+</style>
+
+</head>
+<body>
+<div align ="center" style="background-color:black;border:0px solid black;width:100%;font-size:12px;color:white"> <strong>STAFF REDEPLOYMENT </strong> </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+  <table style="border:0px solid black;width:100%">
+  <tr>
+      <td colspan="10">
+    <form action="/humanresources/staff/editredeployment/{{ getdetails.id }}/" method="post" name ="main" onsubmit="disable(this)">
+    <table align ="center" style="border:0px solid black;width:auto;">
+        <tr>
+            <td colspan="3" style="background-color:white;width:100%;font-size:12px;color:red;font-style:italic;text-align:center">
+                <strong>Press ESC to close  </strong>
+            </td>
+        </tr>
+
+<tr>
+        <td>
+Staff Id :
+        </td>
+<td><input id="id_staffid" type="text" name="staffid" readonly="readonly" size="35" value = "{{getdetails.staffid}}" class="loginTxtbox">
+</td>
+<td rowspan =10 valign = "top"><img style = "border:1px solid black;width:100px;heigth:100px" src ="/static/{{getdetails.picture}}" ></td>
+</tr>
+<tr>
+        <td>
+Staff Name :
+        </td>
+<td><input id="id_staffname" readonly="readonly"  name="staffname" size="35" class="loginTxtbox" value="{{getdetails.name}}" >
+</td>
+<td>
+</td>
+</tr>
+<tr>
+        <td>
+Sex:
+        </td>
+<td><input id="id_sex" readonly="readonly" type="text" name="sex" size="15" value = "{{getdetails.sex}}" class="loginTxtbox">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+        <td>
+Department :
+        </td>
+<td><input id="id_department" readonly="readonly" type="text" name="department"  size="35" value = "{{getdetails.department}}" class="loginTxtbox">
+</td>
+
+</tr>
+<tr>
+       <td>
+New Department :
+        </td>
+<td><select name="newdepartment" id="id_newdepartment">
+<option selected = "selected" value="{{getdetails.department}}">{{getdetails.department}}</option>
+{% for pincode in gdept %}
+<option value="{{pincode.name}}">{{pincode.name}}</option>
+ {% endfor %}
+</select>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+        <td>
+Branch:
+        </td>
+<td><input id="id_location" readonly="readonly" type="text" name="location" size="35" value = "{{getdetails.branch}}" class="loginTxtbox">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+New Branch
+</td>
+<td><select name="newlocation" id="id_newlocation">
+<option selected = "selected" value="{{getdetails.branch}}">{{getdetails.branch}}</option>
+{% for pincode1 in glocal %}
+<option value="{{pincode1.lgname}}">{{pincode1.lgname}}</option>
+ {% endfor %}
+</select>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+        <td>
+Date Of Redeployment :
+        </td>
+<td><input id="dateofred" readonly="readonly" type="text" name="dateofred" size="10"  class="loginTxtbox">
+    &nbsp;<span class="error"> Invalid Date</span>
+</td>
+<td>
+
+</td>
+</tr>
+<tr>
+
+<td colspan="3" style="text-align:center;">
+
+<input name="submit" type= "submit" value="Redeploy {{ getdetails.name|title }}" >
+ </td>
+
+</tr>
+   </table>
+    </form>
+      </td>
+  </tr>
+
+</table>
+
+<script language="javascript" type="text/javascript">
+function openrec()
+{
+  //alert("welcome");
+   var uid = $("#id_staffid").val();
+   var data='userid='+uid;
+
+   //alert(data);
+   $.ajax({
+    type:"POST",
+    url:"/humanresources/staff/ajaxaredeploy/",
+    data:data,
+    success:function(html) {
+         $(".listbox1").show();
+         $(".nameslist1").html(html);
+
+    }
+
+ });
+  // alert("error");
+   return false;
+
+}
+</script>
+<script>
+$(document).ready(function() {
+    var pickerOpts = {
+        //appendText: "mm/dd/yy",
+        //defaultDate: "+5",
+        showOtherMonths: true,
+        changeMonth: true,
+        changeYear: true,
+        dateFormat:"mm/dd/yy"
+        //showButtonPanel: true
+        // showOn: "button"
+    };
+        $("#dateofred").datepicker(pickerOpts);
+         //alert("welcome");
+         //$("#id_staffname").focus();
+         //$(".box").hide();
+});
+</script>
+<script>
+$(document).ready(function() {
+  $(".listbox1").hide();
+   //openrec();
+});
+</script>
+<script language="javascript" type="text/javascript">
+    function disable(f)
+    {
+        var button = f.elements['submit'];
+        button.value = 'Processing ...';
+        button.disabled = 'true';
+        return true;
+    }
+</script>
+
+
+</body>
+</html>

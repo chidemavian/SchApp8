@@ -1,0 +1,41 @@
+
+from django.conf.urls.defaults import patterns, url
+from django.views.generic import DetailView, TemplateView
+from myproject.student import models
+
+urlpatterns = patterns('myproject.sysadmin.views',
+    # Examples:
+    #url(r'^$', 'index'),
+    url(r'^createuser/$', 'creatuser'),
+    url(r'^backup-db/$', 'backup'),
+    url(r'^subclass/$', 'getsubclass'),
+    url(r'^getusermain/$', 'getuseraccountmain'),
+    url(r'^edituser/(\d+)/$', 'editusermain'),
+    url(r'^getacademic/$', 'getstudentacademic'),
+    url(r'^edituseraca/(\d+)/$', 'edituseraca'),
+    url(r'^getadmin/$', 'getadmin'),
+    url(r'^edituseradmin/(\d+)/$', 'edituseradmin'),
+    url(r'^unauto/$', 'adminunautomain'),
+    url(r'^resetuser/$', 'resetusermain'),
+    url(r'^classteacher/$', 'classteachermain'),
+    url(r'^getteacher/$', 'getclassteacher'),
+    url(r'^deleteclassteacher/(\d+)/$', 'deleteclassteacher'),
+    url(r'^getuser/$', 'autocomplete'),
+    url(r'^subjectteacher/$', 'subjectteachermain'),
+    url(r'^getsubjectteacher/$', 'getsubjectteacher'),
+    url(r'^deletesubjectteacher/(\d+)/$', 'deletesubjectteacher'),
+    url(r'^principal/$', 'principalmain'),
+    url(r'^getprincipal/$', 'getprin'),
+    url(r'^deleteprincipal/(\d+)/$', 'deleteprincipal'),
+    url(r'^page-expire/(\d+)/$', "expire"),
+    url(r'^paybill/$',"paybill"),
+    url(r'^term-status/$',"subjectteacherenable"),
+    url(r'^student-promotion/$',"student_promotion"),
+    url(r'^update-calendar/$',"calendar_update"),
+    url(r'^online-result/$',"online_result"),
+    url(r'^online-statement/$',"online_statement"),
+    url(r'^subject-report/$','subject_report'),
+    url(r'^subject-reportajax/$', 'subrepajax'),
+
+
+)

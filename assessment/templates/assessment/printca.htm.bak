@@ -1,0 +1,110 @@
+{% extends "assessment/base.htm" %}
+{%block head %}
+    {%block title %}SchApp v7.0 {%endblock%}
+{%endblock %}
+{%block content%}
+    <input name="submitprint" type= "submit" value="Print Report" onclick = "openrecprint();">
+    <div class="printable">
+    <table style="width:100%;">
+        <tr>
+            <td colspan="10">
+                <table style="width:100%;vertical-align:top;text-align:left;">
+                    <tr style="width:100%;">
+
+                        <td style=" text-align:right;vertical-align:top;width:40%;float:left;" rowspan="2">
+
+                            <img style="width: 100px; height: 100px;text-align:right" src="/static/{{ school.logo }}" alt="{{ school.name }}" >
+                        </td>
+                        <td>
+
+                        </td>
+                        <td  style="vertical-align:top;text-align:left;font-family:verdana;font-size:14px;width:100%;">
+                            <span style="font-weight:bold;font-size:21px;color:#8b0000;"> {{ school.name }}</span> <br><span style="font-size:11px"> {{ school.address }}</span><br><span style="font-size:11px"> {{ school.website }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;font-weight:bold; color:#000;" colspan="3">SUBJECT TEACHER'S REPORT</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="10">
+                <table style="border:1px solid #000;width:100%">
+                    <tr>
+                        <td>Subject:</td>
+                        <td style="font-size:15px;font-weight:bold;color:blue;">{{ subject }}</td>
+
+                        <td>Session:</td>
+                        <td style="font-size:15px;font-weight:bold;color:blue;">{{ session }}</td>
+
+                        <td >Class:</td>
+                        <td style="font-size:15px;font-weight:bold;color:blue;">{{ klass }}</td>
+
+                        <td>Arm:</td>
+                        <td style="font-size:15px;font-weight:bold;color:blue;">{{ arm }}</td>
+                                    <td>Term:</td>
+                        <td style="font-size:15px;font-weight:bold;color:blue;">{{ term }}</td>
+                            <td>Teacher's Name: </td>
+                        <td style="font-size:15px;font-weight:bold;color:blue;">{{ teacher }}</td>
+                    </tr>
+                </table>
+                <table style="border:1px solid #000;width:100%">
+                    <tr>
+                  <!--      <td>Teacher's Name</td>
+                        <td style="font-size:15px;font-weight:bold;color:blue;">{{ teacher }}</td>
+                    </tr> -->
+                </table>
+
+            </td>
+        </tr>
+        <tr>
+            <td colspan="10">
+
+                <table style="width:100%;background-color:white;border-collapse:collapse;">
+                    <thead >
+                    <tr>
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">S/N</td>
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Admission No</td>
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Name</td>
+                        <!--<td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Sex</td>-->
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">First C/A</td>
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Second C/A</td>
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Third C/A</td>
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Exam Score</td>
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Term Score</td>
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Grade</td>
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Position</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for student in data %}
+                        <tr>
+                            <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ forloop.counter }}</td>
+                            <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ student.admissionno }}</td>
+                            <td style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black">{{ student.fullname }}</td>
+                            <!--<td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ student.sex }}</td>-->
+                            <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black;text-align:center;">{{ student.first_ca }}</td>
+                            <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black;text-align:center;">{{ student.second_ca }}</td>
+                            <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black;text-align:center;">{{ student.third_ca }}</td>
+                            <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black;text-align:center;">{{ student.exam_score }}</td>
+                            <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black;text-align:center;">{{ student.termscore }}</td>
+                            <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black;text-align:center;">{{ student.remark }}</td>
+                            <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black;text-align:center;">  {{ student.position }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>
+    </div>
+
+    <script language="javascript" type="text/javascript">
+        function openrecprint()
+        {
+            //alert("welcome");
+            $( ".printable" ).print();
+        }
+    </script>
+{%endblock%}

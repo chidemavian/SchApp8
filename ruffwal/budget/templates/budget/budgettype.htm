@@ -1,0 +1,68 @@
+{% extends "budget/base.htm" %}
+{%block content%}
+<div align ="center" style="background-color:#ccccc0;width:100%;height:20px; font-size:16px;color:black;padding-top:1px;">Budget Type </div>
+<div align="center" style="color:red;font-family:courier;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+
+<table align ="left" style="width:50%;">
+    <tr>
+        <td colspan="10" >
+
+
+            <form action="" method="post" name ="main" onsubmit="disable(this)">
+                <table align ="left" style="width:auto;">
+                    <tr>
+
+                        <td colspan="2" style="text-align:left;">
+                          Your current budget type is <span style="color:red;font-size:13px;font-weight:bold;">{{ curr }}</span>
+
+                        </td>
+                    </tr>
+<tr>
+    <td colspan = "4" >
+         <div align = "center" style ="border:1px;color:black;background-color:#ccccc0;font-size:14px"> Change Budget Type</div>
+    </td>
+</tr>
+                    <tr>
+                        <td>
+                           Change Budget Type To:
+                        </td>
+                        <td>
+                            <select name="type" id="id_type">
+                                <!--<option selected = "selected" value=""></option>-->
+                                <option value="ANNUAL">ANNUAL</option>
+                                <option value="MONTHLY">MONTHLY</option>
+                            </select>
+                        </td>
+
+                    </tr>
+                    <tr>
+
+                        <td colspan="2" style="text-align:center;">
+
+                            <input name="submit" type= "submit" value="   Update Budget Type  " >
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </td>
+    </tr>
+
+</table>
+
+
+
+
+
+<script language="javascript" type="text/javascript">
+    function disable(f)
+    {
+        var button = f.elements['submit'];
+        button.value = 'Processing';
+        button.disabled = 'true';
+        return true;
+    }
+</script>
+
+
+
+{%endblock%}

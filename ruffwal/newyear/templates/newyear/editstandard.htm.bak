@@ -1,0 +1,234 @@
+{% extends "newyear/baseposting.htm" %}
+{%block content%}
+        <div align ="center" style="background-color:gray;border:0px solid black;width:100%;height:10%; font-size:12px;color:white"> <strong>EDIT STANDARD JOURNAL  </strong> </div>
+        <div align="center" style="color:red;font-family:courier;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+        <form action="" method="post" name ="main" onsubmit="disable(this)">
+            <table align ="left" style="border:0px solid black;width:70%;">
+                <tr>
+                    <td>
+                        DR Code:
+                    </td>
+                    <td><input type ="text" id="accname" size="35" name="accname" value ="{{getdetails.acccode}}">
+                    </td>
+
+                    <td align ="left" valign = "Top" style="width:100%" rowspan = 20>
+                        <div  class ="listbox" >
+                            <div class="nameslist"></div>
+
+                        </div>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        DR Name :
+                    </td>
+                    <td>
+                        <input type ="text" id="acccode" size="20" name="acccode" value ="{{getdetails.accname}}" readonly="readonly" >
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Particulars :
+                    </td>
+                    <td>
+                        <input type ="text" id="subname" size="30" name="subname" value ="{{getdetails.particular}}" >
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Amount :
+                    </td>
+                    <td>
+                        <input type ="text" id="grpname" size="25" name="grpname" value ="{{getdetails.amount}}">
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Reference No :
+                    </td>
+                    <td>
+                        <input type ="text" id="customer" size="25" name="customer" value ="{{getdetails.refno}}" >
+                    </td>
+                </tr>
+                <td>
+
+                </td>
+                <tr>
+                    <td>
+                        CR Code :
+                    </td>
+                    <td>
+                        <input type ="text" id="cuscode" size="25" name="cuscode" value ="{{getdetails.cracccode}}" >
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        CR Name :
+                    </td>
+                    <td>
+                        <input type ="text" id="cusname" size="25" name="cusname" value ="{{getdetails.craccname}}" readonly="readonly" >
+                    </td>
+                </tr>
+                <td>
+
+                </td>
+                <tr>
+                    <td>
+                        Duration :
+                    </td>
+                    <td><select name="duration" id="duration">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                    </td>
+                    <td>
+
+                    </td>
+                </tr>
+                <tr>
+
+
+                    <td align ="left" style="width:30%">
+
+                        <a  href ="/eduflox/account/newyear/deletestandard/{{getdetails.id}}" style ="color:Black;;font-size:9px"> <img style = "border:0px;width:25px;heigth:25px" src ="/static/imgs/editdelete.png" >  </a>Delete Journal </td>
+                    <td align ="left" style="width:30%">
+                        <input name="submit" type= "submit" value="  Update Journal  " >
+                    </td>
+
+                    <td></td>
+                </tr>
+                <tr>
+                    <td align ="left" style="width:30%">
+                        <input type="hidden" name="hcode"
+                               value="{{getdetails.id}}">
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table></form>
+    <script type="text/javascript">
+        document.getElementById('accname').focus()
+    </script>
+    <script>
+        $(document).ready(function() {
+            $(".listbox").hide();
+            $("#accname").keyup(function () {
+                //alert("welcome");
+                $("#acccode").val("");
+                //$("#id_cusbal").val("");
+                var uid = $("#accname").val();
+                var data='userid='+uid;
+
+                //alert(data);
+                $.ajax({
+                    type:"POST",
+                    url:"/eduflox/account/newyear/paymentajaxcode/",
+                    data:data,
+                    success:function(html) {
+                        $(".listbox").show();
+                        $(".nameslist").html(html);
+                        //$("#test").html(html);
+                        $('li').hover(function(){
+                            $(this).addClass('hover');
+                        },function(){
+                            $(this).removeClass('hover');
+                        });
+                        $('li').click(function(){
+                            var newdata = $(this).text();
+                            var commsep = newdata.split(",");
+                            //$("#id_cusname").val($(this).text()); cusbal
+                            $("#acccode").val(commsep[1]);
+                            $("#accname").val(commsep[0]);
+                            //$("#id_cusbal").val(commsep[2]);
+                            $('.listbox').hide();
+                        });
+
+                    }
+                });
+                //alert("error");
+                return false;
+            });
+        });
+
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $(".listbox").hide();
+            $("#cuscode").keyup(function () {
+                //alert("welcome");
+                $("#cusname").val("");
+
+                var uid = $("#cuscode").val();
+                var data='userid='+uid;
+
+                //alert(data);
+                $.ajax({
+                    type:"POST",
+                    url:"/eduflox/account/newyear/paymentajaxcode/",
+                    data:data,
+                    success:function(html) {
+                        $(".listbox").show();
+                        $(".nameslist").html(html);
+                        //$("#test").html(html);
+                        $('li').hover(function(){
+                            $(this).addClass('hover');
+                        },function(){
+                            $(this).removeClass('hover');
+                        });
+                        $('li').click(function(){
+                            var newdata = $(this).text();
+                            var commsep = newdata.split(",");
+                            //$("#id_cusname").val($(this).text()); cusbal
+                            $("#cusname").val(commsep[1]);
+                            $("#cuscode").val(commsep[0]);
+                            $('.listbox').hide();
+                        });
+
+                    }
+                });
+                //alert("error");
+                return false;
+            });
+        });
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+
+
+
+{%endblock%}

@@ -1,0 +1,145 @@
+{% extends "hrm/base.htm" %}
+{%block head %}
+    {%block title %}Solutions{%endblock%}
+{%endblock %}
+{%block content%}
+    <div class="pmiddle">
+        <!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+
+        <div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%;heigth:25px; font-size:14px;color:black;padding-top:5px;"> STAFF REPORT  </div>
+        <div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+
+        <table align ="left" style="border:0px solid black;width:100%">
+            <tr><td>
+                <form action="" method="post" name ="main" onsubmit="disable(this)">
+                    <table align ="left" style="border:0px solid black;width:auto;">
+                        <tr><td colspan="3"> <a href="/hrm/hrm/hrmstaffreportbydepartment/" style="color:blue;font-size:12px;font-weight:bold;">Staff Report By Department</a></td><td colspan="3"><a href="/hrm/hrm/hrmstaffreportbydesg/" style="color:blue;font-size:12px;font-weight:bold;">Staff Report By Designation</a></td></tr>
+                        <tr>
+                            <td align ="left" style="width:auto">
+                                Status :
+                            </td>
+                            <td align ="left" style="width:auto">{{ form.status}}
+                            <td align ="left" style="width:auto">
+                                Designation :
+                            </td>
+                            <td align ="left" style="width:auto">{{ form.designation}}
+                            </td>
+                            <td align ="left" style="width:auto;">
+                                Download Excel File :
+                            </td>
+                            <td align ="left" style="width:auto;">{{ form.excelfile}}
+                            </td>
+                            <td align ="left" style="width:auto"><input name="submit" type= "submit" value="View Report" >
+                            </td>
+                            <td align ="left" style="width:auto">{{ form.status.errors}}
+
+                        </tr>
+                    </table>
+                </form>
+
+            </td></tr>
+            <tr>
+                <td>
+
+                  {% if staff_list %}
+                    <table align ="left" style="border:0px solid black;width:100%">
+                        <tr>
+                            <td colspan="30">
+                                <input name="submitprint" type= "submit" value="Print Report"  onclick = "openrecprint();">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan ="30">
+                                <div class="printable">
+                                    <table align ="center" style="border:0px solid black;width:100%;background-color:white">
+                                        <tr>
+                                            <td>
+                                                <table align ="left" style="border:0px solid black;width:100%;background-color:white">
+                                                    <tr>
+                                                        <td align="left" valign="top" style = "width:auto;background-color:white;font-size:12px" colspan = "3"><img align ="center" style = "left:10%;float:left;padding:5px;border:0px;width:55px;heigth:55px" src ="/static/{{comp.picture}}" > {{comp.name}}<br>{{comp.address}}</td>
+                                                    </tr>
+                                                    <tr><td colspan ="15" align ="center" style="font-weight:bold;">{{tra}} STAFF LIST {{ quali }}</td>
+                                                        <td style="float:right;font-size:10px;">{{ printdate }}</td>
+                                                    </tr>
+
+                                                </table>
+                                            </td></tr>
+                                        <tr>
+                                            <td>
+
+
+                                                <table align ="left" style="width:100%;background-color:white;border-collapse:collapse;">
+
+                                                    {% for j in staff_list %}
+                                                        <tr>
+                                                            <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;" colspan="11"> <strong>{{ j.dept}}</strong></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="left" valign="top" style = "width:auto; height:10px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle"><strong>S/N</strong></td>
+                                                            <td align="left" valign="top" style = "width:auto; height:10px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle"><strong>Staff Id</strong></td>
+                                                            <td align="left" valign="top" style = "width:auto; height:10px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Staff Name</strong></td>
+                                                            <td align="left" valign="top" style = "width:auto; height:10px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Sex</strong></td>
+                                                            <td align="left" valign="top" style = "width:auto; height:10px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle"><strong>Phone No</strong></td>
+                                                            <td align="left" valign="top" style = "width:auto; height:10px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Address</strong></td>
+                                                            <td align="left" valign="top" style = "width:auto; height:10px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Date Of Birth</strong></td>
+                                                            <td align="left" valign="top" style = "width:auto; height:10px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Date Of App.</strong></td>
+                                                            <td align="left" valign="top" style = "width:auto; height:10px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle"><strong>Designation</strong></td>
+                                                            <td align="left" valign="top" style = "width:auto; height:10px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle"><strong>Level/Step</strong></td>
+
+                                                            <td align="left" valign="top" style = "width:auto; height:10px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Qualification</strong></td>
+                                                        </tr>
+
+                                                        {% for pincode in j.staff %}
+                                                            <tr>
+                                                            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ forloop.counter}}</td>
+                                                            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.staffid}}</td>
+                                                            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.name|title}}</td>
+                                                            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.sex}}</td>
+                                                            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.phoneno}}</td>
+                                                            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.address}}</td>
+                                                            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.dateofbirth|date:"d-m-Y"}}</td>
+                                                            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.dateofresum|date:"d-m-Y"}}</td>
+                                                            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.designation}}</td>
+                                                            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.level}},{{ pincode.step }}</td>
+
+                                                            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.qualification}}</td>
+                                                        {% endfor %}
+                                                    </tr>
+                                                    {% endfor %}
+
+
+                                                </table>
+
+
+                                            </td></tr>
+                                    </table>
+
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+        {% endif %}
+        </table>
+    </div>
+
+
+
+    <script language="javascript" type="text/javascript">
+        function openrecprint()
+        {
+            //alert("welcome");
+            $( ".printable" ).print();
+
+
+        }
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+{%endblock%}

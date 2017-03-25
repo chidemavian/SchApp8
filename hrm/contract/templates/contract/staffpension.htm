@@ -1,0 +1,230 @@
+{% extends "contract/base.htm" %}
+{%block head %}
+{%block title %}Solutions{%endblock%}
+{%endblock %}
+{%block content%}
+    {% load humanize %}
+<div class="pmiddle">
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="left" style="border:1px solid black;width:100%;font-family: verdana;color:black">
+<div align ="center" style="background-color:black;border:0px solid black;width:100%; font-size:12px;color:white"> <strong>CONTRACT STAFF INFORMATION  </strong> </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+
+    <table align ="left" style="width:100%">
+  <tr>
+      <td colspan="10">
+
+
+ <form action="" method="post" name ="main" onsubmit="disable(this)">
+ <table style="width:auto;">
+
+<tr>
+        <td>
+Staff Name :
+        </td>
+<td>{{ form.staffname}}
+</td>
+<td>{{ form.staffname.errors}}
+</td>
+</tr>
+<tr>
+        <td>
+Address :
+        </td>
+<td>{{ form.address}}
+</td>
+<td>{{ form.address.errors}}
+</td>
+
+</tr>
+<tr>
+        <td>
+Phone No :
+        </td>
+<td>{{ form.phoneno}}
+</td>
+<td>{{ form.phoneno.errors}}
+</td>
+
+</tr>
+<tr>
+        <td>
+Next Of Kin :
+        </td>
+<td>{{ form.nextofkin}}
+</td>
+<td>{{ form.nextofkin.errors}}
+</td>
+
+</tr>
+
+<tr>
+        <td>
+Next Of Kin Phone No :
+        </td>
+<td>{{ form.nextofkinphone}}
+</td>
+<td>{{ form.nextofkinphone.errors}}
+</td>
+
+</tr>
+<tr>
+        <td>
+Bank Name  :
+        </td>
+<td>{{ form.accname}}
+</td>
+<td>{{ form.accname.errors}}
+</td>
+</tr>
+     <tr>
+         <td>
+             Account Number  :
+         </td>
+         <td>{{ form.accno}}
+         </td>
+         <td>{{ form.accno.errors}}
+         </td>
+     </tr>
+     <tr>
+         <td>
+             Monthly Allowance  :
+         </td>
+         <td>{{ form.allowance}}
+         </td>
+         <td>{{ form.allowance.errors}}
+         </td>
+     </tr>
+
+<tr>
+
+<td colspan="3" style="text-align:center;">
+
+<input name="submit" type= "submit" value="Submit Record">
+ </td>
+</tr>
+ </table>
+</form>
+      </td>
+  </tr>
+<tr>
+<td colspan = 8>
+<input name="submitprint" type= "submit" value="Print Report"  onclick = "openrecprint();">
+<div class="printable">
+
+<table style="width:100%;color:black;border-collapse:collapse;">
+ <tr>
+             <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong>S/N </strong></td>
+             <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong>Staff Name</strong></td>
+              <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Address</strong></td>
+              <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Phone No</strong></td>
+               <td align="center" valign="top"style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Next Of Kin</strong></td>
+              <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Next Of Kin Phone</strong></td>
+             <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Bank Name</strong></td>
+     <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Account Number</strong></td>
+     <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Allowance</strong></td>
+     <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Deduction</strong></td>
+     <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Overtime</strong></td>
+               </tr>
+         {% for pincode in getdetails %}
+           <tr>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ forloop.counter }}</td>
+            <!--  <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="/hrm/editstaffnonpension/{{ pincode.id }}/" style ="color:blue"> {{ pincode.staffname|title }} </a></td> -->
+             <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="#" style ="color:blue" onclick="admno({{ pincode.id }});" title="Edit This Record"> {{ pincode.staffname|title }} </a></td>
+
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.address}}</td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.phoneno}}</td>
+
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.nextofkin|title}}</td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.nextofkinphone}}</td>
+               <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.accname}}</td>
+             <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.accno}}</td>
+             <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.allowance|intcomma}}</td>
+             <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.deduction|intcomma}}</td>
+             <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.overtime|intcomma}}</td>
+
+           {% endfor %}
+            </tr>
+</table>
+</div>
+</td>
+</tr>
+
+</table>
+</div>
+</div>
+    <div id="myDialog">
+    </div>
+
+<script>
+$(document).ready(function() {
+        // $("#id_transdate").datepicker();
+         //alert("welcome");
+         $("#id_staffname").focus();
+         //$(".box").hide();
+});
+</script>
+
+<script language="javascript" type="text/javascript">
+function openrecprint()
+{
+  //alert("welcome");
+   $( ".printable" ).print();
+}
+</script>
+
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#myDialog").hide();
+        });
+    </script>
+    <script type="text/javascript" language="javascript">
+        function admno(vid){
+            //alert(vid);
+            var state = vid;
+            var url = "/hrmes/contract/getcontract/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialog").html(html);
+                    getdialog();
+                }
+            });
+            return false;
+        }
+
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialog(){
+            var dialogOpts = {
+                autoOpen:true,
+                modal:true,
+                position: ["center", "middle"],
+                height:"auto",
+                width:650,
+                title:'Edit Contract Staff Record',
+                closeOnEscape:true,
+                show: true,
+                hide: true,
+                bgiframe: true
+            };
+            $("#myDialog").dialog(dialogOpts);
+        }
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+ {%endblock%}

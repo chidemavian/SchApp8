@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional/EN">
+<html>
+<head>
+    <title> CapitalExpert :- Human Resources And Payroll </title>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+    <style type="text/css">
+        .error { color: red; }
+
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error').hide();
+            $('.submit').click(function(event){
+                var data=$("#dateofred").val();
+                var len=data.length;
+                if (len <= 0){
+                    $('.error').show();
+                    $("#dateofred").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error').hide();
+                }
+            });
+        });
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+
+    <style type="text/css">
+        .loginTxtbox
+        {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            color: #000;
+            text-align: left;
+            border: #4772A9 1px solid;
+            height: 16px;
+        }
+    </style>
+
+</head>
+<body>
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="center" style="background-color:black;border:0px solid black;width:100%;height:10%; font-size:12px;color:white"> <strong>STAFF RETIREMENT </strong> </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+    <form action="/humanresources/staff/editredeploymentretire/{{ getdetails.id }}/" method="post" name ="main" onsubmit="disable(this)">
+ <table align ="center" style="border:0px solid black;width:100%">
+     <tr>
+         <td colspan="3" style="background-color:white;width:100%;font-size:12px;color:red;font-style:italic;text-align:center">
+             <strong>Press ESC to close  </strong>
+         </td>
+     </tr>
+<tr>
+        <td>
+Staff Id :
+        </td>
+<td><input id="id_staffid" type="text" name="staffid" readonly="readonly" size="35" value ="{{getdetails.staffid}}" class="loginTxtbox">
+</td>
+<td rowspan ="6" valign = "top"><img style = "border:1px solid black;width:100px;height:100px" src ="/static/{{getdetails.picture}}" ></td>
+</tr>
+<tr>
+        <td>
+Staff Name :
+        </td>
+<td><input id="id_staffname" readonly="readonly"  name="staffname" size="35" class="loginTxtbox" value="{{getdetails.name|title}}">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+        <td>
+Sex:
+        </td>
+<td><input id="id_sex" readonly="readonly" type="text" name="sex" size="15" value ="{{getdetails.sex}}" class="loginTxtbox">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+        <td>
+Date Of Resumption :
+        </td>
+<td><input id="id_dateofresumption" readonly="readonly" type="text" name="dateofresumption" size="15" value="{{getdetails.dateofresum|date:"d/m/Y"}}" class="loginTxtbox">
+</td>
+<td></td>
+</tr>
+
+<tr>
+        <td>
+Date Of Retirement :
+        </td>
+<td><input id="dateofred" readonly="readonly" type="text" name="dateofred" size="15" class="loginTxtbox">
+    &nbsp;<span class="error"> Invalid Date</span>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+        
+<td colspan="3" style="text-align: center;">
+
+<input name="submit" type= "submit" value="Submit" >
+ </td>
+</tr>
+ </table>
+</form>
+
+<script>
+$(document).ready(function() {
+    var pickerOpts = {
+        //appendText: "mm/dd/yy",
+        //defaultDate: "+5",
+        showOtherMonths: true,
+        changeMonth: true,
+        changeYear: true,
+        dateFormat:"mm/dd/yy"
+        //showButtonPanel: true
+        // showOn: "button"
+    };
+        $("#dateofred").datepicker(pickerOpts);
+         //alert("welcome");
+         //$("#id_staffname").focus();
+         //$(".box").hide();
+});
+</script>
+</body>
+</html>

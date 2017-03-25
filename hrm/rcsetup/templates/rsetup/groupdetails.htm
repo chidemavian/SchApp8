@@ -1,0 +1,55 @@
+{% extends "rsetup/basesetup.htm" %}
+{%block title %}{%endblock%}
+
+{%block content%}
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="left" style="border:1px solid black;background-color:white;width:50%;heigth:10%;font-family: verdana;color:black">
+<div align ="center" style="background-color:black;border:0px solid black;width:100%;heigth:10%; font-size:12px;color:white"> <strong>SUB-ACCOUNT DETAILS </strong> </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+
+<form action="" method="post" name ="main">
+        <tr>
+        <td align ="left" style="width:30%">
+            Group Name
+            </td>
+        <td align ="left" style="width:30%">
+
+            {{form.frgroup}}
+
+                        </td>
+<td align ="left" style="width:20%">
+<input name="submit" type= "submit" value="View Details" class ="submit">
+                        </td>
+    </tr>
+<table  align ="left" style="border:2px solid black;width:100%;">
+
+</form>
+
+       <tr>
+             <td align="center" valign="top" style = "width=40px height=10px;background-color:#E6E6E6;font-size:11px"><strong> Group Name</strong></td>
+              <td align="left" valign="top" style = "width=140px height=10px;background-color:#E6E6E6;font-size:11px"><strong>Sub Acc Name </strong></td>
+              <td align="center" valign="top" style = "width=40px height=10px;background-color:#E6E6E6;font-size:11px"><strong> Acc Code</strong></td>
+
+               </tr>
+
+         {% for pincode in getdetails %}
+
+           <tr>
+              <td align="left" valign="top" style = "background-color:gray;font-size:11px;width:auto;color:white"> <strong>{{ pincode.groupname|upper }}</strong></td>
+              <td align="left" valign="top" style = "background-color:gray;font-size:11px;width:auto;color:white"><strong> {{ pincode.subgroupname|upper }}</strong></td>
+              <td align="left" valign="top" style = "background-color:gray;font-size:11px;width:auto;color:white"> <strong>{{ pincode.subgroupcode|upper}}</strong></td>
+           {% endfor %}
+
+
+            </tr>
+</table>
+</div>
+<!-- partitioning for the account creation-->
+
+
+
+
+
+
+
+ {%endblock%}

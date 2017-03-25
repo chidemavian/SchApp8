@@ -1,0 +1,127 @@
+{% extends "query/base.htm" %}
+{%block head %}
+    {%block title %}Solutions{%endblock%}
+{%endblock %}
+{%block content%}
+    <div class="pmiddle">
+        <!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+        <div align ="left" style="border:1px solid black;width:100%;height:10%;font-family: verdana;color:black">
+            <div align ="center" style="background-color:black;border:0px solid black;width:100%;height:10%; font-size:12px;color:white"> <strong>STAFF QUERY REPORT  </strong> </div>
+            <div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+            <table style="width:100%;">
+                <tr>
+                    <td colspan="10">
+                        <form action="" method="post" name ="main">
+                            <table align ="left" style="border:1px solid black;width:60%;background-color:gray;">
+
+                                <tr>
+                                    <td align ="left">
+                                        {{ form.querytype.label}}&nbsp;{{ form.querytype }}&nbsp;{{ form.querytype.errors }}
+                                    </td>
+                                    <td align ="left" >{{ form.queryyear.label}}&nbsp;{{ form.queryyear }}&nbsp;{{ form.queryyear.errors }}
+                                    </td>
+                                    <td align ="left">{{ form.staffid.errors}}
+                                    </td>
+                                    <td align ="left">
+                                        <input name="submit" type= "submit" value="Submit" class = "submit">
+                                    </td>
+
+                                </tr>
+
+
+                            </table>
+                        </form>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="10">
+                        <table style="width:100%">
+                            <tr>
+                                <td colspan = 8>
+                                    <input name="submitprint" type= "submit" value="Print Report" class = "submit" onclick = "openrecprint();">
+                                    <div class="printable">
+                                    <table align ="center" style="border:0px solid black;width:100%;color:black;background-color:white;">
+                                        <tr>
+                                            <td colspan="5">
+                                                <table align ="left" style="border:0px solid black;width:85%;background-color:white">
+                                                    <tr>
+                                                        <td align="left" valign="top" style = "width:auto;background-color:white;font-size:12px" colspan = "3"><img align ="center" style = "left:10%;float:left;padding:5px;border:0px;width:55px;heigth:55px" src ="/static/{{comp.picture}}" > {{comp.name}}<br>{{comp.address}}</td>
+
+                                                    </tr>
+                                                    <tr><td colspan ="5" align ="center">{{ querytype }} - QUERY REPORT</td>
+                                                        <td colspan ="5" style="float:right;font-size:10px;">{{ printdate }}</td>
+                                                    </tr>
+
+                                                </table>
+                                            </td></tr>
+                                        <tr>
+                                            <td colspan="8">
+
+                                         <table style="width:85%;color:black;border-collapse:collapse;">
+                                        <tr>
+                                            <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong>S/N</strong></td>
+                                            <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Staff Id</strong></td>
+                                            <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Staff Name</strong></td>
+                                            <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Date</strong></td>
+                                            <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Issuer</strong></td>
+                                            <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Reason</strong></td>
+                                            <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Action Taken</strong></td>
+                                            <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Posted By</strong></td>
+
+                                        </tr>
+
+                                        {% if staff_list %}
+                                            {% for pincode in staff_list %}
+                                                <tr>
+
+                                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ forloop.counter }}</strong></td>
+                                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.staffid }}</strong></td>
+                                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.staffname }}</strong></td>
+                                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.querydate|date:"d-m-Y" }}</strong></td>
+                                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.querygiver }}</strong></td>
+
+                                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.reasonforquery }}</strong></td>
+
+                                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.actiontaken}}</strong></td>
+                                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.userid}}</strong></td>
+                                               {% endfor %}
+                                        {% else %}
+                                            <td colspan="8" align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  .......No Recond Found.</td>
+                                        {% endif %}
+                                        </tr>
+                                         </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- parti-->
+
+
+    <script language="javascript" type="text/javascript">
+        function openrecprint()
+        {
+            //alert("welcome");
+            $( ".printable" ).print();
+
+
+        }
+    </script>
+
+
+
+
+
+
+{%endblock%}

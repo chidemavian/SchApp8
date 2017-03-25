@@ -1,0 +1,217 @@
+{% extends "payroll/base.htm" %}
+{%block head %}
+{%block title %}Solutions{%endblock%}
+{%endblock %}
+{% load humanize %}
+{%block content%}
+    <div class="pmiddle">
+        <!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+
+        <div align ="center" style="background-color:black;border:0px solid black;width:100%;height:10%; font-size:12px;color:white"> <strong>PAYSLIP  </strong> </div>
+        <div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+        <table align ="left" style="border:0px solid black;width:100%">
+            <tr><td>
+                <form action="" method="post" name ="main" onsubmit="disable(this)">
+                <table align ="left" style="border:1px solid black;width:auto;background-color:gray;">
+
+                        <tr>
+
+                            <td>
+                                Select Date :
+                            </td>
+                            <td>{{ form.caldate}}
+                            </td>
+                            <td>
+                                Staff Name :
+                            </td>
+                            <td>{{ form.staffid}}
+                            </td>
+                            <td>
+
+                                <input name="submit" type= "submit" value="View Report">
+                            </td>
+                            <td>{{ form.caldate.errors}}
+                            </td>
+                        </tr>
+                </table>
+                </form>
+            </td></tr>
+            <tr>
+                <td>
+                    <table align ="left" style="border:0px solid black;width:92%">
+                        <tr>
+                            <td colspan="30">
+                                <input name="submitprint" type= "submit" value="Print Report"  onclick = "openrecprint();">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan ="30">
+                                <div class="printable">
+                                    <table align ="left" style="border:1px solid black;width:80%;background-color:white">
+                                        <tr>
+                                            <td>
+                                                <table align ="left" style="border:0px solid black;width:100%;background-color:white">
+                                                    <tr>
+                                                    <td align="left" valign="top" style = "width:auto;background-color:white;font-size:9px"><strong> </strong></td>
+                                                    <td align="left" valign="top" style = "width:auto;background-color:white;font-size:9px"><strong></strong></td>
+                                                    <td align="left" valign="top" style = "width:auto;background-color:white;font-size:12px" colspan = "3"><img align ="center" style = "left:10%;float:left;padding:5px;border:0px;width:55px;height:55px" src ="/static/{{comp.picture}}" > {{comp.name}}<br>{{comp.address}}</td>
+                                                    </tr>
+                                                    <tr><td colspan ="5" align ="center">{{ disdate }} - STAFF PAYSLIP </td>
+                                                        <td colspan ="5" style="float:right;font-size:10px;">{{ printdate }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan ="15" align="left" valign="top" style = "font-size:12px;width:auto;color:black;font-family:verdana;"> <strong>Staff Id :: {{ staffid}}</strong></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan ="15" align="left" valign="top" style = "font-size:12px;width:auto;color:black;font-family:verdana;"> <strong>Staff Name :: {{ staffname}}</strong></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan ="15" align="left" valign="top" style = "font-size:12px;width:auto;color:black;font-family:verdana;"> <strong>Designation :: {{ desig}}</strong></td>
+
+                                                    </tr>
+                                                </table>
+                                            </td></tr>
+                                        <tr>
+                                            <td colspan="50">
+                                                <table align ="left" style="border:0px solid black;width:80%;background-color:white" cellspacing="3" >
+
+
+                                                    <tr>
+                                                        <td align="left" valign="top" colspan="50"><table align="left" style="font-family:verdana;width:90%;"><thead><tr>
+                                                            <td style="width:100%" align="center">Allowance</td>
+                                                        </tr></thead>
+                                                            <tbody>
+                                                            {% for p in allowance %}
+
+                                                            <tr>
+                                                                <td align="left" valign="top" style = "font-size:10px;width:auto;color:black"> {{ p.alldes|title}}</td>
+                                                                <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;text-align:right"> {{ p.allamount}}</td>
+
+                                                            {% endfor %}
+                                                            </tr>
+                                                            <tr><td colspan ="15"> <hr> </td> </tr>
+                                                            <tr>
+                                                                <td align="right" valign="top" style = "font-size:12px;width:auto;color:black ;">Total Allowance ::</td>
+                                                                <td align="left" valign="top" style = "font-size:12px;width:auto;color:black;;text-align:right"> {{ totalall}}</td>
+                                                            </tr>
+                                                            <tr><td colspan ="15"> <hr> </td> </tr>
+
+                                                            </tbody>
+
+
+                                                        </table></td>
+
+
+                                                        <td align="left" valign="top" colspan="50">
+                                                            <table align="right" style="font-family:verdana;width:90% "><thead><tr>
+                                                                <td style="width:100%" align="center">Deduction</td>
+                                                            </tr></thead>
+                                                                <tbody>
+                                                                {% for p in deduction %}
+
+                                                                    <tr>
+                                                                    <td align="left" valign="top" style = "font-size:10px;width:auto;color:black">{{ p.deddes|title}}</td>
+                                                                    <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;text-align:right"> {{ p.dedamount}}</td>
+                                                                    <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;text-align:right"> {{ p.outstanding}}</td>
+
+                                                                {% endfor %}
+                                                                </tr>
+                                                                <tr><td colspan ="15"> <hr> </td> </tr>
+                                                                <tr>
+                                                                    <td align="right" valign="top" style = "font-size:12px;width:auto;color:black;">Total Deduction ::</td>
+                                                                    <td align="left" valign="top" style = "font-size:12px;width:auto;color:black ;;text-align:right"> {{ totalded}}</td>
+                                                                </tr>
+                                                                <tr><td colspan ="15"> <hr> </td> </tr>
+                                                                </tbody>
+
+                                                        </table></td>
+                                                    </tr>
+
+                                                 </table>
+                                        <tr>
+                                            <td colspan ="15" align="center" valign="top" style = "font-size:14px;width:auto;color:black;font-family:verdana;">Net Pay :: {{ netpay}}</td>
+
+                                        </tr>
+                                      <!--
+                                        <tr>
+                                            <td colspan ="15" align="center" valign="top" style = "font-size:14px;width:auto;color:black;font-family:verdana;"> {{ totalcont}}</td>
+
+                                        </tr>-->
+
+                                    </table>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </table>
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            var pickerOpts = {
+                //appendText: "mm/dd/yy",
+                //defaultDate: "+5",
+                showOtherMonths: true,
+                changeMonth: true,
+                changeYear: true,
+                showButtonPanel: true
+                // showOn: "button"
+
+            };
+            $("#id_caldate").datepicker(pickerOpts);
+            //alert("welcome");
+            // $("#id_staffid").focus();
+            //$(".box").hide();
+            autocomplete();
+        });
+    </script>
+    <script language="javascript" type="text/javascript">
+        function openrecprint()
+        {
+            //alert("welcome");
+            $( ".printable" ).print();
+
+
+        }
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        function autocomplete(){
+
+            $("#id_staffid").autocomplete({
+                //minLength: 0
+                source: "/humanresources/hrm/findstaffname/",
+                select: function( event, ui ) {
+                    $( "#id_staffid" ).val( ui.item.staffid );
+                    $( "#id_staffname" ).val( ui.item.name );
+
+
+                    return false;
+                }
+            })
+                    .data( "autocomplete" )._renderItem = function( ul, item ) {
+                return $( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( "<a>" + item.label + "</a>" )
+                        .appendTo( ul );
+            };
+
+        }
+
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+
+{%endblock%}

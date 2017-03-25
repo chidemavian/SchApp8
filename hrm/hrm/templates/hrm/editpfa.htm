@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional/EN">
+<html>
+<head>
+    <title> CapitalExpert :- Human Resources And Payroll </title>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error').hide();
+            $('.submit').click(function(event){
+                var data=$("#bodyname").val();
+                var len=data.length;
+                if (len <= 0){
+                    $('.error').show();
+                    $("#bodyname").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error').hide();
+                }
+
+            });
+        });
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+    <style type="text/css">
+        .loginTxtbox
+        {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            color: #000;
+            text-align: left;
+            border: #4772A9 1px solid;
+            height: 16px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div align ="center" style="background-color:black;border:0px solid black;width:100%;font-size:12px;color:white"> <strong>EDIT STAFF PFA </strong> </div>
+    <div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+    <form action="/hrmes/hrm/editstaffpfa/{{ getdetails.id }}/" method="post" name ="main" onsubmit="disable(this)">
+        <table style="width:100%">
+            <tr>
+                <td colspan="2" style="background-color:white;width:100%;font-size:12px;color:red;font-style:italic;text-align:center">
+                    <strong>Press ESC to close  </strong>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Staff Id :
+                </td>
+                <td><input id="staffid" type="text" name="staffid" size="35" value ="{{getdetails.staffid}}" readonly="readonly" class="loginTxtbox">
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    Staff Name :
+                </td>
+                <td><input id="staffname" readonly="readonly" type="text" name="staffname"  size="35" value ="{{getdetails.staffname}}" class="loginTxtbox">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Pension Administrator :
+                </td>
+                <td><select name="hmoname" id="hmoname">
+                    <option selected = "selected" value="{{getdetails.hmoname}}">{{getdetails.hmoname}}</option>
+                    {% for pincode in getpfa %}
+                        <option value="{{pincode.accname}}">{{pincode.accname}}</option>
+                    {% endfor %}
+                </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Pension Number :
+                </td>
+                <td><input id="bodyname"  name="bodyname" size="25"  class="loginTxtbox" value="{{getdetails.accno}}">
+                    &nbsp;<span class="error"> PFA No is required</span>
+                </td>
+            </tr>
+
+            <tr>
+
+                <td>
+                    <a  href ="/hrmes/hrm/deletestaffpfa/{{ getdetails.id }}/" style ="color:Black;;font-size:9px"> <img style ="width:25px;height:25px" src ="/static/imgs/editdelete.png" >  </a>Delete
+                </td>
+                <td>
+                    <input name="submit" type= "submit" value="Update Record">
+                </td>
+
+
+            </tr>
+        </table>
+    </form>
+
+
+<!-- parti-->
+
+
+
+</body>
+</html>

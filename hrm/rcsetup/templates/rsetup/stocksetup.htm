@@ -1,0 +1,74 @@
+{% extends "rsetup/basesetup.htm" %}
+{%block head %}
+{%block title %}{%endblock%}
+{%endblock %}
+{%block content%}
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="left" style="border:1px solid black;width:100%;heigth:10%;font-family: verdana;color:black">
+<div align ="center" style="background-color:black;border:0px solid black;width:100%;heigth:10%; font-size:12px;color:white"> <strong>INVENTORY CREATION  </strong> </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+<table align ="center" style="border:0px solid black;width:100%;">
+ <form action="/hrmes/inventory/" method="post" name ="main">
+<tr>
+        <td align ="left" style="width:30%">
+Name :
+        </td>
+<td align ="left" style="width:30%">{{ form.subgrname}}
+</td>
+<td align ="left" style="width:30%">{{ form.subgrname.errors}}
+</td>
+</tr>
+
+<tr>
+        <td>
+Account name :
+        </td>
+<td>{{ form.accname}}
+</td>
+<td>{{ form.accname.errors}}
+</td>
+</tr>
+<tr>
+        <td align ="left" style="width:30%">
+
+
+                        </td>
+<td align ="left" style="width:30%">
+
+<input name="submit" type= "submit" value="   Create Inventory  " class = "submit">
+ </td>
+<td align ="left" style="width:30%">
+
+
+ </td>
+</tr>
+</form>
+</div>
+ <tr>
+             <td align="center" valign="top" style = "width=auto; height=10px;background-color:#E6E6E6;font-size:11px"><strong>Stock Name</strong></td>
+              <td align="left" valign="top" style = "width=auto; height=10px;background-color:#E6E6E6;font-size:11px"><strong>Stock Code </strong></td>
+              <td align="center" valign="top" style = "width=auto; height=10px;background-color:#E6E6E6;font-size:11px"><strong> Account Name</strong></td>
+              <td align="center" valign="top" style = "width=auto; height=10px;background-color:#E6E6E6;font-size:11px"><strong> Account Code</strong></td>
+               </tr>
+
+         {% for pincode in getdetails %}
+
+           <tr>
+              <td align="left" valign="top" style = "background-color:gray;font-size:11px;width:auto;color:yellow"> <strong><a href="/hrmes/editstock/{{ pincode.acccode }}/" style ="color:yellow"> {{ pincode.stockname|upper }} </a></strong></td>
+              <td align="left" valign="top" style = "background-color:gray;font-size:11px;width:auto;color:white"><strong> {{ pincode.acccode|upper }}</strong></td>
+              <td align="left" valign="top" style = "background-color:gray;font-size:11px;width:auto;color:white"> <strong>{{ pincode.subname|upper}}</strong></td>
+              <td align="left" valign="top" style = "background-color:gray;font-size:11px;width:auto;color:white"> <strong>{{ pincode.subcode|upper}}</strong></td>
+           {% endfor %}
+
+
+            </tr>
+</table>
+
+
+<!-- parti-->
+
+<script type="text/javascript">
+document.getElementById('id_accname').focus()
+</script>
+
+ {%endblock%}

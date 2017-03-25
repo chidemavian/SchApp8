@@ -1,0 +1,93 @@
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+    <style type="text/css">
+        .error { color: red; }
+        .error1 { color: red; }
+        .error2 { color: red; }
+    </style>
+</head>
+<body>
+{% load humanize %}
+<div align ="center" style="background-color:white;width:100%;font-size:12px;color:red;font-style:italic;"> <strong>Press ESC to close  </strong> </div>
+
+<table align ="left" style="border:0px solid black;width:100%">
+
+    <tr>
+        <td colspan ="30">
+            <div class="printable">
+                <table align ="center" style="width:100%;background-color:white">
+
+                    <tr><td colspan ="5" align ="center" style="font-weight:bold;"> ACCOUNT STATEMENT  FROM  {{ varstart|date:"F j,Y" }} TO  {{ varend|date:"F j,Y" }}</td> </tr>
+
+                    <tr>
+                        <td>
+
+
+                            <table align ="left" style="border-collapse:collapse;width:100%;background-color:white;">
+
+                                {% if ld  %}
+
+                                {% for j in ld  %}
+                                    <!--  <tr><td colspan="10"><hr></td></tr>-->
+
+                                    <tr><td colspan="5"><table style="width:auto;"> <tr><td>{{ j.varco }}</td>
+                                        <td><td> {{j.varna }} </td>
+                                       </tr></table></td>
+                                    </tr>
+                                    <tr><td colspan="5"><table style="width:auto;"> <tr>
+
+                                        <td><td>Last Trans.Date :: {{ j.vardat|date:"F j,Y" }} </td>
+                                        <td><td>Opening Balance :: {{ j.opbal|intcomma }} </td></tr></table></td>
+                                    </tr>
+                                    <!--  <tr><td colspan="10"><hr></td></tr>-->
+                                    <tr>
+                                        <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;border:1px solid black;font-weight:bold;text-align:center;">S/N </td>
+                                        <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;border:1px solid black;font-weight:bold;text-align:center;">Trans Id </td>
+                                        <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;border:1px solid black;font-weight:bold;text-align:center;">Date </td>
+                                        <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;border:1px solid black;font-weight:bold;text-align:center;">Particular</td>
+                                        <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;border:1px solid black;font-weight:bold;text-align:center;">Ref. No </td>
+                                        <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;border:1px solid black;font-weight:bold;text-align:center;">Debit</td>
+                                        <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;border:1px solid black;font-weight:bold;text-align:center;">Credit</td>
+                                        <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;border:1px solid black;font-weight:bold;text-align:center;">Balance</td>
+                                    </tr>
+                                    {% if j.trans  %}
+                                    {% for pincode in j.trans %}
+                                        <tr>
+                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">   {{forloop.counter}}</td>
+                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">   {{ pincode.transid}}</td>
+                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">   {{ pincode.transdate|date:"d-m-Y"}}</td>
+                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.particulars }}</td>
+                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.refno }}</td>
+                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  {{ pincode.disdebit }}</td>
+                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.discredit}}</td>
+                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ pincode.disbal }}</td>
+                                    {% endfor %}
+                                    {% else %}
+                                        <td colspan="7" align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:black">  .......No Record Found.</td>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                                {% else %}
+                                    <td colspan="7" align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:black">  .......No Record Found.</td>
+                                {% endif %}
+                            </table>
+                        </td></tr>
+                </table>
+
+            </div>
+        </td></tr>
+</table>
+
+
+<script language="javascript" type="text/javascript">
+    function openrecprint()
+    {
+        $( ".printable" ).print();
+    }
+</script>
+
+</body>
+</html>

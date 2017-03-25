@@ -1,0 +1,208 @@
+
+
+/** ======== GENERAL DEFINITIONS ========= **/
+
+*{
+	margin: 0;
+	color: #000000;
+}
+
+a:link{
+text-decoration: NONE;
+color: #990000;
+}
+
+ul,ul li{
+	list-style: none;
+	text-indent: 0;
+}
+
+
+a:visited{
+text-decoration: NONE;
+color: #990000;
+}
+
+a:active{
+text-decoration: NONE;
+color: #cccccc;
+}
+.body{
+	width:100%;
+}
+
+#wrapper{
+	width:100%;
+}
+
+#content{
+	width:75.8%;
+	margin-left:10%;
+	border: thin solid #cccccc;
+	padding:1%;
+	margin-top:2px;
+	min-height: 25em;
+	content: normal;
+	
+}
+.heads{
+	
+	border-radius:20px;
+	background-color:#ccccc0;
+	width:100%;
+	height:25px;
+	font-size:14px;
+	color:black;
+	padding-top:5px;"
+
+
+}
+
+.submenu{
+	position: relative;
+	width: 100%;
+	min-height:1em;
+	padding:1%;
+
+}
+.submenu td{
+	color:#cccc00;
+	font-size: 14px;
+	min-width:100px;
+	padding:1%;
+	text-align:center;
+	background-color: #ccccc0;
+	border-radius:10px;
+}
+
+.submenu td a{
+	color:#00000f;
+	font-weight: bol;
+} 
+
+.submenu td:hover{
+	background-color: #ffffff;
+	wid:100px;
+	fot-size:14px;
+	border-bottom:thin solid #000000 ;
+}
+
+.submenu td:hover a{
+	color: #000000;
+}
+
+
+#content #content_left_other{
+	width: 78%;	
+	position: relative;
+}
+
+#content #content_right_other{
+	width: 20%;
+	margin-left:76%;
+}
+
+
+#content #content_right_other_student{
+	width: 15%;
+	left:69%;
+	position: absolute;
+	top:100px;
+	
+}
+
+#header{
+	width:100%;
+	min-height: 4em;
+	padding:1%;
+
+}
+
+#header > div{
+	float:left;
+	display: inline-block;
+}
+
+#header #app_name{
+	font-family:Arial;
+	font-size: 24pt;
+	color:#990000;
+}
+.header_nav_bar{
+}
+.header_nav_bar td div{
+width:auto;
+padding:0.5em;
+font-weight: bold;
+background-color: #cccccc;
+cursor: pointer;
+}
+
+.header_nav_bar td div:hover{
+background-color: #fffff0;
+}
+
+.boxnn{
+	width: 100%;
+	margin-left: 8.8%;
+}
+.app_menu{
+width:auto;
+padding:0.3em;
+padding-left:1.2em;
+border-top-right-radius: 30px;
+border-bottom-left-radius: 30px;
+}
+
+.app_menu:hover{
+	background-color: #ffccff;
+	width:25%;
+
+	
+}
+
+.side_menu_header{
+	font-weight: bold;
+	color:#000000;
+	font-size: 12pt;
+	margin-left: 20%;
+}
+
+.side_menu{
+
+}
+
+.side_menu li a{
+	font-weight: bold;
+	color:#990000;
+	font-size: 12pt;
+	display: block;
+	padding:0.5em;
+	border: thin solid #990000;
+	margin-bottom: 0.1em;
+}
+
+
+.side_menu li a:hover{
+	color:#990000;
+	background-color: #ffccff;	
+}
+.side_menu li a:
+}
+
+
+/** ===========  FONT DEFINITION SECTION ===== **/
+
+.header_font{
+	font-family:Arial;
+	font-size: 24pt;
+	color:#990000;
+}
+
+
+#footer{
+	margin-left:30%;
+	font-weight: bold;
+	margin-top: 10px;
+	color: #999999;
+}

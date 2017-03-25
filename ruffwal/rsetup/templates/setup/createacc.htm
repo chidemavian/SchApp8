@@ -1,0 +1,153 @@
+{% extends "setup/basesetup.htm" %}
+{%block head %}
+{%endblock %}
+{%block content%}
+<div align ="center" style="border:0px solid black;width:100%;height:4%; font-size:12px;color:white"> <strong>ACCOUNT CREATION  </strong> </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+    <table align ="left" style="border:0px solid black;width:100%">
+        <tr><td>
+<form action="/SchApp/account/createacc/" method="post" name ="main" onsubmit="disable(this)">
+<table align ="left" style="border:0px solid black;width:100%">
+<tr>
+        <td align ="left" style="width:auto;">
+Group Name :
+        </td>
+<td align ="left" style="width:auto;">{{ form.grpname}}
+</td>
+<td align ="left" style="width:auto;">{{ form.grpname.errors}}
+</td>
+</tr>
+<tr>
+        <td>
+Sub Group Name :
+        </td>
+<td>{{ form.subgrname}}
+</td>
+<td>{{ form.subgrname.errors}}
+</td>
+</tr>
+<tr>
+        <td>
+Account name :
+        </td>
+<td>{{ form.accname}}
+</td>
+<td>{{ form.accname.errors}}
+</td>
+</tr>
+<tr>
+        <td align ="left" style="width:auto">
+
+
+                        </td>
+<td align ="left" style="width:auto;">
+
+<input name="submit" type= "submit" value="   Create Account  " >
+ </td>
+<td align ="left" style="width:30%">
+ </td>
+</tr>
+
+</table>
+    </form>
+        </td></tr>
+        <tr>
+
+            <td colspan="20">
+                <div class="box">
+                </div>
+            </td>
+
+        </tr>
+
+    </table>
+
+
+
+<!-- parti-->
+
+<script type="text/javascript">
+document.getElementById('id_accname').focus()
+</script>
+
+    <script type="text/javascript" language="javascript">
+        function getsubaccount(){
+            var state = $("#id_grpname").val() ;
+            //alert(state);
+            var url = "/SchApp/account/getsubaccountacc/";
+            var i = 0;
+            var data='userid='+state;
+            $("#id_subgrname").val('');
+            $("#id_subgrname").html('');
+            if (state != undefined){
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data:data,
+                    success: function(data){
+                        var options = '';
+                        for (i=0; i<data.length; i++){
+                            options += '<option value="' + data[i] +'">' + data[i] + '</option>'
+                        }
+                        $("#id_subgrname").append(options);
+                        autopost();
+                    }
+                })
+            }
+        }
+    </script>
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            getsubaccount();
+
+            $("#id_grpname").change(function () {
+                getsubaccount();
+            });
+            $("#id_subgrname").change(function () {
+                autopost();
+            });
+
+        });
+    </script>
+
+ <script language="javascript" type="text/javascript">
+        function openrecprint()
+        {
+            //alert("welcome");
+            $( ".printable" ).print();
+
+
+        }
+ </script>
+    <script type="text/javascript" language="javascript">
+        function autopost(){
+            var state = $("#id_grpname").val() + ':'+ $("#id_subgrname").val();
+            //alert(state);
+            var url = "/SchApp/account/getaccountdetails/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    $(".box").show();
+                    $(".box").html(html);
+
+                }
+            });
+            return false;
+        }
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+{%endblock%}
+

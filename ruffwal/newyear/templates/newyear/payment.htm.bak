@@ -1,0 +1,301 @@
+{% extends "newyear/baseposting.htm" %}
+{% load humanize %}
+{%block content%}
+    <div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%;height:25px; font-size:14px;color:white;padding-top:5px;"> <strong>PAYMENT TRANSACTION  </strong> </div>
+    <div align="center" style="color:red;font-family:courier;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+    <table align ="center" style="border:0px solid black;width:100%">
+        <tr><td>
+            <form action="" method="post" name ="main" id = "form1" onsubmit="disable(this)">
+                <table align ="left" style="border:1px;color:black;background-color:white;width:100%">
+                    <tr>
+                        <td colspan="4" style ="border:1px;color:white;background-color:#ccccc0;font-size:14px;text-align:center;">
+                            <strong>Bank Details</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Bank/Cash Name :
+                        </td>
+                        <td>{{ form.cusname}}
+                        </td>
+                        <td colspan = "2">{{ form.cusname.errors}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Bank/Cash Code :
+                        </td>
+                        <td>{{ form.cuscode}}
+                        </td>
+                        <td colspan = "2">{{ form.cuscode.errors}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Bank/Cash Balance :
+                        </td>
+                        <td>{{ form.cusbal}}
+                        </td>
+                        <td colspan = "2">{{ form.cusbal.errors}}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Transaction Date :
+                        </td>
+                        <td>{{ form.transdate}}
+                        </td>
+                        <td colspan = "2">{{ form.transdate.errors}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Ref. No :
+                        </td>
+                        <td>{{ form.invoiceno}}
+                        </td>
+                        <td colspan = "2">{{ form.invoiceno.errors}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan = "4" >
+                            <div style ="border:1px;color:white;background-color:#ccccc0;font-size:14px;text-align:center"> <strong>Transaction Details</strong> </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Account Name :
+                        </td>
+                        <td>{{ form.accname}}
+                        </td>
+                        <td colspan = "2">{{ form.accname.errors}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Account Code :
+                        </td>
+                        <td>{{ form.acccode}}
+                        </td>
+                        <td colspan = "2">{{ form.acccode.errors}}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Particulars :
+                        </td>
+                        <td>{{ form.particulars}}
+                        </td>
+                        <td colspan = "2">{{ form.particulars.errors}}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Amount :
+                        </td>
+                        <td>{{ form.transamount}}
+                        </td>
+                        <td colspan = "2">{{ form.transamount.errors}}
+                        </td>
+                    </tr>
+                    <tr >
+                    <tr>
+                        <td colspan="4" style="text-align:center;">
+
+                            <input name="submit" type= "submit" value="Submit" style="width:150px;height:25px;">
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        <tr>
+            <td>
+            {% if getdetails %}
+                <table align ="center" style="width:100%;background-color:white;border-collapse:collapse;">
+                    <tr>
+                        <td colspan="6">
+                            <form action="/eduflox/account/newyear/paymentprocess/" method="POST" onsubmit="disable(this)">
+                                <input name="submit" type="submit" value="Process Payment">
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong>Bank Code </strong></td>
+                        <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong>Bank Name</strong></td>
+                        <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Particular</strong></td>
+                        <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Trans. Date</strong></td>
+                        <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Amount</strong></td>
+                        <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Account Code</strong></td>
+
+                    </tr>
+
+                    {% for pincode in getdetails %}
+
+                        <tr>
+                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"><strong> {{ pincode.cuscode|upper }}</strong></td>
+                        <!-- <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="/posting/editpayment/{{ pincode.id }}/" style ="color:red"> {{ pincode.cusname|upper }} </a></strong></td>-->
+                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="#" style ="color:red" onClick= "getdialogtry({{ pincode.id }});"> {{ pincode.cusname|upper }} </a></strong></td>
+
+                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.particular}}</strong></td>
+                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.transdate|date:"d-m-Y"}}</strong></td>
+
+                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.amount|intcomma}}</strong></td>
+                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.acccode|upper}}</strong></td>
+                    {% endfor %}
+                    </tr>
+                </table>
+            {% endif %}
+            </td>
+        </tr>
+    </table >
+    <div id="myDialog" title="Edit Account">
+    </div>
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function() {
+            var pickerOpts = {
+                //appendText: "mm/dd/yy",
+                //defaultDate: "+5",
+                showOtherMonths: true,
+                changeMonth: true,
+                changeYear: true,
+                dateFormat:"mm/dd/yy"
+            };
+            $("#id_transdate").datepicker(pickerOpts);
+            //alert("welcome");
+            $("#id_cusname").focus();
+            autocomplete();
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $("#id_cusname").focus();
+            autocomplete();
+            autocompleteinv();
+        });
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        function autocomplete(){
+            $("#id_cusname").autocomplete({
+                //minLength: 0
+                source: "/eduflox/account/posting/getaccbank/",
+
+                select: function( event, ui ) {
+                    $( "#id_cuscode" ).val( ui.item.acccode );
+                    $( "#id_cusname" ).val( ui.item.accname );
+                    $( "#id_cusbal" ).val( ui.item.accbal );
+                    return false;
+                }
+            })
+                    .data( "autocomplete" )._renderItem = function( ul, item ) {
+                return $( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( "<a>" + item.label + "</a>" )
+                        .appendTo( ul );
+            };
+
+        }
+
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        function autocompleteinv(){
+            $("#id_accname").autocomplete({
+                source: "/eduflox/account/posting/getaccbanknot/",
+
+                select: function( event, ui ) {
+                    $( "#id_acccode" ).val( ui.item.acccode );
+                    $( "#id_accname" ).val( ui.item.accname );
+                    // $( "#id_cusbal" ).val( ui.item.accbal );
+                    return false;
+                }
+
+            })
+                    .data( "autocomplete" )._renderItem = function( ul, item ) {
+                return $( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( "<a>" + item.label + "</a>" )
+                        .appendTo( ul );
+            };
+
+        }
+
+    </script>
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#id_cusname").keyup(function () {
+                $( "#id_cuscode" ).val("");
+                $( "#id_cusbal" ).val("");
+            });
+            $("#id_accname").keyup(function () {
+                // $( "#id_acccode" ).val("");
+                $( "#id_acccode" ).val("");
+            });
+        });
+    </script>
+
+
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#myDialog").hide();
+        });
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialogtry(vid){
+            //alert(vid);
+            var state = vid;
+            var url = "/eduflox/account/newyear/getpaymentnewyear/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialog").html(html);
+                    getdialog();
+                }
+            });
+            return false;
+        }
+
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialog(){
+            var dialogOpts = {
+                autoOpen:true,
+                modal:true,
+                position: ["center", "middle"],
+                height:350,
+                width:490,
+                title:'',
+                closeOnEscape:true,
+                show: true,
+                hide: true,
+                bgiframe: true
+            };
+            $("#myDialog").dialog(dialogOpts);
+        }
+
+    </script>
+    <script type="text/javascript">
+        function disbutton(){
+            $("input[type=submit]").attr("disabled", "disabled");
+            return false;
+        }
+
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+{%endblock%}

@@ -1,0 +1,171 @@
+{% extends "report/base.htm" %}
+{% load humanize %}
+{%block content%}
+    <div align ="center" style="background-color:#ccccc0;min-width:100%;height:25px; font-size:14px;color:white"> <strong>MINI-STORE REPORT  </strong> </div>
+    <div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+    <table align ="left" style="border:0px solid black;width:100%">
+        <tr><td>
+            <form action="" method="post" name ="main" onsubmit="disable(this)">
+                <table align ="left" style="border:1px solid black;width:100%;color:#000000;">
+                    <tr>
+                        <td>Date : </td>
+                        <td>{{ form.enddate}}</td>
+                        <td>Download Excel : </td>
+                        <td>{{ form.excelfile}}</td>
+                        <td><input name="submit" type= "submit" value=" View Report "></td>
+                    </tr>
+
+                </table >
+            </form>
+        </td></tr>
+        <tr>
+            <td>
+                {% if ll %}
+                <table align ="left" style="border:0px solid black;width:100%">
+                    <tr>
+                        <td>
+                            <input name="submit" type= "submit" value="Print Mini-Store Report  " onclick="openrecprint();">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan ="30">
+                            <div class="printable">
+                                <table align ="center" style="border:0px solid black;width:100%;background-color:white">
+                                    <tr>
+                                        <td>
+                                            <table align ="left" style="border:0px solid black;width:100%;background-color:white">
+                                                <tr>
+                                                    <td align="left" valign="top" style = "width:auto;background-color:white;font-size:9px"><strong> </strong></td>
+                                                    <td align="left" valign="top" style = "width:auto;background-color:white;font-size:9px"><strong></strong></td>
+                                                    <td align="left" valign="top" style = "width:auto;background-color:white;font-size:12px" colspan = "3"><img align ="center" style = "left:10%;float:left;padding:5px;border:0px;width:55px;heigth:55px" src ="/static/{{comp.picture}}" > {{comp.name}}<br>{{comp.address}}</td>
+
+                                                </tr>
+                                                <tr><td colspan ="15" align ="center"> MINI-STORE REPORT</td> </tr>
+
+                                            </table>
+                                        </td></tr>
+
+                                    <tr>
+                                        <td>
+
+
+                                            <table align ="left" style="border-collapse:collapse;width:100%;background-color:white;">
+
+                                                <tr>
+
+                                                    <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;border:1px solid black;font-weight:bold;text-align:center;">Stock Code</td>
+                                                    <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;border:1px solid black;font-weight:bold;text-align:center;">Stock Name</td>
+                                                    <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;border:1px solid black;font-weight:bold;text-align:center;">Quantity In Stock</td>
+                                                    <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;border:1px solid black;font-weight:bold;text-align:center;">Average Price</td>
+                                                    <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;border:1px solid black;font-weight:bold;text-align:center;">Account Balance</td>
+                                                </tr>
+                                                <!-- <tr><td colspan="10"><hr></td></tr> onmouseover="getdialogtry({{ pincode.pid}});"-->
+                                                {% for pincode in ll%}
+                                                    <tr>
+                                                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">   {{ pincode.acccode}}</td>
+                                                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ pincode.stockname }}</td>
+                                                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ pincode.qtybal|intcomma }}</td>
+                                                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ pincode.avgprice|intcomma }}</td>
+                                                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ pincode.accbal|intcomma }}</td>
+
+                                                {% endfor %}
+
+                                                </tr>
+                                                <tr>
+                                                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"></td>
+                                                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;font-weight:bold;text-align:right;"> Total :: </td>
+                                                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;font-weight:bolder;">{{ totqty }}</td>
+                                                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"></td>
+                                                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;font-weight:bolder;">{{ totbal }}</td>
+
+                                                </tr>
+                                            </table>
+                                        </td></tr>
+                                </table>
+
+                            </div>
+                        </td></tr>
+                </table>
+    {% endif %}
+    </table>
+    <div id="myDialog" title="Edit Account">
+    </div>
+    <script language="javascript" type="text/javascript">
+        function openrecprint()
+        {
+            $( ".printable" ).print();
+        }
+    </script>
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#myDialog").hide();
+        });
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialogtry(vid){
+            //alert(vid);
+            var state = vid;
+            var url = "/SchApp/account/report/getministatementpayable/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialog").html(html);
+                    getdialog();
+                }
+            });
+            return false;
+        }
+
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialog(){
+            var dialogOpts = {
+                autoOpen:true,
+                modal:true,
+                position: ["center", "middle"],
+                height:"auto",
+                width:490,
+                title:'Account Statement',
+                closeOnEscape:true,
+                show: true,
+                hide: true,
+                bgiframe: true
+            };
+            $("#myDialog").dialog(dialogOpts);
+        }
+
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            var pickerOpts = {
+                //appendText: "mm/dd/yy",
+                //defaultDate: "+5",
+                showOtherMonths: true,
+                changeMonth: true,
+                changeYear: true,
+                showButtonPanel: true
+                // showOn: "button"
+            };
+            $("#id_enddate").datepicker(pickerOpts);
+            //$("#id_startdate").val("01/01/2011");
+        });
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+
+
+{%endblock%}

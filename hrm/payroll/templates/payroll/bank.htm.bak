@@ -1,0 +1,74 @@
+
+
+
+{% load humanize %}
+<table align ="left" style="width:100%;color:black;border-collapse:collapse;">
+    <tr>
+        <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> S/N</strong></td>
+        <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Staff Id</strong></td>
+        <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Staff Name</strong></td>
+        <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong>Bank Name</strong></td>
+        <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Account Number</strong></td>
+    </tr>
+
+    {% for pincode in gdata %}
+
+        <tr>
+        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong> {{ forloop.counter }} </strong></td>
+        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong> {{ pincode.staffid }} </strong></td>
+        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.staffname|title}}</strong></td>
+        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.bankname }}</strong></td>
+        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="#" style ="color: blue;" onclick="admno({{ pincode.id }});" title="Edit This Account"> {{ pincode.accountno }} </a></strong></td>
+      <!--  <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="/payroll/deletebank/{{ pincode.id }}/" style ="color: blue;"> {{ pincode.accountno }} </a></strong></td>-->
+
+    {% endfor %}
+    </tr>
+</table>
+<div id="myDialog" >
+</div>
+<script type="text/javascript" >
+    $(document).ready(function() {
+        $("#myDialog").hide();
+    });
+</script>
+<script type="text/javascript" language="javascript">
+    function admno(vid){
+        //alert(vid);
+        var state = vid;
+        var url = "/humanresources/payroll/getbank/";
+        var i = 0;
+        var data='userid='+state;
+        $.ajax({
+            type:"POST",
+            url:url,
+            data:data,
+            success:function(html) {
+                //$("#myDialog").show();
+                $("#myDialog").html(html);
+                getdialog();
+            }
+        });
+        return false;
+    }
+
+</script>
+<script type="text/javascript" language="javascript">
+    function getdialog(){
+        var dialogOpts = {
+            autoOpen:true,
+            modal:true,
+            position: ["center", "middle"],
+            height:"auto",
+            width:490,
+            title:'Edit Bank Details',
+            closeOnEscape:true,
+            show: true,
+            hide: true,
+            bgiframe: true
+        };
+        $("#myDialog").dialog(dialogOpts);
+    }
+
+</script>
+
+

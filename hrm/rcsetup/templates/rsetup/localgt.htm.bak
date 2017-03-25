@@ -1,0 +1,19 @@
+{% load humanize %}
+{%block content%}
+
+    <table align ="center" style="width:100%;color:black;border-collapse:collapse;">
+        <tr>
+            <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> STATE</strong></td>
+            <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> LOCAL GOVT. AREA</strong></td>
+        </tr>
+
+        {% for pincode in data %}
+
+            <tr>
+            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.state}}</strong></td>
+            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="/humanresources/deletelocalgt/{{ pincode.id }}/" style ="color:red"> {{ pincode.localgovt }} </a></strong></td>
+                              {% endfor %}
+        </tr>
+    </table>
+
+{%endblock%}

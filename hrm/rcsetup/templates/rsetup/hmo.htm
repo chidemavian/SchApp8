@@ -1,0 +1,275 @@
+{% extends "rsetup/basesetup.htm" %}
+{%block title %}{%endblock%}
+
+{%block content%}
+        <!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+        <div align ="left" style="border:1px solid black;width:100%;font-family: verdana;color:black">
+            <div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%; font-size:12px;color:black"> HMO SETUP </div>
+            <div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+            <table align ="left" style="border:0px solid black;width:100%;" id = "table1">
+                <tr><td valign="top">
+                <form action="" method="post" name ="main" onsubmit="disable(this)">
+                <table align ="left" style="border:1px solid black;width:100%;">
+                    <thead> <tr><td colspan=12 align="center" style="border:0px solid black;width:100%;font-weight: bol;background-color:#ccccc0;color: black;">HMO Set Up
+                    </td>
+                        <td></td>
+                    </tr>
+                    </thead>
+                    <tr>
+                        <td align ="left" style="width:auto;">
+                            Name
+                        </td>
+                        <td align ="left" style="width:auto">
+
+                            {{form.name}}
+
+                        </td>
+                        <td align ="left" style="width:auto;">
+
+                            {{form.name.errors}}
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align ="left" style="width:auto;">
+                            Address
+                        </td>
+                        <td align ="left" style="width:auto;">
+                            {{form.address}}
+                        </td>
+                        <td align ="left" style="width:auto;">
+                            {{form.address.errors}}
+                        </td>
+                        <td align ="left" style="width:auto;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align ="left" style="width:auto;">
+
+                        </td>
+                        <td align ="left" style="width:auto;">
+
+                            <input name="submit" type= "submit" value="   Create HMO  ">
+                        </td>
+                        <td align ="left" style="width:auto;">
+
+                        </td>
+
+               <tr>
+                    <td colspan="8">
+
+                 <table style="width:100%;color:black;border-collapse:collapse;">
+                <tr>
+                    <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"> HMO Name</td>
+                    <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black">HMO Address</td>
+                </tr>
+
+                {% for pincode in getdetails %}
+                    <tr>
+                   <!-- <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="/edithmo/{{ pincode.id }}/" style ="color:red" title="Click here to edit the HMO">{{ pincode.name|upper }}</a></strong></td>-->
+                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"><a href="#" style ="color:red" title="Click here to edit the HMO" onclick="admno({{ pincode.id }});">{{ pincode.name|upper }}</a></td>
+                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ pincode.address|upper }}</td>
+                {% endfor %}
+                </tr>
+                 </table>
+                    </td>
+                </tr>
+            </table>
+                </form>
+            </td>
+                    <td valign="top">
+
+                        <form action="/hrm/hmosetupprovider/" method="post" name ="main2" id="form2" onsubmit="disable(this)">
+                            <table align ="left" style="border:1px solid black;width:100%;">
+                                <thead> <tr><td colspan=12 align="center" style="border:0px solid black;width:100%;font-weight:;background-color:#ccccc0;color: black;"> Set Up HMO Providers
+                                </td>
+                                    <td></td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td align ="left" style="width:auto;">
+                                        HMO
+                                    </td>
+                                    <td align ="left" style="width:auto;">
+                                        {{form2.hmo}}
+
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td align ="left" style="width:auto;">
+                                        Name
+                                    </td>
+                                    <td align ="left" style="width:auto;">
+                                        {{form2.name1}}
+
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td align ="left" style="width:auto;">
+                                      Address
+                                    </td>
+                                    <td align ="left" style="width:auto;">
+                                        {{form2.address1}}
+
+                                    </td>
+
+                                </tr>
+
+                                <tr>
+                                    <td align ="left" style="width:auto;">
+
+                                    </td>
+                                    <td align ="left" style="width:auto;">
+
+                                        <input name="submit" type= "submit" value="   Create PROVIDERS  ">
+                                    </td>
+                                    <td align ="left" style="width:auto;">
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan = 8>
+                                        <div class = "box"> </div>
+
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table> </form>
+                    </td></tr>
+            </table>
+
+
+        </div>
+
+        <!-- parti-->
+
+
+    <div id="myDialog" >
+    </div>
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#myDialog").hide();
+        });
+    </script>
+    <script type="text/javascript" language="javascript">
+        function admno(vid){
+            //alert(vid);
+            var state = vid;
+            var url = "/hrm/gethmo/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialog").html(html);
+                    getdialog();
+                }
+            });
+            return false;
+        }
+
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialog(){
+            var dialogOpts = {
+                autoOpen:true,
+                modal:true,
+                position: ["center", "middle"],
+                height:"auto",
+                width:490,
+                title:'Edit HMO',
+                closeOnEscape:true,
+                show: true,
+                hide: true,
+                bgiframe: true
+            };
+            $("#myDialog").dialog(dialogOpts);
+        }
+
+    </script>
+
+
+
+   
+
+    <script language="javascript" type="text/javascript">
+        function openrec()
+        {
+            //alert("welcome");
+            var uid = $("#id_hmo").val() ;
+            //alert(uid);
+            var data='userid='+uid;
+
+            //alert(data);
+            $.ajax({
+                type:"POST",
+                url:"/hrm/ajaxstreetlgprovider/",
+                data:data,
+                success:function(html) {
+                    $(".box").show();
+                    $(".box").html(html);
+                }
+            });
+            //alert("error");
+            return false;
+        }
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // $("#id_transdate").datepicker();
+            //alert("welcome");
+            //$("#id_name").focus();
+            $(".box").hide();
+            openrec();
+
+        });
+    </script>
+
+    <script type="text/javascript" >
+        $(document).ready(function() {
+
+            $(".box").hide();
+            $("#id_hmo").change(function () {
+                openrec();
+            });
+        });
+
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+
+<script language="javascript" type="text/javascript">
+    function openrec()
+    {
+        var data='userid='+'test';
+        $.ajax({
+            type:"POST",
+            url:"/header/",
+            data:data,
+            success:function(html) {
+                $(".boxnn").show();
+                $(".boxnn").html(html);
+            }
+        });
+        return false;
+    }
+</script>
+
+
+{%endblock%}

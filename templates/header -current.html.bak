@@ -1,0 +1,169 @@
+<style type="text/css">
+.style1 {
+	color: #990000;
+	font-weight: bold;
+}
+</style>
+
+
+{% block content %}
+
+    {% load humanize  %}
+
+    <div  style="width:100%;font-family:times;" >
+        <!--
+        <div style="font-size:15px;font-style:italic;color:red;height:12px;text-align:left;font:times;padding-bottom:29px;">
+            Eduflox(v2.1)<br>
+        </div>-->
+        
+        
+       
+        
+        
+        
+        
+        
+        <!--
+    <div style="font-size:14px;font-style:italic;height:223px;width:193px;overflow:auto;text-align:left;font-weight:bold;border: 1px solid #336666;" >
+       Latest News <br>
+
+        <span style="font-size:10px;font-weight:normal;">
+            {% if news %}
+            {% for pincode in news %}
+               <ul>
+                   <li>
+                       <a href="#" onClick= "getdialogtrynews( {{ pincode.id }});"> {{ pincode.news|truncatewords:"5" }}</a>
+                   </li>
+               </ul>
+
+            {% endfor %}
+            {% else %}
+          <p> No News </p>
+          {% endif %}
+
+        </span>
+    </div>-->
+    </div>
+
+    <table style="width:900px;background-color:#fff;text-align:center;" align="center"><tr>
+                <td width="225" style="width:auto;border:0px solid white;background-color:#fff;color:#ffffff"><div style="font-size:12px;color:#000;text-align:left;height:21px;font-weight:normal;" class="header_nav_bar">
+            <span class="">Username :</span> <span style="color:red;"> {{ useracc.username|upper }}</span>
+      </div></td>
+                <td width="125" style="width:auto;border:0px solid white;background-color:#fff;color:#ffffff"><div style="font-size:12px;font-style:italic;color:#000;text-align:left;height:21px;font-weight:normal;" title="Change Your Password">
+            <a href="#" style="color:#990000" onClick= "getdialogtrynew();"><strong>Change Password |</strong></a>
+      </div></td>
+                <td width="110" style="width:auto;border:0px solid white;background-color:#fff;color:#ffffff"><div style="font-size:12px;font-style:italic;color:#000;text-align:left;height:21px;font-weight:normal;" title="Main Page">
+            <a href="/welcome/" style="color:#990000;font:Arial;font-size:12px;"><strong>Control Panel   |</strong></a>
+      </div></td>
+                <td width="142" style="width:auto;border:0px solid white;background-color:#fff;color:#ffffff"><div style="font-size:12px;font-style:italic;color:#000;text-align:left;height:21px;font-weight:normal;" title="Search For Student">
+            <a href="/student_search/" style="color:#990000;font-weight:bold;font:Arial;font-size:12px;">Student Seaarch  |</a>
+      </div></td>
+                <td width="67" style="width:auto;border:0px solid white;background-color:#fff;color:#ffffff"><div style="font-size:12px;font-style:italic;color:#000;text-align:left;height:21px;font-weight:normal;">
+            <a href="/SchApp/account/" style="color:#990000;font-weight:bold;font:Arial;font-size:12px;">Account |</a>
+      </div></td>
+                <td width="140" style="width:auto;border:0px solid white;background-color:#fff;color:#ffffff"><div style="font-size:12px;font-style:italic;color:#000;text-align:left;height:21px;font-weight:normal;">
+            <a href="/hrmes/" style="color:#990000;font-weight:bold;font:Arial;font-size:12px;">Human Resources  |</a>
+      </div></td>
+                <td width="59" style="width:auto;border:0px solid white;background-color:#fff;color:#ffffff"> <div style="font-size: 12px; color: #990000; height: 21px; font-weight: bold; font-family: Arial;" title="Log Out">
+
+            <a href="/logout/" style="color:#990000;font-weight:bold;font:Arial;font-size:12px;">Log Out</a>
+      </div></td>
+                <!--<td width="63" style="width:auto;border:0px solid white;background-color:#fff;color:#ffffff"><div style="font-size:17px;font-style:italic;color:red;height:40px;text-align:left;font-weight:normal;">
+            Today :: <br>
+            <span style="color:#000;">{{ vvtoday }} </span>
+        </div></td>-->
+    </tr>
+</table>
+    
+    <div id="myDialognew" title="Change Password">    </div>
+    <div id="mynews" title="News">    </div>
+
+
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#myDialognew").hide();
+            $("#mynews").hide();
+        });
+    </script>
+   <script type="text/javascript" language="javascript">
+        function getdialogtrynew(){
+            //alert(vid);
+            var state = 'test';
+            var url = "/getchangepassword/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialognew").html(html);
+                    getdialognew();
+                }
+            });
+            return false;
+        }
+
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialognew(){
+            var dialogOpts = {
+                autoOpen:true,
+                modal:true,
+                position: ["center", "middle"],
+                height:250,
+                width:490,
+                title:'Change Your Password',
+                closeOnEscape:true,
+                show: true,
+                hide: true,
+                bgiframe: true
+            };
+            $("#myDialognew").dialog(dialogOpts);
+        }
+
+    </script>
+
+   <script type="text/javascript" language="javascript">
+        function getdialogtrynews(vid){
+            //alert(vid);
+            var state = vid;
+            var url = "/getnews/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#mynews").html(html);
+                    getdialognews();
+                }
+            });
+            return false;
+        }
+
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        function getdialognews(){
+            var dialogOpts = {
+                autoOpen:true,
+                modal:true,
+                position: ["center", "middle"],
+                height:"auto",
+                width:300,
+                title:'Latest News',
+                closeOnEscape:true,
+                show: true,
+                hide: true,
+                bgiframe: true
+            };
+            $("#mynews").dialog(dialogOpts);
+        }
+
+    </script>
+
+{% endblock %}

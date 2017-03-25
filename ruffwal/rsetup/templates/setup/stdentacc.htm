@@ -1,0 +1,75 @@
+{% extends "setup/basesetup.htm" %}
+{%block content%}
+        <div align ="center" style="background-color:;border:0px solid black;width:100%;height:4%; font-size:12px;color:white"> <strong>STUDENT ACCOUNT </strong> </div>
+        <div align="center" style="color:red;font-family:courier;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+        <table align ="center" style="border:0px solid black;width:100%;">
+            <tr>
+                <td>
+                    <table align ="left" style="border:0px solid black;width:100%">
+                     <tr>
+                         <td>
+                             <input name="submit" type= "submit" value="Print Receivables  " onclick="openrecprint();">
+                         </td>
+                     </tr>
+
+                        <tr>
+                            <td colspan ="30">
+                                <div class="printable">
+                                    <table align ="center" style="border:0px solid black;width:100%;">
+
+                                        <tr>
+                                            <td>
+                                                <table align ="left" style="border:0px solid black;width:100%;background-color:white;border-collapse:collapse;">
+                                                    <tr>
+                                                        <td align="left" valign="top" style = "width:auto;height:15px;background-color:#E6E6E6;font-size:14px;border:1px solid black;"><strong>S/N </strong></td>
+                                                        <td align="left" valign="top" style = "width:auto;height:15px;background-color:#E6E6E6;font-size:14px;border:1px solid black;"><strong>Account Number </strong></td>
+                                                        <td align="left" valign="top" style = "width:auto; height:15px;background-color:#E6E6E6;font-size:14px;border:1px solid black;"><strong>Account Name</strong></td>
+                                                        <td align="left" valign="top" style = "width:auto; height:15px;background-color:#E6E6E6;font-size:14px;border:1px solid black;"><strong> Account Balance</strong></td>
+                                                        <td align="left" valign="top" style = "width:auto ;height:15px;background-color:#E6E6E6;font-size:14px;border:1px solid black;"><strong> Account Status</strong></td>
+                                                        <td align="left" valign="top" style = "width:auto ;height:15px;background-color:#E6E6E6;font-size:14px;border:1px solid black;"><strong> </strong></td>
+                                                    </tr>
+                                                    {% for pincode in getdetails %}
+                                                        <tr>
+                                                        <td align="left" valign="top" style = "font-size:13px;width:auto;color:#000;border:1px solid black;"><strong> {{ forloop.counter }}</strong></td>
+                                                        <td align="left" valign="top" style = "font-size:13px;width:auto;color:#000;border:1px solid black;"><strong> {{ pincode.acccode }}</strong></td>
+                                                        <td align="left" valign="top" style = "font-size:13px;width:auto;color:#000;border:1px solid black;"><strong> {{ pincode.accname|upper }}</strong></td>
+                                                        <td align="left" valign="top" style = "font-size:13px;width:auto;color:#000;border:1px solid black;"><strong> {{ pincode.accbal }}</strong></td>
+                                                        <td align="left" valign="top" style = "font-size:13px;width:auto;color:#000;border:1px solid black;"><strong> {{ pincode.accstatus }}</strong></td>
+                                                        <td align="left" valign="top" style = "font-size:13px;width:auto;color:#000;border:1px solid black;"> <strong><a href="/SchApp/account/editstudentsacc/{{ pincode.id }}/" style ="color:red;"> Change Account Status </a></strong></td>
+                                                    {% endfor %}
+
+                                                    </tr>
+                                                </table>
+                                            </td></tr>
+                                    </table>
+
+                                </div>
+
+                            </td>
+                        </tr>
+                    </table>
+        </table>
+    <script type="text/javascript">
+        document.getElementById('id_accname').focus()
+    </script>
+    <script language="javascript" type="text/javascript">
+        function openrecprint()
+        {
+            //alert("welcome");
+            $( ".printable" ).print();
+
+
+        }
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+{%endblock%}

@@ -1,0 +1,83 @@
+{% extends "asset/base.htm" %}
+{%block content%}
+<div align ="center" style="background-color:#ccccc0;width:100%;height:15px; font-size:12px;color:white;padding-top:10px;"> <strong> CREATE DEPARTMENT  </strong> </div>
+<div align="center" style="color:red;font-family:courier;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+
+<table align ="left" style="width:auto;">
+    <tr>
+        <td colspan="10" >
+
+
+            <form action="" method="post" name ="main" onsubmit="disable(this)">
+                <table align ="left" style="width:auto;">
+
+                    <tr>
+                        <td>
+                            {{ form.name.label}}
+                        </td>
+                        <td>{{ form.name}}
+                        </td>
+                    </tr>
+
+
+                    <tr>
+
+                        <td colspan="2" style="text-align:center;">
+
+                            <input name="submit" type= "submit" value="   Create Department  " >
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="10">
+
+            <table style="width:100%;border-collapse:collapse;background-color:white">
+                <tr>
+                    <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black"><strong> S/N</strong></td>
+                    <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black"><strong>Name</strong></td>
+
+                </tr>
+                {% for pincode in getdetails %}
+
+                <tr>
+                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;text-align:center;"> {{ forloop.counter }}</td>
+                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.name|upper }}</td>
+
+                    {% endfor %}
+
+
+                </tr>
+
+            </table>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    document.getElementById('id_name').focus()
+</script>
+
+
+<script language="javascript" type="text/javascript">
+    function openrecprint()
+    {
+        $( ".printable" ).print();
+    }
+</script>
+
+
+<script language="javascript" type="text/javascript">
+    function disable(f)
+    {
+        var button = f.elements['submit'];
+        button.value = 'Processing';
+        button.disabled = 'true';
+        return true;
+    }
+</script>
+
+
+
+{%endblock%}

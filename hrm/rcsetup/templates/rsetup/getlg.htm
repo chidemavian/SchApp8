@@ -1,0 +1,7 @@
+{% load humanize %}
+{%block content%}
+    {% for pincode in data %}
+        {{ pincode.state }}
+    {% endfor %}
+
+{%endblock%}

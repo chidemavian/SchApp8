@@ -1,0 +1,125 @@
+{% extends "posting/baseposting.htm" %}
+{% load humanize %}
+{%block content%}
+    <div align ="center" style="background-color:#cccccc;width:100%;height:3%; font-size:14px;color:black;vertical-align:middle;text-align: center">Student Bill </div>
+    <div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+    <table align ="center" style="width:100%">
+        <tr><td>
+            <form action="/SchApp/account/posting/postbill/" method="post" name ="main" id = "form1" onsubmit="disable(this)">
+                <table align ="left" style="border:1px;color:#2e6e9e;background-color:white;width:auto;font-size:12px">
+                    <tr>
+                        <td>
+                            Session :
+                        </td>
+                        <td>
+                            <input type ="text" id="session" size="10" name="session" value ="{{session}}" readonly="readonly" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+
+                        </td>
+                        <td>
+                            Class :
+                        </td>
+                        <td><input type ="text" id="klass" size="15" name="klass" value ="{{klass}}" readonly="readonly" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+                        </td>
+                        <td>
+                            Term :
+                        </td>
+                        <td><input type ="text" id="term" size="10" name="term" value ="{{term}}" readonly="readonly" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+                        </td>
+                        <td>
+                            Date :
+                        </td>
+                        <td><input type ="text" id="transdate" size="10" name="transdate"  readonly="readonly" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+                        </td>
+                        <td>
+
+                            <input name="submit" type= "submit" value="Post This Bill" />
+                        </td>
+                    </tr>
+                </table>
+
+            </form>
+<tr>
+        <td>
+               <input name="submitprint" type= "submit" value="Print" onclick = "openrecprint();">
+               
+        </td>
+</tr>
+<div class="printable"> 
+<tr>
+    <td colspan="3" style ="border-radius:20px;color:black;background-color:#ccccc0;font-size:16px;text-align:center;">
+    Expected Income Report for: <t style="font-size:15px;font-weight:bold;color:blue;">{{klass}} {{term}} term, {{session}} Session </t>
+    </td>
+</tr>
+        <tr>
+            <td colspan = 8>
+                <table align ="left" style="width:100%;background-color:white;border-collapse:collapse;">
+                    <tr>
+                        <td style="color:#1d5987;font-size:13px;font-weight:bold;">
+                            Class :    {{ klass }}
+                        </td>
+                        <td style="color:#1d5987;font-size:13px;font-weight:bold;">
+                            Term :  {{ term }}
+                        </td>
+                        <td style="color:#1d5987;font-size:13px;font-weight:bold;">
+                            Session : {{ session }}
+                        </td>
+                        <td style="color:#1d5987;font-size:13px;font-weight:bold;">
+                            Total Bill : {{ total }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">S/N </td>
+                        <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Admission Number</td>
+                        <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Student Name</td>
+                        <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle;text-align:center;"> Total Bill</td>
+
+                    </tr>
+
+                    {% for pincode in getdetails %}
+
+                        <tr>
+                        <td align="center" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ forloop.counter }}</td>
+                        <td align="center" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000;border:1px solid black">{{ pincode.admno }}</td>
+                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ pincode.name|title}}</td>
+                        <td align="center" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;text-align:center;">{{ pincode.totalbill}}</td>
+                    {% endfor %}
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        </div>
+    </table >
+
+
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function() {
+            var pickerOpts = {
+                //appendText: "mm/dd/yy",
+                //defaultDate: "+5",
+                showOtherMonths: true,
+                changeMonth: true,
+                changeYear: true,
+                dateFormat:"mm/dd/yy"
+            };
+            $("#transdate").datepicker(pickerOpts);
+
+        });
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+        <script language="javascript" type="text/javascript">
+        function openrecprint()
+        {
+            //alert("welcome");
+            $( ".printable" ).print();
+        }
+    </script>
+{%endblock%}

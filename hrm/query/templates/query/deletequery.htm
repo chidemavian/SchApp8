@@ -1,0 +1,80 @@
+{% extends "query/base.htm" %}
+{% load humanize %}
+
+{%block content%}
+    <div class="pmiddle">
+        <!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+        <div align ="left" style="border:0px solid black;width:100%;font-family:verdana;font-size:11px;color:black">
+            <div align ="center" style="background-color:black;border:0px solid black;width:100%; font-size:12px;color:white"> <strong>DELETE QUERY </strong> </div>
+            <div align="center" style="color:white;font-family:verdana;font-size:16px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+            <strong><span style="color: red;font-size:16px"> Are you sure you want to delete query below?</span></strong>
+                        <form action="" method="post" name ="main" >
+                            <table align ="left" style="border:0px solid black;width:auto;font-size:14px" border="1">
+                                <tr>
+                                    <td align ="left" >
+                                        Staff Id :&nbsp;{{ details.staffid }}
+                                    </td>
+                                    <td align ="left"  >
+                                        Staff Name :&nbsp;{{ details.staffname }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align ="left" >
+                                        Query Type :&nbsp;{{ details.querytype }}
+                                    </td>
+                                    <td align ="left"  >
+                                        Query Date :&nbsp;{{ details.querydate|date:"d-m-Y" }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align ="left" >
+                                        Query Issuer :&nbsp;{{ details.querygiver }}
+                                    </td>
+                                    <td align ="left"  >
+                                        Reason :&nbsp;{{ details.reasonforquery }}
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td align ="left" >
+                                        Action Taken :&nbsp;{{ details.actiontaken }}
+                                    </td>
+                                    <td align ="left"  >
+
+                                    </td>
+
+                                </tr>
+                                <tr valign="top">
+                                    <td align ="left"  >
+                                        Reason For Deleting : &nbsp; <textarea name="reason" id="reason" type= "text" ></textarea>
+                                    </td>
+                                    <td>
+
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td align ="left">
+                                        <input name="submit" type= "submit" value="Delete Query" class = "submit">
+                                    </td>
+
+                                    <td align ="left">
+                                    </td>
+
+                                </tr>
+                            </table>
+                        </form>
+
+
+
+        </div>
+
+        <!-- parti-->
+        <script>
+            $(document).ready(function() {
+                $("#id_name").focus();
+
+            });
+        </script>
+    </div>
+{%endblock%}

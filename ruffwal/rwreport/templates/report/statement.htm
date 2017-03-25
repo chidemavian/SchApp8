@@ -1,0 +1,186 @@
+{% extends "report/base.htm" %}
+{% load humanize %}
+{%block content%}
+<div align ="center" style="background-color:#ccccc0;min-width:100%;height:3%; font-size:12px;color:white"> <strong>STATEMENT OF ACCOUNT (BY SUBGROUP)  </strong> </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+    <table align ="left" style="border:0px solid black;width:100%">
+        <tr><td>
+            <form action="" method="post" name ="main" onsubmit="disable(this)">
+    <table align ="left" style="border:1px solid #000000;background-color:#E6E6E6;width:100%;color:#000000;">
+<tr>
+<td>Group Name : </td>
+<td>{{ form.grpname}}</td>
+    <td>Sub Group : </td>
+    <td>{{form.subgrname}}</td>
+<td>Start Date : </td>
+<td>{{ form.startdate}}</td>
+<td>End Date : </td>
+<td>{{ form.enddate}}</td>
+    <td>Download Excel : </td>
+    <td>{{ form.excelfile}}</td>
+<td><input name="submit" type= "submit" value=" View Statement " ></td>
+</tr>
+
+</table >
+    </form>
+ </td></tr>
+        <tr>
+            <td colspan="12">
+            {% if ld %}
+                <table align ="left" style="border:0px solid black;width:70%">
+                    <tr>
+                        <td>
+                            <input name="submit" type= "submit" value="Print Statement  " onclick="openrecprint();">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan ="30">
+                            <div class="printable">
+                                <table align ="center" style="width:100%;background-color:white">
+                                    <tr>
+                                        <td colspan="5">
+                                            <table  align ="left" style="border-collapse:collapse;width:100%;background-color:white">
+                                                <tr>
+                                                    <td rowspan="4" style="text-align:right;">
+                                                        <img style="width: 120px; height: 50px;" src="/static/{{ comp.picture }}" alt="{{ comp.name }}">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+
+                                                    <td style="font-size:14px;font-style:normal;font-weight:bold;text-align:left">{{ comp.name }}</td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-size:12px;font-style:normal;font-weight:bold;text-align:left">{{ comp.address }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-size:14px;font-style:normal;font-weight:bold;text-align:left"></td>
+                                                </tr>
+                                            </table>
+
+                                        </td>
+                                    </tr>
+                                    <tr><td colspan ="5" align ="center"> ACCOUNT STATEMENT  FROM  {{ varstart|date:"F j,Y" }} TO  {{ varend|date:"F j,Y" }}</td> </tr>
+
+                                    <tr>
+                                        <td>
+
+
+                                            <table align ="left" style="border-collapse:collapse;width:100%;background-color:white;">
+
+
+
+                                                {% for j in ld  %}
+                                                    <!--  <tr><td colspan="10"><hr></td></tr>-->
+
+                                                    <tr><td colspan="5"><table> <tr><td>{{ j.varco }}</td>
+                                                        <td><td> {{j.varna }} </td>
+                                                        <td><td>Last Trans.Date :: {{ j.vardat|date:"F j,Y" }} </td>
+                                                        <td><td>Opening Balance :: {{ j.opbal|intcomma }} </td></tr></table></td></tr>
+                                                    <!--  <tr><td colspan="10"><hr></td></tr>-->
+                                                    <tr>
+                                                        <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;font-weight:bold;text-align:left;border:1px solid black;">S/N </td>
+                                                        <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;font-weight:bold;text-align:left;border:1px solid black;">Trans Id </td>
+                                                        <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;font-weight:bold;text-align:left;border:1px solid black;">Date </td>
+                                                        <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;font-weight:bold;text-align:left;border:1px solid black;">Particular</td>
+                                                        <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;font-weight:bold;text-align:left;border:1px solid black;">Ref. No </td>
+                                                        <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;font-weight:bold;text-align:right;border:1px solid black;">Debit</td>
+                                                        <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;font-weight:bold;text-align:right;border:1px solid black;">Credit</td>
+                                                        <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;font-weight:bold;text-align:right;border:1px solid black;">Balance</td>
+                                                    </tr>
+                                                    {% for pincode in j.trans %}
+                                                        <tr>
+                                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;">   {{forloop.counter}}</td>
+                                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;">   {{ pincode.transid }}</td>
+                                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;">   {{ pincode.transdate|date:"F j,Y"}}</td>
+                                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;"> {{ pincode.particulars }}</td>
+                                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;"> {{ pincode.refno }}</td>
+                                                        <td align="right" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;">  {{ pincode.disdebit }}</td>
+                                                        <td align="right" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;"> {{ pincode.discredit}}</td>
+                                                        <td align="right" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;">{{ pincode.disbal }}</td>
+                                                    {% endfor %}
+                                                </tr>
+                                                {% endfor %}
+                                            </table>
+                                        </td></tr>
+                                </table>
+
+                            </div>
+                        </td></tr>
+                </table>
+    {% endif %}
+    </table>
+<script type="text/javascript">
+$(document).ready(function() {
+    var pickerOpts = {
+        //appendText: "mm/dd/yy",
+        //defaultDate: "+5",
+        showOtherMonths: true,
+        changeMonth: true,
+        changeYear: true,
+        dateFormat:"mm/dd/yy"
+        // showOn: "button"
+    };
+         $("#id_startdate").datepicker(pickerOpts);
+         $("#id_enddate").datepicker(pickerOpts);
+ });
+</script>
+    <script language="javascript" type="text/javascript">
+        function openrecprint()
+        {
+            //alert("welcome");
+            $( ".printable" ).print();
+
+
+        }
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        function getsubaccount(){
+            var state = $("#id_grpname").val() ;
+            //alert(state);
+            var url = "/SchApp/account/report/getsubaccountaccreport/";
+            var i = 0;
+            var data='userid='+state;
+            $("#id_subgrname").val('');
+            $("#id_subgrname").html('');
+            if (state != undefined){
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data:data,
+                    success: function(data){
+                        var options = '';
+                        for (i=0; i<data.length; i++){
+                            options += '<option value="' + data[i] +'">' + data[i] + '</option>'
+                        }
+                        $("#id_subgrname").append(options);
+
+                    }
+                })
+            }
+        }
+    </script>
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            getsubaccount();
+
+            $("#id_grpname").change(function () {
+                getsubaccount();
+            });
+
+
+        });
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ....';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+
+{%endblock%}

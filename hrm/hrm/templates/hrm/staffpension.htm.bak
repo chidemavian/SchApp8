@@ -1,0 +1,156 @@
+{% extends "hrm/base.htm" %}
+{%block head %}
+{%block title %}Solutions{%endblock%}
+{%endblock %}
+{%block content%}
+<div class="pmiddle">
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="left" style="border:1px solid black;width:100%;heigth:10%;font-family: verdana;color:black">
+<div align ="center" style="background-color:black;border:0px solid black;width:100%;heigth:10%; font-size:12px;color:white"> <strong>NON - PENSIONABLE RECORD  </strong> </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+<table align ="center" style="border:0px solid black;width:100%">
+ <form action="" method="post" name ="main">
+<tr>
+        <td align ="left" style="width:30%">
+Category :
+        </td>
+<td align ="left" style="width:30%">{{ form.category}}
+</td>
+<td align ="left" style="width:30%">{{ form.category.errors}}
+</td>
+
+</tr>
+<tr>
+        <td align ="left" style="width:30%">
+Staff Name :
+        </td>
+<td align ="left" style="width:30%">{{ form.staffname}}
+</td>
+<td align ="left" style="width:30%">{{ form.staffname.errors}}
+</td>
+</tr>
+<tr>
+        <td>
+Address :
+        </td>
+<td>{{ form.address}}
+</td>
+<td>{{ form.address.errors}}
+</td>
+<td>
+</td>
+</tr>
+<tr>
+        <td align ="left" style="width:30%">
+Phone No :
+        </td>
+<td align ="left" style="width:30%">{{ form.phoneno}}
+</td>
+<td align ="left" style="width:30%">{{ form.phoneno.errors}}
+</td>
+
+</tr>
+<tr>
+        <td>
+Next Of Kin :
+        </td>
+<td>{{ form.nextofkin}}
+</td>
+<td>{{ form.nextofkin.errors}}
+</td>
+<td>
+</td>
+</tr>
+
+<tr>
+        <td>
+Sex :
+        </td>
+<td>{{ form.sex}}
+</td>
+<td>{{ form.sex.errors}}
+</td>
+<td>
+</td>
+</tr>
+<tr>
+        <td>
+Year :
+        </td>
+<td>{{ form.session}}
+</td>
+<td>{{ form.session.errors}}
+</td>
+<td>
+</td>
+</tr>
+<tr>
+        <td align ="left" style="width:30%">
+
+
+                        </td>
+<td align ="left" style="width:30%">
+
+<input name="submit" type= "submit" value="Submit" >
+ </td>
+<td align ="left" style="width:30%">
+ </td>
+<td>
+</td>
+</tr>
+</form>
+<tr>
+<td colspan = 8>
+<input name="submitprint" type= "submit" value="Print Report" class = "submit" onclick = "openrecprint();">
+<div class="printable">
+
+<table align ="center" style="border:1px solid black;width:100%">
+ <tr>
+             <td align="center" valign="top" style = "width=auto; height=10px;background-color:white;font-size:9px;color:black"><strong>Category </strong></td>
+             <td align="center" valign="top" style = "width=auto; height=10px;background-color:white;font-size:9px;color:black"><strong>Staff Name</strong></td>
+              <td align="center" valign="top" style = "width=auto; height=10px;background-color:white;font-size:9px;color:black"><strong> Address</strong></td>
+              <td align="center" valign="top" style = "width=auto;height=10px;background-color:white;font-size:9px;color:black"><strong> Phone No</strong></td>
+               <td align="center" valign="top" style = "width=auto; height=10px;background-color:white;font-size:9px;color:black"><strong> Next Of Kin</strong></td>
+              <td align="center" valign="top" style = "width=auto ;height=10px;background-color:white;font-size:9px;color:black"><strong> Sex</strong></td>
+             <td align="center" valign="top" style = "width=auto ;height=10px;background-color:white;font-size:9px;color:black"><strong> Year</strong></td>
+               </tr>
+         {% for pincode in getdetails %}
+           <tr>
+              <td align="left" valign="top" style = "background-color:white;font-size:9px;width:auto;color:black"> {{ pincode.category|upper }}</td>
+              <td align="left" valign="top" style = "background-color:white;font-size:9px;width:auto;color:black"> <a href="/humanresources/hrm/editstaffnonpension/{{ pincode.id }}/" style ="color:blue"> {{ pincode.staffname|upper }} </a></td>
+
+              <td align="left" valign="top" style = "background-color:white;font-size:9px;width:auto;color:black"> {{ pincode.address}}</td>
+              <td align="left" valign="top" style = "background-color:white;font-size:9px;width:auto;color:black"> {{ pincode.phoneno}}</td>
+
+              <td align="left" valign="top" style = "background-color:white;font-size:9px;width:auto;color:black"> {{ pincode.nextofkin}}</td>
+              <td align="left" valign="top" style = "background-color:white;font-size:9px;width:auto;color:black"> {{ pincode.sex}}</td>
+               <td align="left" valign="top" style = "background-color:white;font-size:9px;width:auto;color:black"> {{ pincode.session}}</td>
+           {% endfor %}
+            </tr>
+</table>
+</div>
+</td>
+</tr>
+
+</table>
+</div>
+</div>
+<!-- parti-->
+
+<script>
+$(document).ready(function() {
+        // $("#id_transdate").datepicker();
+         //alert("welcome");
+         $("#id_staffname").focus();
+         //$(".box").hide();
+});
+</script>
+
+<script language="javascript" type="text/javascript">
+function openrecprint()
+{
+  //alert("welcome");
+   $( ".printable" ).print();
+}
+</script>
+ {%endblock%}

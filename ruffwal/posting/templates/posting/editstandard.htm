@@ -1,0 +1,380 @@
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <style type="text/css">
+        .error { color: red; }
+        .error1 { color: red; }
+        .error2 { color: red; }
+        .error3 { color: red; }
+        .error4 { color: red; }
+        .error5 { color: red; }
+    </style>
+</head>
+<body>
+{% load humanize %}
+<div align ="center" style="background-color:white;width:100%;font-size:12px;color:red;font-style:italic;"> <strong>Press ESC to close  </strong> </div>
+<div align ="center" style="background-color:gray;width:100%;font-size:12px;color:white"> <strong>EDIT STANDARD JOURNAL  </strong> </div>
+<div align="center" style="color:red;font-family:courier;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+    <form action="/SchApp/account/posting/editstandard/{{ getdetails.id }}/" method="post" name ="main" onsubmit="disable(this)">
+    <table align ="left" style="border:0px solid black;width:100%;">
+        <tr>
+            <td>
+                DR Name :
+            </td>
+            <td>
+                <input type ="text" id="acccode" size="35" name="acccode" value ="{{getdetails.accname}}"  style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+            </td>
+        </tr>
+<tr>
+        <td>
+DR Code:
+        </td>
+<td><input type ="text" id="accname" size="25" name="accname" value ="{{getdetails.acccode}}" readonly="readonly" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+&nbsp;<span class="error"> Account Code is required</span>
+    </td>
+</tr>
+
+<tr>
+<td>
+Particulars :
+</td>
+<td>
+<input type ="text" id="subname" size="35" name="subname" value ="{{getdetails.particular}}" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+    &nbsp;<span class="error1"> Particular is required</span>
+</td>
+</tr>
+<tr>
+<td>
+Amount :
+</td>
+<td>
+<input type ="text" id="grpname" size="25" name="grpname" value ="{{getdetails.amount}}" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+    &nbsp;<span class="error2"> Invalid Amount is required</span>
+</td>
+</tr>
+<tr>
+<td>
+Reference No :
+</td>
+<td>
+<input type ="text" id="customer" size="25" name="customer" value ="{{getdetails.refno}}" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+    &nbsp;<span class="error3"> Invoice No is required</span>
+</td>
+</tr>
+        <tr>
+            <td>
+                CR Name :
+            </td>
+            <td>
+                <input type ="text" id="cusname" size="35" name="cusname" value ="{{getdetails.craccname}}"  style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+            </td>
+        </tr>
+<tr>
+<td>
+CR Code :
+</td>
+<td>
+<input type ="text" id="cuscode" size="25" name="cuscode" value ="{{getdetails.cracccode}}" readonly="readonly" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+    &nbsp;<span class="error4"> Account No is required</span>
+</td>
+</tr>
+<tr>
+<td>
+Duration in Month:
+</td>
+<td>
+    <input type ="text" id="duration" size="8" name="duration" value ="{{getdetails.duration}}"  style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+    &nbsp;<span class="error5"> Invalid Duration</span>
+</td>
+</tr>
+<tr>
+<td>
+
+<a  href ="/SchApp/account/posting/deletestandard/{{getdetails.id}}" style ="color:Black;;font-size:9px"> <img style = "width:25px;height:25px" src ="/static/imgs/editdelete.png" >  </a>Delete Journal </td>
+<td>
+<input name="submit" type= "submit" value="  Update Journal  ">
+ </td>
+
+ </tr>
+<tr>
+<td colspan="2">
+<input type="hidden" name="hcode"
+value="{{getdetails.id}}">
+          </td>
+</tr>
+ </table></form>
+<!-- parti-->
+
+<script>
+     $(document).ready(function() {
+        $("#id_acccode").focus();
+         autocomplete();
+         autocompleteinv();
+     });
+</script>
+<script type="text/javascript" language="javascript">
+        function autocomplete(){
+            $("#acccode").autocomplete({
+                //minLength: 0
+                source: "/SchApp/account/posting/getaccbankall/",
+                focus: function(event, ui){
+                    $( "#acccode" ).val( ui.item.accname );
+                    //$( "#id_staffname" ).val( ui.item.label.name );
+                    // populateForm(ui.item.value);
+                    return false;
+                },
+                select: function( event, ui ) {
+                    $( "#accname" ).val( ui.item.acccode );
+                    $( "#acccode" ).val( ui.item.accname );
+                    // $( "#id_cusbal" ).val( ui.item.accbal );
+                    return false;
+                }
+            })
+
+
+        }
+
+</script>
+
+<script type="text/javascript" language="javascript">
+    function autocompleteinv(){
+        $("#cusname").autocomplete({
+            source: "/SchApp/account/posting/getaccbankall/",
+            focus: function(event, ui){
+                $( "#cusname" ).val( ui.item.accname );
+                //$( "#id_staffname" ).val( ui.item.label.name );
+                // populateForm(ui.item.value);
+                return false;
+            },
+            select: function( event, ui ) {
+                $( "#cuscode" ).val( ui.item.acccode );
+                $( "#cusname" ).val( ui.item.accname );
+                // $( "#id_cusbal" ).val( ui.item.accbal );
+                return false;
+            }
+
+        })
+                .data( "autocomplete" )._renderItem = function( ul, item ) {
+            return $( "<li></li>" )
+                    .data( "item.autocomplete", item )
+                    .append( "<a>" + item.label + "</a>" )
+                    .appendTo( ul );
+        };
+
+    }
+
+</script>
+<script type="text/javascript" >
+    $(document).ready(function() {
+        $("#acccode").keyup(function () {
+            $( "#accname" ).val("");
+        });
+        $("#cusname").keyup(function () {
+            $( "#cuscode" ).val("");
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#accname").focus();
+        $('.error').hide();
+        $('.submit').click(function(event){
+            var data=$("#accname").val();
+            var len=data.length;
+            if (len <= 0){
+                $('.error').show();
+                $("#accname").focus();
+                //$('.error').show();
+                event.preventDefault();
+            }
+            else
+            {
+                $('.error').hide();
+            }
+        });
+    });
+</script>
+<script type="text/javascript" >
+    $(document).ready(function() {
+        $("#acccode").keyup(function () {
+            $('.error').hide();
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        //$("#acccode").focus();
+        $('.error1').hide();
+        $('.submit').click(function(event){
+            var data=$("#subname").val();
+            var len=data.length;
+            if (len <= 0){
+                $('.error1').show();
+                $("#subname").focus();
+                //$('.error').show();
+                event.preventDefault();
+            }
+            else
+            {
+                $('.error1').hide();
+            }
+        });
+    });
+</script>
+<script type="text/javascript" >
+    $(document).ready(function() {
+        $("#subname").keyup(function () {
+            $('.error1').hide();
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#grpname").focus();
+        $('.error2').hide();
+        $('.submit').click(function(event){
+            var data=$("#grpname").val();
+            var len=data.length;
+            if (len <= 0){
+                $('.error2').show();
+                $("#grpname").focus();
+                //$('.error').show();
+                event.preventDefault();
+            }
+            else
+            {
+                $('.error2').hide();
+            }
+
+            //*********************************************************
+            if (jQuery.isNumeric(data) == true){
+
+            }
+            else
+            {
+                alert('A valid Amount is required');
+                $("#grpname").focus();
+                event.preventDefault();
+            }
+            //**********************************************************
+        });
+    });
+</script>
+<script type="text/javascript" >
+    $(document).ready(function() {
+        $("#grpname").keyup(function () {
+            $('.error2').hide();
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#customer").focus();
+        $('.error3').hide();
+        $('.submit').click(function(event){
+            var data=$("#customer").val();
+            var len=data.length;
+            if (len <= 0){
+                $('.error3').show();
+                $("#customer").focus();
+                //$('.error').show();
+                event.preventDefault();
+            }
+            else
+            {
+                $('.error3').hide();
+            }
+        });
+    });
+</script>
+<script type="text/javascript" >
+    $(document).ready(function() {
+        $("#customer").keyup(function () {
+            $('.error3').hide();
+        });
+    });
+</script>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#cuscode").focus();
+        $('.error4').hide();
+        $('.submit').click(function(event){
+            var data=$("#cuscode").val();
+            var len=data.length;
+            if (len <= 0){
+                $('.error4').show();
+                $("#cuscode").focus();
+                //$('.error').show();
+                event.preventDefault();
+            }
+            else
+            {
+                $('.error4').hide();
+            }
+        });
+    });
+</script>
+<script type="text/javascript" >
+    $(document).ready(function() {
+        $("#cusname").keyup(function () {
+            $('.error4').hide();
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#duration").focus();
+        $('.error5').hide();
+        $('.submit').click(function(event){
+            var data=$("#duration").val();
+            var len=data.length;
+            if (len <= 0){
+                $('.error5').show();
+                $("#duration").focus();
+                //$('.error').show();
+                event.preventDefault();
+            }
+            else
+            {
+                $('.error5').hide();
+            }
+
+            //*********************************************************
+            if (jQuery.isNumeric(data) == true){
+
+            }
+            else
+            {
+                alert('A valid duration is required');
+                $("#duration").focus();
+                event.preventDefault();
+            }
+            //**********************************************************
+        });
+    });
+</script>
+<script type="text/javascript" >
+    $(document).ready(function() {
+        $("#duration").keyup(function () {
+            $('.error5').hide();
+        });
+    });
+</script>
+<script language="javascript" type="text/javascript">
+    function disable(f)
+    {
+        var button = f.elements['submit'];
+        button.value = 'Processing';
+        button.disabled = 'true';
+        return true;
+    }
+</script>
+
+</body>
+</html>

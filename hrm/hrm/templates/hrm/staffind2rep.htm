@@ -1,0 +1,300 @@
+{% extends "hrm/base.htm" %}
+{%block head %}
+{%block title %}Solutions{%endblock%}
+{%endblock %}
+{% load humanize %}
+{%block content%}
+<div class="pmiddle">
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="center" style="border:1px solid black;width:100%;height:10%;font-family: verdana;color:black">
+<div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%;height:5%; font-size:12px;color:black">Staff Individual Report </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+<table align ="left" style="border:0px solid black;width:80%">
+<tr>
+<td colspan ="30">
+     <input name="submitprint" type= "submit" value="Print Report" onclick = "openrecprint();">
+    <div class="printable" align="left">
+   <table align ="left" style="border:0px solid black;width:100%;background-color:white">
+   <tr>
+         <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:9px"><strong> </strong></td>
+              <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:9px"><strong></strong></td>
+             <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px" colspan = "3"><img align ="center" style = "left:50%;float:left;padding:5px;border:0px;width:55px;height:55px" src ="/static/{{comp.picture}}" > {{comp.name}}<br>{{comp.address}}</td>
+   </tr>
+  <tr>
+    <td colspan ="15" align ="center">STAFF DATA REPORT</td>
+  </tr>
+   <tr><td colspan ="15" align ="left"><hr></td> </tr>
+  <tr>
+    <td colspan = "15">
+
+             <table align ="left" style="border:0px solid black;width:100%;background-color:white" >
+             <tr>
+              <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong> STAFF ID:</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong> {{ getdetails.staffid}}</strong></td>
+         <td align="left" valign="top" rowspan="20"><strong><img align ="center" style = "padding:5px;width:200px;height:200px" src ="/static/{{getdetails.picture}}" ></strong></td>
+         </tr>
+              <tr>
+              <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>STAFF NAME :</strong></td>
+              <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.name|title}}</strong></td>
+         </tr>
+         <!--
+           <tr>
+           <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>SEX :</strong></td>
+           <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.sex|title}}</strong></td>
+         </tr>-->
+         <tr>
+              <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>ADDRESS :</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.address|title}}</strong></td>
+         </tr>
+         <tr>
+              <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>PHONE NO :</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.phoneno|title}}</strong></td>
+         </tr>
+         <tr>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>DATE OF BIRTH :</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.dateofbirth|date:"d-m-Y"}}</strong></td>
+
+         </tr>
+         <tr>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>SEX :</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.sex|title}}</strong></td>
+         </tr>
+        <tr>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>MARITAL STATUS :</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.maritalstatus|title}}</strong></td>
+         </tr>
+         <tr>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>NATIONALITY :</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.nationality|title}}</strong></td>
+         </tr>
+        <tr>
+            <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>STATE OF ORIGIN :</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.stateoforigin|title}}</strong></td>
+        </tr>
+        <tr>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>LOCAL GOVT. AREA</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.localgovt|title}}</strong></td>
+        </tr>
+        <tr>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>E-MAIL :</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.email|title}}</strong></td>
+        </tr>
+        <tr>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>NEXT OF KIN :</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.nextofkin|title}}</strong></td>
+        </tr>
+        <tr>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>NEXT OF KIN ADDRESS :</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.nextofkinaddress|title}} </strong></td>
+        </tr>
+               <tr>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>NEXT OF KIN PHONE :</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.nextofkinphone|title}} </strong></td>
+        </tr>
+        <tr>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>DEPARTMENT :</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.department|title}} </strong></td>
+        </tr>
+        <tr>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>DESIGNATION :</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.designation|title}} </strong></td>
+        </tr>
+                 <tr>
+                     <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>LEVEL/STEP :</strong></td>
+                     <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.level}},{{ getdetails.step }} </strong></td>
+                 </tr>
+        <tr>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>QUALIFICATION :</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.qualification}} </strong></td>
+        </tr>
+        <tr>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>BRANCH/LOCATION :</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.branch|title}} </strong></td>
+        </tr>
+        <tr>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>RESIDING STATE :</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.profession|title}} </strong></td>
+        </tr>
+        <tr>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>DATE OF RESUMPTION :</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.dateofresum|date:"d-m-Y"}} </strong></td>
+        </tr>
+        <tr>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>FIRST GUARANTOR :</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.firstguarantor|title}} </strong></td>
+        </tr>
+
+        <tr>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>FIRST GUARANTOR ADDRESS :</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.firstguarantoraddress|title}} </strong></td>
+        </tr>
+
+        <tr>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>SECOND GUARANTOR :</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.secondguarantor|title}} </strong></td>
+        </tr>
+        <tr>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>SECOND GUARANTOR ADDRESS:</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.secondguarantoraddress|title}} </strong></td>
+        </tr>
+        <tr>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:10px"><strong>CURRENT STATUS:</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:12px"><strong>{{ getdetails.status|title}} </strong></td>
+        </tr>
+      </table>
+    </td>
+ </tr>
+
+  <tr align="left">
+      <td colspan = "25" align="left" >
+      <table align ="left" style="width:100%;background-color:white;text-align:left;border-collapse:collapse;">
+      <tr>
+          <td colspan="4" style = "font-size:10px;width:auto;color:black;font-weight:bold;border:1px solid black;"> BRANCH DEPLOYMENT </td>
+
+      </tr>
+
+      <tr align="left">
+          <td align="left" valign="top" style = "width:auto;background-color:white;font-size:8px;border:1px solid black;">S/N</td>
+             <td align="left" valign="top" style = "width:auto; background-color:white;font-size:8px;border:1px solid black;">OLD BRANCH</td>
+              <td align="left" valign="top" style = "width:auto; background-color:white;font-size:8px;border:1px solid black;">NEW BRANCH</td>
+               <td align="left" valign="top" style = "width:auto;background-color:white;font-size:8px;border:1px solid black;">DATE</td>
+      </tr>
+           {% for p in locared %}
+           <tr>
+               <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ forloop.counter}}</td>
+               <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ p.currentlocation}}</td>
+              <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ p.newlocation}}</td>
+              <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ p.recdate|date:"d-m-Y"}}</td>
+
+             {% endfor %}
+            </tr>
+</table>
+</td></tr>
+<tr> <td colspan = "15">
+ <table align ="left" style="width:100%;background-color:white;border-collapse:collapse;">
+<tr><td colspan="25" style = "font-size:10px;width:auto;color:black;font-weight:bold;border:1px solid black;"> CAREER PROGRESSION </td></tr>
+<tr>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;">S/N</td>
+             <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;">OLD DESIGNATION</td>
+              <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;">NEW DESIGNATION</td>
+    <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;">OLD LEVEL/STEP</td>
+    <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;">NEW LEVEL/STEP</td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;">DATE</td>
+          </tr>
+ {% for k in prommo %}
+           <tr>
+               <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ forloop.counter}}</td>
+               <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;">{{ k.olddesignation}}</td>
+              <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ k.newdesignation}}</td>
+     <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ k.oldlevel}}</td>
+     <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ k.newlevel}}</td>
+                <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ k.recdate|date:"d-m-Y"}}</td>
+             {% endfor %}
+            </tr>
+</table>
+</td></tr>
+<tr>
+    <td colspan = "10">
+     <table align ="left" style="width:100%;background-color:white;border-collapse:collapse;">
+<tr><td colspan = "25" style = "font-size:10px;width:auto;color:black;font-weight:bold;border:1px solid black;"> SCHOOL ATTENDED </td></tr>
+<tr>
+             <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;">S/N</td>
+             <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;">NAME OF SCHOOL</td>
+              <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;">COURSE OF STUDIED</td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;"> CERTIFICATE OBTAINED</td>
+              <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;"> GRADE OBTAINED</td>
+             <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;"> YEAR OF GRADUATION</td>
+          </tr>
+ {% for s in educ %}
+           <tr>
+                 <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ forloop.counter}}</td>
+               <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ s.nameofsch}}</td>
+              <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ s.courseofstu}}</td>
+              <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ s.certificateob}}</td>
+              <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ s.gradeobtained}}</td>
+              <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ s.exityear}}</td>
+                           {% endfor %}
+            </tr>
+</table>
+</td></tr>
+<tr>
+    <td colspan = "10">
+     <table align ="left" style="width:100%;background-color:white;border-collapse:collapse;">
+<tr><td colspan = "25"  style = "font-size:10px;width:auto;color:black;font-weight:bold;border:1px solid black;"> MEMBER OF PROFESSIONAL BODY </td></tr>
+<tr>         <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;">S/N</td>
+             <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;">BODY NAME</td>
+              <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;">QUALIFICATION</td>
+             <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;">YEAR OF QUALIFICATION</td>
+          </tr>
+ {% for f in proff %}
+           <tr>
+              <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ forloop.counter}}</td>
+               <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ f.bodyname}}</td>
+              <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ f.qualification}}</td>
+              <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ f.exityear}}</td>
+                                     {% endfor %}
+            </tr>
+</table>
+</td></tr>
+   <tr>
+       <td colspan = "10">
+           <table align ="left" style="width:100%;background-color:white;border-collapse:collapse;">
+               <tr><td colspan = "25"  style = "font-size:10px;width:auto;color:black;font-weight:bold;border:1px solid black;"> TRAINING ATTENDED </td></tr>
+               <tr>         <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;">S/N</td>
+                   <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;">TRAINING TYPE</td>
+                   <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;">DESCRIPTION</td>
+                   <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;"> YEAR </td>
+               </tr>
+               {% for f in train %}
+                   <tr>
+                   <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ forloop.counter}}</td>
+                   <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ f.traintype}}</td>
+                   <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ f.description}}</td>
+                   <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ f.commdate|date:"Y"}}</td>
+               {% endfor %}
+               </tr>
+           </table>
+       </td></tr>
+
+   <tr>
+       <td colspan = "10">
+           <table align ="left" style="width:100%;background-color:white;border-collapse:collapse;">
+               <tr><td colspan = "25"  style = "font-size:10px;width:auto;color:black;font-weight:bold;border:1px solid black;"> QUERY RECEIVED </td></tr>
+               <tr>         <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;">S/N</td>
+                   <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;">QUERY TYPE</td>
+                   <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;">ISSUER</td>
+                   <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;"> REASON </td>
+                   <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;">ACTION TAKEN </td>
+                   <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px;border:1px solid black;"> DATE </td>
+               </tr>
+               {% for f in query %}
+                   <tr>
+                   <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ forloop.counter}}</td>
+                   <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ f.querytype}}</td>
+                   <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ f.querygiver}}</td>
+                   <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ f.reasonforquery}}</td>
+                   <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ f.actiontaken}}</td>
+                   <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;border:1px solid black;"> {{ f.querydate|date:"d-m-Y"}}</td>
+               {% endfor %}
+               </tr>
+           </table>
+       </td></tr>
+</table>
+
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+
+<script language="javascript" type="text/javascript">
+function openrecprint()
+{
+  //alert("welcome");
+   $( ".printable" ).print();
+
+
+}
+</script>
+{%endblock%}

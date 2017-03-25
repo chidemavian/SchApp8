@@ -1,0 +1,165 @@
+{% extends "setup/basesetup.htm" %}
+{%block content%}
+<div align ="center" style="background-color:;border:0px solid black;width:100%;height:4%; font-size:16px;color:black"> Sub Group Account Set UP</div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+ <table align ="left" style="border:0px solid black;width:100%">
+        <tr><td>
+            <form action="" method="post" name ="main" onsubmit="disable(this)">
+    <table align ="left" style="border:0px solid black;width:auto;" id = "table1">
+     <tr>
+        <td align ="left" style="width:auto;">
+            Group Name
+         </td>
+        <td align ="left" style="width:auto;">
+            {{form.frgroup}}
+        </td>
+<!--
+<td align ="left" style="width:20%">
+<a href="/entersetupdet/" style ="color:Blue">Details </a>
+                        </td>
+-->
+    </tr>
+<tr>
+        <td align ="left" style="width:auto;">
+            Name
+            </td>
+        <td align ="left" style="width:auto;">
+            {{form.subname}}
+
+                        </td>
+<td align ="left" style="width:auto;">
+
+
+
+                        </td>
+ </tr>
+<tr>
+        <td align ="left" style="width:auto;" colspan = 3>
+            {{form.subname.errors}}
+        </td>
+
+</tr>
+
+<tr>
+        <td align ="left" style="width:auto;">
+
+            </td>
+        <td align ="left" style="width:auto;">
+
+<input name="submit" type= "submit" value="   Create Sub Group  " >
+                        </td>
+<td align ="left" style="width:auto;">
+                        </td>
+
+    </table>
+    </form>
+        </td></tr>
+     <tr>
+         <td>
+             <table align ="left" style="border:0px solid black;width:100%">
+              <!--   <img src="/static/imgs/printer.jpeg" style="width:30px;height: 30px "  onclick="openrecprint();" >-->
+                 <input name="submit" type= "submit" value="Print Report  " onclick="openrecprint();">
+                 <tr>
+                     <td colspan ="30">
+                         <div class="printable">
+                             <table align ="center" style="border:0px solid black;width:100%;">
+
+                                 <tr>
+                                     <td>
+
+
+                                         <table align ="left" style="border-collapse:collapse;width:100%;background-color:white">
+                                             <tr>
+                                                 <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black"><strong> Group Name</strong></td>
+                                                 <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black"><strong>Sub Acc Name </strong></td>
+                                                 <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black"><strong> Sub Acc Code</strong></td>
+
+                                             </tr>
+
+                                             {% for pincode in getdetails %}
+                                                 <tr>
+
+                                                 <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.groupname|upper }}</strong></td>
+                                                 <!--<td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"><strong> <a href="/editsubacc/{{ pincode.subgroupcode }}/" style ="color:red" title="Edit {{ pincode.subgroupname|upper }} " onClick= "getdialogtry({{ pincode.subgroupcode  }});">{{ pincode.subgroupname|upper }}</a></strong></td>-->
+                                                 <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"><strong> {{ pincode.subgroupname|upper }}</strong></td>
+                                                 <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.subgroupcode|upper}}</strong></td>
+                                             {% endfor %}
+                                             </tr>
+                                         </table>
+                                     </td></tr>
+                             </table>
+
+                         </div>
+
+                     </td>
+                 </tr>
+             </table>
+         </td>
+     </tr>
+ </table>
+<div id="myDialog" title="Sub Account">
+</div>
+<script type="text/javascript" >
+        $(document).ready(function() {
+            $("#myDialog").hide();
+        });
+</script>
+<script type="text/javascript">
+document.getElementById('id_subname').focus()
+</script>
+<script language="javascript" type="text/javascript">
+        function openrecprint()
+        {
+            $( ".printable" ).print();
+        }
+</script>
+    <script type="text/javascript" language="javascript">
+        function getdialogtry(vid){
+            //alert(vid);
+            var state = vid;
+            var url = "/SchApp/account/getsubaccount/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialog").html(html);
+                    getdialog();
+                }
+            });
+            return false;
+        }
+
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialog(){
+            var dialogOpts = {
+                autoOpen:true,
+                modal:true,
+                position: ["center", "middle"],
+                height:220,
+                width:410,
+                title:'Edit Sub Account' ,
+                closeOnEscape:true,
+                show: true,
+                hide: true,
+                bgiframe: true
+            };
+            $("#myDialog").dialog(dialogOpts);
+        }
+
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+ {%endblock%}

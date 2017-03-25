@@ -1,0 +1,434 @@
+<!-- Created: 10/05/2011 by NANA -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional/EN">
+<html>
+<head>
+<title> SchApp 8.0 Enterprise School Softwares </title>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<link rel="shortcut icon" href="/static/favicon.png" />
+<link type="text/css" rel="Stylesheet" href="/static/JS/jquery-ui.css" />
+<script type="text/javascript" src='/static/JS/jquery-1.5.js'></script>
+<script type="text/javascript" src='/static/JS/jquery.validate.js'></script>
+<script type='text/javascript' src='/static/JS/csrf_tokenizer.js'></script>
+<script type='text/javascript' src='/static/JS/jquery.js'></script>
+<script type='text/javascript' src='/static/JS/jquery-ui.js'></script>
+<script type='text/javascript' src='/static/JS/jquery-1.7.1.min.js'></script>
+<script type='text/javascript' src='/static/JS/jquery-ui-1.8.18.custom.min.js'></script>
+<script type='text/javascript' src='/static/JS/myprint.js'></script>
+<script type='text/javascript' src='/static/JS/jquery-1.7.1.min.js'></script>
+<script type='text/javascript' src='/static/JS/jquery-ui-1.8.18.custom.min.js'></script>
+<link rel="stylesheet" type="text/css" href="/static/JS/highslide.css" />
+<link rel="stylesheet" type="text/css" href="/static/JS/css/style.css" />
+<link rel="stylesheet" type="text/css" href="/static/JS/css/hot-sneaks/jquery-ui-1.8.18.custom.css" />
+<script type='text/javascript' src='/static/JS/myprint.js'></script>
+
+<script language="javascript" type="text/javascript">
+    function disable(f)
+    {
+        var button = f.elements['submit'];
+        button.value = 'Processing';
+        button.disabled = 'true';
+        return true;
+    }
+</script>
+
+<script type=text/javascript>
+    $(document).ready(function() {
+        openrecasset();
+    });
+</script>
+<script language="javascript" type="text/javascript">
+    function openrecasset()
+    {
+        var data='userid='+'test';
+        $.ajax({
+            type:"POST",
+            url:"/header/",
+            data:data,
+            success:function(html) {
+                $(".boxnn").show();
+                $(".boxnn").html(html);
+            }
+        });
+        return false;
+    }
+</script>
+
+<style type="text/css">
+
+A:link {
+    color:BLACK;
+    text-decoration:none;
+}
+A:visited {
+    color:BLACK;
+    text-decoration:none;
+}
+A:hover {
+    background-color: #ffd8.0;
+    color: red;
+}
+.submit {
+    /*
+ background-color:black;
+ color: white;
+ border: 1px solid black;*/
+}
+
+.adv{
+    border: 0px solid black;
+    background-color:#000;
+    width:100%;
+    height:10%;
+    padding:0px;
+    position:absolute;
+    top:0%;
+    left:0%;
+}
+
+.adv1{
+    border: 1px solid #336666;
+    background-color: #336666;
+    width:100%;
+    height:3.8%;
+    position:absolute;
+    top:0%;
+    left:0%;
+    color:white;
+    font-size:14px;
+    font-family: courier;
+}
+.advin {
+
+    width:20%;
+    padding:0px;
+    position:absolute;
+    left:0%;
+    color:#f5deb3;
+}
+.advout{
+    width:48%;
+    padding:0px;
+    position:absolute;
+    left:51%;
+    color:#f5deb3;
+    font-size:13px;
+    font-weight: bold;
+    font-family:courier;
+}
+.admiddle{
+    width:20%;
+    padding:0px;
+    position:absolute;
+    left:41%;
+    color:#f5deb3;
+    font-size:14px;
+    font-weight: bold;
+    font-family:courier;
+}
+.pmiddle{
+    border: 2px solid #800000;
+    background-color:white;
+    width:80%;
+    min-height:30%;
+    padding:0px;
+    position:absolute;
+    top:4.5%;
+    left:17%;
+    margin:0px;
+    font-family:courier;
+    font-size:11px;
+}
+.topup{
+    background-color: #666666;
+    height:60px
+}
+
+.pleft{
+    border: 0px solid black;
+    background-color:#e5e5e5;
+    width:15%;
+    min-height:40%;
+    padding:0px;
+    position:absolute;
+    top:4.5%;
+    left:0%;
+}
+.foot1{
+    background:pink;
+    width:420px;
+    position:absolute;
+    top:35%;
+    left:35%;
+}
+.foot{
+    background:gray;
+    width:100%;
+    height:10%;
+    position:absolute;
+    top:90%;
+    left:0%;
+}
+.comm{
+    background-color:gray;
+    font-family:verdana;
+    width:100%;
+    color:black;
+    min-height:49px;
+}
+.subcomm{
+    margin-left:30px;
+    background-color:#006600;
+    font-family:verdana;
+    width:95%;
+    color:white;
+    min-height:49px;
+}
+.adv11{
+    border: 2px solid #000;
+    background-color:#800000;
+    width:100%;
+    height:10%;
+    position:relative;
+    top:0%;
+    left:0%;
+    color:white;
+    font-size:14px;
+    font-family: times;
+    font-weight:bold;
+    padding-top:1px;
+}
+
+.pmiddle1{
+    border: 2px solid #000;
+    background-color:white;
+    width:100%;
+    min-height:50%;
+    position:absolute;
+    top:10%;
+    left:0%;
+    margin:0px;
+    font-family:times;
+    font-size:12px;
+
+}
+
+body {
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    width:100%;
+    font-size: 12px;
+    font-family: times;
+    background-color:#E5E5E5;
+}
+
+ul.errorlist {
+    margin: 0;
+    padding: 0;
+}
+.errorlist li {
+    background-color: red;
+    color: white;
+    display: block;
+    font-size: 14px;
+    margin: 0 0 3px;
+    padding: 4px 5px;
+}
+.style2 {
+    font-size: x-large;
+    color: #FFFFFF;
+}
+.style3 {
+    font-size: large;
+    color: #CCCCCC;
+    font-family: Georgia, "Times New Roman", Times, serif;
+}
+.style4 {color: #006600}
+
+.listbox {
+
+    width: 100%;
+    height: auto;
+    background-color: #000;
+    border: 0px solid #000;
+    font-size:12px;
+
+
+
+}
+.nameslist {
+    margin: 0px;
+    padding: 0px;
+    list-style:none;
+}
+.listbox1 {
+
+    width: 100%;
+    height: auto;
+    /*  background-color: #000;
+   border: 0px solid #000;
+   font-size:12px; */
+
+
+
+}
+.nameslis1t {
+    margin: 0px;
+    padding: 0px;
+    list-style:none;
+}
+.hover {
+    background-color: cyan;
+    color: blue;
+}
+.box {
+    position: relative;
+    left: 0px;
+    margin: 0px;
+    width: 100%;
+    min-height: 50px;
+    border: 0px solid #000;
+    font-size:14px;
+    font-family:Verdana;
+    overflow :auto;
+}
+.boxnn {
+    border: 1px solid #336666;
+    overflow:auto;
+    width:200px;
+    height:400px;
+    font-size:12px;
+    float: right;
+    text-align:right;
+    font-family:Georgia;
+
+}
+.loginTxtbox
+{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: #000;
+    text-align: left;
+    border: #4772A9 1px solid;
+    height: 16px;
+}
+.loginTxtbox1
+{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: #000;
+    text-align: left;
+    border: #4772A9 1px solid;
+
+}
+.normal-textct {
+    font-family: Tahoma;
+    font-size: 11.5px;
+    line-height: 24px;
+    color: #000;
+}
+.printtable{
+    background-color:white;
+    font-family:verdana;
+    font-size:12px;
+    width:auto;
+    color:#000000;
+    border:1px solid black;
+}
+.list_item_container{
+    width:auto;
+    font-style:italic;
+    font-size:10px;
+    height:52px;
+    font-weight:bold;
+}
+.image{
+    float:left;
+
+}
+</style>
+
+
+
+</head>
+<body style="width:99.7%;height:100%;position:absolute" >
+<div class="adv11">
+    <table align ="left" style="border:0px solid #f5deb3;width:auto;position:relative;" cellspacing="1" cellpadding="1" >
+        <tr>
+            <td colspan="15" style="color:white;font-size:18px;font:times;font-weight:bold;font-style:italic;font:Roman">
+                SchApp 8.0 - Asset Management
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table style="width:100%;background-color:#000;text-align:center;" align="center">
+
+                    <tr>
+                        <td style="width:auto;border:1px solid white;background-color:#000;color:#ffffff">
+                            <a href="/SchApp/account/assets/asset-department/" style="color:yellow;">
+                                Create Department
+                            </a>
+                        </td>
+
+                        <td style="width:auto;border:1px solid white;background-color:#000;color:#ffffff">
+                            <a href="/SchApp/account/assets/asset-creation/" style="color:yellow;">
+                               Assets Registration
+                            </a>
+                        </td>
+                        <td style="width:auto;border:1px solid white;background-color:#000;color:#ffffff">
+                            <a href="/SchApp/account/assets/asset-list/" style="color:yellow;">
+                                Assets List
+                            </a>
+                        </td>
+                        <td style="width:auto;border:1px solid white;background-color:#000;color:#ffffff">
+                            <a href="/SchApp/account/assets/asset-schedule/" style="color:yellow;">
+                               Assets Schedule
+                            </a>
+                        </td>
+                        <td style="width:auto;border:1px solid white;background-color:#000;color:#ffffff">
+                            <a href="/SchApp/account/assets/asset-summary/" style="color:yellow;">
+                                Assets Summary
+                            </a>
+                        </td>
+                        <td style="width:auto;border:1px solid white;background-color:#000;color:#ffffff">
+                            <a href="/SchApp/account/assets/asset-residual-value/" style="color:yellow;">
+                                Set Residual Value
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+    </table>
+</div>
+<div class="pmiddle1">
+    <table style="width:100%">
+        <tr>
+            <td style="float:left;vertical-align:top;max-width:78%;border: 1px solid #000;" valign="top">
+                {%block content%}
+                {%endblock%}
+            </td>
+            <td style="float:right;vertical-align:top;text-align:right;" valign="top">
+
+                <div class="boxnn">
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="width:100%;text-align:center;background-color:#800000;color:#ffffff;height:50px;font-weight:bold;font-size:15px;">
+               ADYSYS Technologies (07031009036,08035076979)
+
+            </td>
+        </tr>
+
+
+    </table>
+
+
+</div>
+</body>
+</html>
+
+

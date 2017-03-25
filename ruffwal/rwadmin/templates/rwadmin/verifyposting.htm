@@ -1,0 +1,121 @@
+{% extends "rwadmin/base.htm" %}
+{% load humanize %}
+{%block content%}
+<div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%;height:15px;font-size:14px;color:white;padding-top:10px;"> <strong>VERIFY TRANSACTION  </strong> </div>
+<div align="center" style="color:red;font-family:courier;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+<table align ="center" style="width:100%;">
+    <tr>
+        <td colspan = 8>
+            {% if getdetails %}
+                <input name="submitprint" type= "submit" value="Print Transaction" onclick = "openrecprint();">
+                <div class="printable">
+                    <table align ="left" style="width:100%;background-color:white;border-collapse:collapse;">
+                        <tr>
+
+                            <td style=" text-align: right;vertical-align:top;" rowspan="3">
+                                <img style="width: 80px; height: 80px;" src="/static/{{ school.picture }}" alt="{{ school.name }}">
+                            </td>
+                            <td style=" text-align: left; vertical-align:top;">
+                                <span style="font-size:20px;color: #8b0000;font-weight:bold;">{{ school.name }}</span><br>
+                                {{ school.address }} <br>
+
+                                <!--{{ school.phone }}-->
+                            </td>
+
+                        </tr>
+                        <tr>
+
+                            <td style="text-align:left;font-size:18px;color:#000;font-weight:bold;background-color:#FFF;height:25px;" colspan="7">
+
+
+                            </td>
+                        </tr>
+
+                        <tr>
+
+                            <td style="text-align:left;font-size:12px;color:#000;font-weight:bold;background-color:#FFF;" colspan="7">
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td style="text-align:center;font-size:18px;color:#000;font-weight:bold;background-color:#FFF;height:25px;" colspan="7">
+                                POSTINGS REPORT
+
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td style="text-align:left;font-size:12px;color:#000;font-weight:bold;background-color:#FFF;" colspan="7">
+                                TOTAL DEBIT : &nbsp; {{ tdebit }}
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td style="text-align:left;font-size:12px;color:#000;font-weight:bold;background-color:#FFF;" colspan="7">
+                                TOTAL CREDIT : &nbsp; {{ tcredit }}
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td style="text-align:left;font-size:12px;color:#000;font-weight:bold;background-color:#FFF;" colspan="7">
+                                USER ID : &nbsp; {{ userid }}
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td style="text-align:left;font-size:12px;color:#000;font-weight:bold;background-color:#FFF;" colspan="7">
+                                TRANS ID : &nbsp; {{ transid }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="7">
+                                <table align ="left" style="width:100%;background-color:white;border-collapse:collapse;">
+                                    <tr>
+                                        <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong>Acc Code </strong></td>
+                                        <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong>Acc Name</strong></td>
+                                        <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Particular</strong></td>
+                                        <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Ref. No</strong></td>
+                                        <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Trans. Date</strong></td>
+                                        <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> DR</strong></td>
+                                        <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> CR</strong></td>
+                                        <!--<td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Posted By</strong></td>-->
+                                    </tr>
+                                    {% for pincode in getdetails %}
+                                        <tr>
+                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"><strong> {{ pincode.acccode|upper }}</strong></td>
+                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.accname|upper }}</strong></td>
+                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.particulars}}</strong></td>
+                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.refno}}</strong></td>
+                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.transdate|date:"d-m-Y"}}</strong></td>
+                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.debit|intcomma}}</strong></td>
+                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.credit|intcomma}}</strong></td>
+                                        <!--<td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.userid}}</strong></td>-->
+                                    {% endfor %}
+                                    </tr>
+                                </table>
+
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+            {% endif %}
+        </td>
+    </tr>
+</table >
+<script>
+$(document).ready(function() {
+              $("#id_transid").focus();
+});
+</script>
+    <script language="javascript" type="text/javascript">
+        function openrecprint()
+        {
+            //alert("welcome");
+            $( ".printable" ).print();
+        }
+    </script>
+
+
+{%endblock%}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <div style="background-color:#000;font-size: 16px;width:100%;color:#ffffff;height:25px;text-align:left"><span style="font-weight:bold;color:yellow;padding:5px;">SchApp Forum</span> <a href="/forum/editprofile/" style="color:#ffffff;float:right;font-size:12px;padding:5px;">Change Your Profile </a><a href="/forum/main/" style="color:#ff4500;float:right;font-size:12px;padding:5px;"> Post Comment</a></div>
+    <div style="background-color:#ffffff;position:relative;padding: 10px" align="left">
+        <div style="font-size: 14px;color:red;text-decoration:blink;width:100%;height:10%" align="center">{{ varerr }}</div>
+        <form method="post" action="" enctype="multipart/form-data">
+            <table style="color:#000;" border="0" cellpadding="2" cellspacing="2"  align="left">
+                <tr>
+                    <td colspan="4">
+                        <h2>Edit Profile</h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <hr>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Email :</td>
+                    <td><input type="text" id="name" name="name" value="{{ userdetails.email }}" size="30" class="loginTxtbox"> </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Picture :</td>
+                    <td> <img src="/static/{{ userdetails.photo }}" alt="No Picture" style="width:60px;height:60px"></td>
+                    <td><input type="file" name="image" value="Upload Picture" id="image" size="7"></td>
+                </tr>
+
+                <tr>
+
+                    <td colspan="3" style="text-align:center;"> <input name="submit" type= "submit" value="Update Profile"></td>
+
+                </tr>
+            </table>
+        </form>
+
+    </div>
+
+
+{% endblock %}

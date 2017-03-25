@@ -1,0 +1,266 @@
+{% extends "query/base.htm" %}
+{%block content%}
+    <div class="pmiddle">
+        <!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+        <div align ="left" style="border:1px solid black;width:100%;height:10%;font-family: verdana;color:black">
+            <div align ="center" style="background-color:black;border:0px solid black;width:100%;height:10%; font-size:12px;color:white"> <strong>STAFF QUERY RECORD  </strong> </div>
+            <div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+            <table style="width:100%;">
+                <tr>
+                    <td colspan="10" style="width:100%;">
+                        <form action="" method="post" name ="main">
+                            <table align ="left" style="border:0px solid black;width:70%;text-align:left">
+                                <tr style="width:auto;">
+                                    <td >
+                                        {{ form.staffname.label}}
+                                    </td>
+                                    <td >{{ form.staffname}}
+                                    </td>
+                                    <td>{{ form.staffname.errors}}
+                                    </td>
+                                </tr>
+                                <tr style="width:auto;">
+                                    <td  >
+                                        {{ form.staffid.label}}
+                                    </td>
+                                    <td >{{ form.staffid}}
+                                    </td>
+                                    <td  >{{ form.staffid.errors}}
+                                    </td>
+                                   <!--
+                                    <td align ="left" valign = "Top" style="width:100%" rowspan = 20>
+
+                                        <div  class ="listbox" >
+                                            <div class="nameslist"></div>
+                                        </div>
+                                    </td>-->
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        {{ form.querytype.label}}
+                                    </td>
+                                    <td>{{ form.querytype}}
+                                    </td>
+                                    <td>{{ form.querytype.errors}}
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        {{ form.querydate.label }}
+                                    </td>
+                                    <td>{{ form.querydate}}&nbsp;{{ form.querydate.errors}}
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        {{ form.linemanager.label }}
+                                    </td>
+                                    <td>{{ form.linemanager}}&nbsp;{{ form.linemanager.errors}}
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        {{ form.reason.label }}
+                                    </td>
+                                    <td>{{ form.reason}}&nbsp;{{ form.reason.errors}}
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        {{ form.action.label }}
+                                    </td>
+                                    <td>{{ form.action}}&nbsp;{{ form.action.errors}}
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td align ="left" style="width:30%">
+                                    </td>
+                                    <td align ="left" style="width:30%">
+
+                                        <input name="submit" type= "submit" value="Submit" class = "submit">
+                                    </td>
+                                    <td align ="left" style="width:30%">
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </form>
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="20">
+                        <input name="submitprint" type= "submit" value="Print Report" class = "submit" onclick = "openrecprint();">
+
+                        <div class="printable">
+                        <div class = "box">
+
+                        </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- parti-->
+
+      <script>
+        $(document).ready(function() {
+            // $("#id_transdate").datepicker();
+            //alert("welcome");
+            $("#id_staffname").focus();
+            //$(".box").hide();
+            //openrec();
+            autocomplete();
+            autocomplete2();
+
+        });
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        function openrecprint()
+        {
+            //alert("welcome");
+            $( ".printable" ).print();
+
+
+        }
+    </script>
+
+    <script>
+        $(document).ready(function() {
+
+            $("#id_staffname").keyup(function () {
+                //alert()
+                $("#id_staffid").val('');
+            });
+
+        });
+
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            var pickerOpts = {
+                //appendText: "mm/dd/yy",
+                //defaultDate: "+5",
+                showOtherMonths: true,
+                changeMonth: true,
+                changeYear: true,
+                showButtonPanel: true
+                // showOn: "button"
+            };
+            $("#id_querydate").datepicker(pickerOpts);
+            //alert("welcome");
+            // $("#id_staffid").focus();
+            //$(".box").hide();
+           // getdeduction();
+        });
+    </script>
+
+ <script type="text/javascript" language="javascript">
+    function autocomplete(){
+
+       $("#id_staffname").autocomplete({
+       //minLength: 0
+       source: "/hrm/hrm/findstaffname/",
+       select: function( event, ui ) {
+               $( "#id_staffid" ).val( ui.item.staffid );
+               $( "#id_staffname" ).val( ui.item.name );
+              // $( "#project-description" ).html( ui.item.desc );
+               //$( "#project-icon" ).attr( "src", "images/" + ui.item.icon );
+              openrec();
+
+               return false;
+           }
+       })
+       .data( "autocomplete" )._renderItem = function( ul, item ) {
+            return $( "<li></li>" )
+                    .data( "item.autocomplete", item )
+                    .append( "<a>" + item.label + "</a>" )
+                    .appendTo( ul );
+        };
+
+    }
+
+ </script>
+
+    <script type="text/javascript" language="javascript">
+        function autocomplete2(){
+
+            $("#id_linemanager").autocomplete({
+                //minLength: 0
+                source: "/hrm/hrm/findstaffname/",
+                select: function( event, ui ) {
+                    $( "#id_linemanager" ).val( ui.item.staffid +'&&'+ ui.item.name );
+                   // $( "#id_staffname" ).val( ui.item.name );
+                    // $( "#project-description" ).html( ui.item.desc );
+                    //$( "#project-icon" ).attr( "src", "images/" + ui.item.icon );
+
+                    return false;
+                }
+            })
+                    .data( "autocomplete" )._renderItem = function( ul, item ) {
+                return $( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( "<a>" + item.label + "</a>" )
+                        .appendTo( ul );
+            };
+
+        }
+
+    </script>
+    <script language="javascript" type="text/javascript">
+    function openrec()
+    {
+        //alert("welcome");
+        var uid = $("#id_staffid").val();
+        var data='userid='+uid;
+
+        //alert(data);
+        $.ajax({
+            type:"POST",
+            url:"/hrm/query/staffajaxquery/",
+            data:data,
+            success:function(html) {
+                $(".box").show();
+                $(".box").html(html);
+
+
+            }
+
+        });
+        // alert("error");
+        return false;
+
+    }
+</script>
+
+
+
+ {%endblock%}

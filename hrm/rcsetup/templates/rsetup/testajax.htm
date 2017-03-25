@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional/EN">
+<html>
+<head>
+    <title>  </title>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+
+</head>
+<body >
+
+
+{% load humanize %}
+
+
+    <table align ="center" style="width:100%;color:black;border-collapse:collapse;">
+        <tr>
+            <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"> S/N</td>
+            <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"> Description</td>
+            <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black "> Amount</td>
+
+            <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black">Level/Step</td>
+
+        </tr>
+
+        {% for pincode in gdata %}
+
+            <tr>
+           <!-- <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="/editall/{{ pincode.id }}/" style ="color:red"> {{ pincode.paydes|upper }} </a></strong></td>-->
+            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ forloop.counter }}</td>
+            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"><a href="#" style ="color:red" onclick="admno({{ pincode.id }});" title="Edit This Allowance"> {{ pincode.paydes|upper }} </a></td>
+            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.amount|intcomma}}</td>
+            <td align="left" valign="top" style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black"> {{ pincode.desc|upper }}</td>
+
+
+
+        {% endfor %}
+        </tr>
+    </table>
+<div id="myDialog" >
+</div>
+<script type="text/javascript" >
+    $(document).ready(function() {
+        $("#myDialog").hide();
+    });
+</script>
+<script type="text/javascript" language="javascript">
+    function admno(vid){
+        //alert(vid);
+        var state = vid;
+        var url = "/hrm/getallowance/";
+        var i = 0;
+        var data='userid='+state;
+        $.ajax({
+            type:"POST",
+            url:url,
+            data:data,
+            success:function(html) {
+                //$("#myDialog").show();
+                $("#myDialog").html(html);
+                getdialog();
+            }
+        });
+        return false;
+    }
+
+</script>
+<script type="text/javascript" language="javascript">
+    function getdialog(){
+        var dialogOpts = {
+            autoOpen:true,
+            modal:true,
+            position: ["center", "middle"],
+            height:"auto",
+            width:490,
+            title:'Edit Allowance',
+            closeOnEscape:true,
+            show: true,
+            hide: true,
+            bgiframe: true
+        };
+        $("#myDialog").dialog(dialogOpts);
+    }
+
+</script>
+
+
+</body>
+</html>

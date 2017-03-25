@@ -1,0 +1,32 @@
+{% extends "newyear/baseposting.htm" %}
+{% load humanize %}
+{%block content%}
+<div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%;height:25px; font-size:14px;color:white;padding-top:5px;"> <strong>TEMPORARY POSTING ENTRIES </strong> </div>
+<div align="center" style="color:red;font-family:verdana;font-size:15px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+{% if getdetails %}
+    <table align ="left" style="width:100%;background-color:white;border-collapse:collapse;">
+ <tr>
+             <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong>Acc Code </strong></td>
+             <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong>Acc Name</strong></td>
+              <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Particular</strong></td>
+              <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Trans. Date</strong></td>
+               <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> DR</strong></td>
+              <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> CR</strong></td>
+     <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Trans Id</strong></td>
+              <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Posted By</strong></td>
+               </tr>
+         {% for pincode in getdetails %}
+           <tr>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"><strong> {{ pincode.acccode|upper }}</strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.accname|upper }}</strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.particulars}}</strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.transdate|date:"d-m-Y"}}</strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.debit|intcomma}}</strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.credit|intcomma}}</strong></td>
+             <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.transid}}</strong></td>
+             <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.userid}}</strong></td>
+           {% endfor %}
+            </tr>
+</table>
+    {% endif %}
+{%endblock%}

@@ -1,0 +1,207 @@
+{% extends "recon/base.htm" %}
+{% load humanize %}
+{%block content%}
+<div align ="center" style="background-color:#ccccc0;width:100%;height:4%; font-size:17px;color:black">Unpresented Cheque </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+<table align ="center" style="width:100%">
+<tr>
+    <td colspan="7">
+<form action="" method="post" name ="main" id = "form1" onsubmit="disable(this)">
+<table align ="left" style="border:1px;color:#000000;background-color:white;width:100%">
+    <tr>
+        <td>
+            Account Name :
+        </td>
+        <td>{{ form.accname}}
+        </td>
+        <td colspan = 2>{{ form.accname.errors}}
+        </td>
+    </tr>
+
+<tr>
+        <td>
+Account Code :
+        </td>
+<td>{{ form.acccode}}
+</td>
+<td colspan = 2>{{ form.acccode.errors}}
+</td>
+</tr>
+
+<tr>
+        <td>
+Account Balance :
+        </td>
+<td>{{ form.accbal}}
+</td>
+<td colspan = 2>{{ form.accbal.errors}}
+</td>
+</tr>
+
+<tr>
+        <td>
+Transaction Date :
+        </td>
+<td>{{ form.transdate}}
+</td>
+<td colspan = 2>{{ form.transdate.errors}}
+</td>
+</tr>
+<tr>
+        <td>
+Reference No :
+        </td>
+<td>{{ form.refno}}
+</td>
+<td colspan = 2>{{ form.refno.errors}}
+</td>
+</tr>
+<tr>
+        <td>
+Particulars :
+        </td>
+<td>{{ form.particulars}}
+</td>
+<td colspan = 2>{{ form.particulars.errors}}
+</td>
+</tr>
+
+<tr>
+        <td>
+Amount :
+        </td>
+<td>{{ form.transamount}}
+</td>
+<td colspan = 2>{{ form.transamount.errors}}
+</td>
+</tr>
+<tr >
+<tr>
+<td colspan="3" style="text-align:center;">
+
+<input name="submit" type= "submit" value="Submit">
+ </td>
+</tr>
+</table>
+</form>
+    </td>
+</tr>
+<tr>
+<td colspan = "7">
+<div class = "box">
+
+</div>
+</td>
+</tr>
+</table >
+<script language="javascript" type="text/javascript">
+function openrec()
+{
+   //alert("welcome");
+   var uid = $("#id_acccode").val();
+   var data='userid='+uid;
+
+ //  alert(data);
+   $.ajax({
+    type:"POST",
+    url:"/SchApp/account/recon/ajaxall/",
+    data:data,
+    success:function(html) {
+         $(".box").show();
+         $(".box").html(html);
+
+    }
+
+ });
+  // alert("error");
+   return false;
+
+}
+</script>
+<script>
+$(document).ready(function() {
+    var pickerOpts = {
+        //appendText: "mm/dd/yy",
+        //defaultDate: "+5",
+        showOtherMonths: true,
+        changeMonth: true,
+        changeYear: true
+       // showButtonPanel: true
+    };
+         $("#id_transdate").datepicker(pickerOpts);
+         //alert("welcome");
+         $("#id_accname").focus();
+         $(".box").hide();
+         autocomplete();
+});
+</script>
+
+    <script type="text/javascript" language="javascript">
+        function autocomplete(){
+            $("#id_accname").autocomplete({
+                //minLength: 0
+                source: "/SchApp/account/recon/ajax/",
+
+                select: function( event, ui ) {
+                    $( "#id_acccode" ).val( ui.item.acccode );
+                    $( "#id_accname" ).val( ui.item.accname );
+                    $( "#id_accbal" ).val( ui.item.accbal );
+                    //alert('welcome');
+                    var uid = ui.item.acccode;
+                    var data='userid='+uid;
+                    $.ajax({
+                        type:"POST",
+                        url:"/SchApp/account/recon/ajaxall/",
+                        data:data,
+                        success:function(html) {
+                            $(".box").show();
+                            $(".box").html(html);
+                        }
+                    });
+                    return false;
+                }
+            })
+                    .data( "autocomplete" )._renderItem = function( ul, item ) {
+                return $( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( "<a>" + item.label + "</a>" )
+                        .appendTo( ul );
+            };
+        }
+
+    </script>
+
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#id_accname").keyup(function () {
+                $( "#id_accbal" ).val("");
+                $( "#id_acccode" ).val("");
+            });
+        });
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+<script language="javascript" type="text/javascript">
+    function openrec()
+    {
+        var data='userid='+'test';
+        $.ajax({
+            type:"POST",
+            url:"/header/",
+            data:data,
+            success:function(html) {
+                $(".boxnn").show();
+                $(".boxnn").html(html);
+            }
+        });
+        return false;
+    }
+</script>
+{%endblock%}

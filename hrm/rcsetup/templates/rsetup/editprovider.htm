@@ -1,0 +1,65 @@
+{% extends "rsetup/basesetup.htm" %}
+
+{%block head %}
+    {%block title %}{%endblock%}
+{%endblock %}
+{%block content%}
+
+        <!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+        <div align ="left" style="border:1px solid black;width:50%;heigth:10%;font-family: verdana;color:black">
+            <div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%;heigth:19%; font-size:12px;color:black"> <strong>EDIT HMO  </strong> </div>
+            <div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+            <table align ="center" style="border:0px solid black;width:100%;">
+
+                <form action="" method="post" name ="main" onsubmit="disable(this)">
+                    <tr>
+                        <td>
+                            HMO Name :
+                        </td>
+                        <td><input type ="text" id="accname" size="35" name="accname" value ="{{getdetails.name}}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            HMO Address :
+                        </td>
+                        <td><input type ="text" id="subname" size="35" name="subname" value ="{{getdetails.address}}">
+                        </td>
+                    </tr>
+                    <tr>
+                    </tr>
+                    <tr>
+                        <td align ="left" style="width:30%">
+
+
+                        </td>
+                        <td align ="left" style="width:30%">
+                            <input name="hcode" type= "hidden" value="{{getdetails.name}}">
+                            <input name="submit" type= "submit" value="  Update HMO Provider  " >
+                        </td>
+                        <td align ="left" style="width:30%">
+                            <a  href ="/hrm/deletehmoprovider/{{getdetails.id}}" style ="color:Black;;font-size:9px"> <img style ="border:0px ;width:25px;heigth:25px" src ="/static/imgs/editdelete.png" >  </a>Delete </td>
+
+                    </tr>
+                </form>
+
+            </table>
+        </div>
+
+        <!-- parti-->
+        <script type="text/javascript">
+            document.getElementById('accname').focus()
+        </script>
+
+        <script language="javascript" type="text/javascript">
+            function disable(f)
+            {
+                var button = f.elements['submit'];
+                button.value = 'Processing ...';
+                button.disabled = 'true';
+                return true;
+            }
+        </script>
+
+
+{%endblock%}

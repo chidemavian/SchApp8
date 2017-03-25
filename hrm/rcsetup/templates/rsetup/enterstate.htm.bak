@@ -1,0 +1,274 @@
+{% extends "rsetup/basesetup.htm" %}
+{%block title %}{%endblock%}
+
+{%block content%}
+
+        <!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+        <div align ="left" style="border:0px solid black;width:100%;heigth:4%;font-family: verdana;color:black">
+            <div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%;height:4%; font-size:12px;color:black"> SET UP STATE AND CAPITAL </div>
+            <div align="center" style="color:red;font-family:verdana;font-size:15px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+            <table align ="left" style="border:0px solid black;width:100%;">
+                <tr><td valign="top">
+                    <form action="/humanresources/state/" method="post" name ="main" id="form1" onsubmit="disable(this)">
+                        <table align ="left" style="border:1px solid black;width:100%;">
+                            <thead> <tr><td colspan=12 align="center" style="border:0px solid black;width:100%;background-color:#ccccc0;color: black;">Set Up State</td></tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td align ="left" style="width:auto;">
+                                    Nationality
+                                </td>
+                                <td align ="left" style="width:auto;">
+                                    {{form.nationality}}
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align ="left" style="width:auto;">
+                                    State
+                                </td>
+                                <td align ="left" style="width:auto;">
+                                    {{form.state}}
+                                </td>
+                                <td align ="left" style="width:auto;">
+                                    {{form.state.errors}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align ="left" style="width:auto;">
+
+                                </td>
+                                <td align ="left" style="width:auto;">
+
+                                    <input name="submit" type= "submit" value="   Create STATE  ">
+                                </td>
+                                <td align ="left" style="width:auto;">
+
+                                </td>
+                            <tr>
+                                <td colspan="5">
+
+                            <table style="width:100%;color:black;border-collapse:collapse;">
+                            <tr>
+                                <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"> <strong> NATIONALITY </strong></td>
+                                <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"> <strong> STATE</strong></td>
+
+                            </tr>
+
+                            {% for pincode in getdetails %}
+                                <tr>
+                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.country}}</strong></td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="/deletestate/{{ pincode.id }}/" style ="color:red">{{ pincode.state}}</a></strong></td>
+
+                            {% endfor %}
+                            </tr>
+                            </table>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table> </form>
+                </td><td valign="top">
+
+                    <form action="/humanresources/localgovt/" method="post" name ="main2" id="form2" onsubmit="disable(this)">
+                        <table align ="left" style="border:1px solid black;width:100%;">
+                            <thead> <tr><td colspan=12 align="center" style="border:0px solid black;width:100%;background-color:#ccccc0;color: black;">Set Up L.G.A
+                            </td>
+                            <td></td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td align ="left" style="width:auto;">
+                                    Nationality
+                                </td>
+                                <td align ="left" style="width:auto;">
+                                    {{form2.nationalitylg}}
+
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td align ="left" style="width:auto;">
+                                    State Name
+                                </td>
+                                <td align ="left" style="width:auto;">
+                                    {{form2.statelg}}
+
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td align ="left" style="width:auto;">
+                                    Local Govt. Area
+                                </td>
+                                <td align ="left" style="width:auto;">
+                                    {{form2.localgovt}}
+
+                                </td>
+                                <td align ="left" style="width:auto;">
+                                    {{form2.localgovt.errors}}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td align ="left" style="width:auto;">
+
+                                </td>
+                                <td align ="left" style="width:auto;">
+
+                                    <input name="submit" type= "submit" value="   Create LOCAL GOVT.  ">
+                                </td>
+                                <td align ="left" style="width:auto;">
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan = "8">
+                                    <div class = "box"> </div>
+
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table> </form>
+                </td></tr>
+            </table>
+        </div>
+        <!-- parti-->
+
+    <script type="text/javascript" language="javascript">
+        function getLGAs(){
+            var state = $("#id_nationalitylg").val();
+            //alert(state)
+            var url = "/hrm/getstate/";
+            var i = 0;
+            var data='userid='+state;
+            $("#id_statelg").val('');
+            $("#id_statelg").html('');
+            if (state != undefined){
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data:data,
+                    success: function(data){
+                        var options = '';
+                        for (i=0; i<data.length; i++){
+                            options += '<option value="' + data[i] +'">' + data[i] + '</option>'
+                        }
+                        $("#id_statelg").append(options);
+                    }
+                })
+            }
+        }
+
+    </script>
+    <script language="javascript" type="text/javascript">
+        function openrec()
+        {
+            //alert("welcome");
+            var uid = $("#id_nationalitylg").val() + "," + $("#id_statelg").val();
+            //alert(uid);
+            var data='userid='+uid;
+
+            //alert(data);
+            $.ajax({
+                type:"POST",
+                url:"/humanresources/ajaxstreetlg/",
+                data:data,
+                success:function(html) {
+                    $(".box").show();
+                    $(".box").html(html);
+                }
+            });
+            //alert("error");
+            return false;
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // $("#id_transdate").datepicker();
+            //alert("welcome");
+            //$("#id_name").focus();
+            $(".box").hide();
+            openrec();
+            getLGAs();
+        });
+    </script>
+
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $(".box").hide();
+            $("#id_statelg").change(function () {
+                //alert("welcome");
+                //$("#id_desname").val("");
+                //$("#id_accbal").val("");
+                var uid = $("#id_nationalitylg").val() + "," + $("#id_statelg").val();
+               // alert(uid);
+                var data='userid='+uid;
+
+                //alert(data);
+                $.ajax({
+                    type:"POST",
+                    url:"/humanresources/ajaxstreetlg/",
+                    data:data,
+                    success:function(html) {
+                        $(".box").show();
+                        $(".box").html(html);
+                    }
+                });
+                // alert("error");
+                return false;
+            });
+        });
+
+    </script>
+
+    <script type="text/javascript" >
+        $(document).ready(function() {
+
+            $(".box").hide();
+            $("#id_nationalitylg").change(function () {
+                getLGAs();
+               var uid = $("#id_nationalitylg").val() + "," + $("#id_statelg").val();
+                var data='userid='+uid;
+                $.ajax({
+                    type:"POST",
+                    url:"/humanresources/ajaxstreetlg/",
+                    data:data,
+                    success:function(html) {
+                        $(".box").show();
+                        $(".box").html(html);
+                    }
+                });
+                // alert("error");
+                return false;
+            });
+        });
+
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+<script language="javascript" type="text/javascript">
+    function openrec()
+    {
+        var data='userid='+'test';
+        $.ajax({
+            type:"POST",
+            url:"/header/",
+            data:data,
+            success:function(html) {
+                $(".boxnn").show();
+                $(".boxnn").html(html);
+            }
+        });
+        return false;
+    }
+</script>
+{%endblock%}

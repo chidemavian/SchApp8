@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SchApp v7.0 {% block title %}{% endblock %}</title>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+</head>
+<body>
+<table style="width:100%;">
+
+    <tr>
+        <td colspan="10">
+
+            <table style="width:100%;background-color:white;border-collapse:collapse;">
+                <thead >
+                <tr>
+                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">S/N</td>
+                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Admission No</td>
+                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Name</td>
+                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Sex</td>
+                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Class</td>
+                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Arm</td>
+                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Session</td>
+                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Term</td>
+                    <td  style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Affective</td>
+                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Psychomotive</td>
+                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Comment</td>
+                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Academic Performance</td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for student in data %}
+                    <tr>
+
+                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ forloop.counter }}</td>
+                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.comment.student.admissionno }}</td>
+                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.comment.student.fullname }}</td>
+                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.comment.student.sex }}</td>
+                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.comment.student.admitted_class }}</td>
+                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.comment.student.admitted_arm }}</td>
+                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.comment.student.admitted_session }}</td>
+                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.comment.term }}</td>
+                        <td title = "Assess Affective domain for {{student.comment.student.fullname }}"style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  <a href="#" style="color:blue" onClick= "getdialogtry({{ student.affective.id  }});"> Affective</a> </td>
+                        <td  title = "Assess Psychomotive domain for {{student.comment.student.fullname }}"style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="#" style="color:blue" onClick= "psyco({{ student.psyco.id  }});"> Psychomotor </a> </td>
+                        <td title = "Enter Comment for {{student.comment.student.fullname }}"style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="#" style="color:blue" onClick= "comment({{ student.comment.id  }});"> Teacher's Comment </a> </td>
+                        <td title = "View Academic Performance for {{student.comment.student.fullname }}"style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="#" style="color:blue" onClick= "getdialogtry1({{ student.comment.id  }});">Academic Performance </a> </td>
+                    </tr>
+
+                {% endfor %}
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>
+<div id="myDialog" title="Enter Affective Skill">
+</div>
+<div id="psychomotor" title="Enter Psychomotor">
+</div>
+<div id="comment" title="Enter Comment">
+</div>
+<div id="academic" title="Student Academic Record">
+</div>
+<script type="text/javascript" >
+    $(document).ready(function() {
+        $("#myDialog").hide();
+        $("#psychomotor").hide();
+        $("#comment").hide();
+        $("#academic").hide();
+    });
+</script>
+<script type="text/javascript" language="javascript">
+    function getdialogtry(vid){
+        //alert(vid);
+        var state = vid;
+        var url = "/assessment/getaffective/";
+        var i = 0;
+        var data='userid='+state;
+        $.ajax({
+            type:"POST",
+            url:url,
+            data:data,
+            success:function(html) {
+                //$("#myDialog").show();
+                $("#myDialog").html(html);
+                getdialog();
+            }
+        });
+        return false;
+    }
+
+</script>
+<script type="text/javascript" language="javascript">
+    function getdialog(){
+        var dialogOpts = {
+            autoOpen:true,
+            modal:true,
+            position: ["center", "middle"],
+            height:"auto",
+            width:410,
+            title:'<a>SchApp 7.0-  Affective Skills Test</a>' ,
+            closeOnEscape:true,
+            show: true,
+            hide: true,
+            bgiframe: true
+        };
+        $("#myDialog").dialog(dialogOpts);
+    }
+
+</script>
+
+<script type="text/javascript" language="javascript">
+    function psyco(vid){
+        //alert(vid);
+        var state = vid;
+        var url = "/assessment/getpsyco/";
+        var i = 0;
+        var data='userid='+state;
+        $.ajax({
+            type:"POST",
+            url:url,
+            data:data,
+            success:function(html) {
+                //$("#myDialog").show();
+                $("#psychomotor").html(html);
+                getdialogpsyco();
+            }
+        });
+        return false;
+    }
+
+</script>
+<script type="text/javascript" language="javascript">
+    function getdialogpsyco(){
+        var dialogOpts = {
+            autoOpen:true,
+            modal:true,
+            position: ["center", "middle"],
+            height:450,
+            width:410,
+            title:'<a>SchApp 7.0 Psychomotor Skill Test</a>' ,
+            closeOnEscape:true,
+            show: true,
+            hide: true,
+            bgiframe: true
+        };
+        $("#psychomotor").dialog(dialogOpts);
+    }
+
+</script>
+
+<script type="text/javascript" language="javascript">
+    function comment(vid){
+        //alert(vid);
+        var state = vid;
+        var url = "/assessment/getcomment/";
+        var i = 0;
+        var data='userid='+state;
+        $.ajax({
+            type:"POST",
+            url:url,
+            data:data,
+            success:function(html) {
+                //$("#myDialog").show();
+                $("#comment").html(html);
+                getcomment();
+            }
+        });
+        return false;
+    }
+
+</script>
+<script type="text/javascript" language="javascript">
+    function getcomment(){
+        var dialogOpts = {
+            autoOpen:true,
+            modal:true,
+            position: ["center", "middle"],
+            height:"auto",
+            width:550,
+            title:'<a>SchApp 7.0 | Comment by Class Teacher</a>' ,
+            closeOnEscape:true,
+            show: true,
+            hide: true,
+            bgiframe: true
+        };
+        $("#comment").dialog(dialogOpts);
+    }
+
+</script>
+
+<script type="text/javascript" language="javascript">
+    function getdialogtry1(vid){
+        //alert(vid);
+        var state = vid;
+        var url = "/assessment/getstudentacademic/";
+        var i = 0;
+        var data='userid='+state;
+        $.ajax({
+            type:"POST",
+            url:url,
+            data:data,
+            success:function(html) {
+                //$("#myDialog").show();
+                $("#academic").html(html);
+                getdialog1();
+            }
+        });
+        return false;
+    }
+
+</script>
+<script type="text/javascript" language="javascript">
+    function getdialog1(){
+        var dialogOpts = {
+            autoOpen:true,
+            modal:true,
+            position: ["center", "middle"],
+            height:490,
+            width:490,
+            title:'<a>SchApp 7.0 | Student Academic Record</a>' ,
+            closeOnEscape:true,
+            show: true,
+            hide: true,
+            bgiframe: true
+        };
+        $("#academic").dialog(dialogOpts);
+    }
+
+</script>
+
+
+</body>
+</html>
+

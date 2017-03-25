@@ -1,0 +1,175 @@
+{% extends "rsetup/basesetup.htm" %}
+{%block head %}
+{%block title %}{%endblock%}
+{%endblock %}
+{%block content%}
+
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="left" style="border:0px solid black;width:100%;font-family: verdana;color:black">
+<div align ="center" style="background-color:#ccccc0;width:100%;font-size:15px;color:black"> Set Up General Allowance  </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+
+<table align ="left" style="width:100%">
+<tr>
+    <td><a href="/hrm/setupall/" style="color:red;width:100%;font-size:15px"> Setup General Allowance </a></td>
+    <td><a href="/hrm/setuspall/" style="color:red;width:100%;font-size:15px"> Setup Special Allowance </a></td>
+</tr>
+ <tr>
+     <td colspan="8">
+    <form action="" method="post" name ="main" onsubmit="disable(this)">
+    <table style="width:100%">
+</tr>
+    <td></td>
+        <td>Level:{{ form.level}}</td><td>Step:{{ form.step}}</td>
+        
+<td>
+
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+
+
+<tr>
+        <td>Description :</td>
+<td>{{ form.paydesc}}</td>
+<td>{{ form.paydesc.errors}}</td>
+<td></td>
+</tr>
+
+<tr>
+<td align ="left" style="width:30%">Amount :</td> <!--(Per Month):</td>-->
+<td align ="left" style="width:30%">{{ form.amount}}</td>
+<td align ="left" style="width:30%">{{ form.amount.errors}}</td>
+</tr>
+
+
+<tr>
+        <td align ="left" style="width:30%"></td>
+<td align ="left" style="width:30%">
+
+<input name="submit" type= "submit" value="Submit" >
+ </td>
+<td align ="left" style="width:30%">
+ </td>
+<td>
+</td>
+</tr>
+        </table>
+</form>
+     </td>
+ </tr>
+<tr>
+<td colspan = 8>
+<div class = "box"> </div>
+
+</td>
+</tr>
+</table>
+</div>
+
+ <script language="javascript" type="text/javascript">
+function openrec()
+{
+  //alert("welcome");
+   var uid = $("#id_level").val()+','+ $("#id_step").val();
+   var data='userid='+uid;
+
+   //alert(data);
+   $.ajax({
+    type:"POST",
+    url:"/hrm/ajaxall/",
+    data:data,
+    success:function(html) {
+         $(".box").show();
+         $(".box").html(html);
+
+    }
+ });
+   //alert("error");
+   return false;
+
+}
+</script>
+<script>
+$(document).ready(function() {
+        // $("#id_transdate").datepicker();
+         //alert("welcome");
+         $("#id_paydesc").focus();
+         $(".box").hide();
+         openrec();
+    getLGAsteps();
+    openrech();
+});
+</script>
+<script>
+$(document).ready(function() {
+ // $(".listbox").hide();
+  $("#id_level").change(function () {
+      getLGAsteps();
+   });
+    $("#id_step").change(function () {
+        openrec();
+    });
+});
+
+</script>
+
+    <script type="text/javascript" language="javascript">
+        function getLGAsteps(){
+            var state = $("#id_level").val();
+            //alert(state)
+            var url = "/hrm/getnewstep/";
+            var i = 0;
+            var data='userid='+state;
+            $("#id_step").val('');
+            $("#id_step").html('');
+            if (state != undefined){
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data:data,
+                    success: function(data){
+                        var options = '';
+                        for (i=0; i<data.length; i++){
+                            options += '<option value="' + data[i] +'">' + data[i] + '</option>'
+                        }
+                        $("#id_step").append(options);
+                        openrec();
+                    }
+                })
+            }
+        }
+
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+<script language="javascript" type="text/javascript">
+    function openrech()
+    {
+        var data='userid='+'test';
+        $.ajax({
+            type:"POST",
+            url:"/header/",
+            data:data,
+            success:function(html) {
+                $(".boxnn").show();
+                $(".boxnn").html(html);
+            }
+        });
+        return false;
+    }
+</script>
+
+
+ {%endblock%}

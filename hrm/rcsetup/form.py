@@ -1,0 +1,233 @@
+from django import forms
+from myproject.hrm.rcsetup.models import *
+import os
+
+IMPORT_FILE_TYPES = ['.xls', ]
+
+NATION_CHIOCES = (
+    ('NIGERIAN','NIGERIAN'),
+    ('NON-NIGERIAN','NON-NIGERIAN'),
+    )
+STATE_CHIOCES = (
+    ('Abia','Abia'),
+    ('Adamawa','Adamawa'),
+    )
+NATION_CHIOCES2 = (
+    ('',''),
+
+    )
+COOP = (
+    ('Cooperative','Cooperative'),
+
+    )
+
+class lgform(forms.Form):
+    name = forms.CharField(label = "LG Name",max_length = 110,required = True)
+    address = forms.CharField(label = "Address",max_length = 280,required = True,widget = forms.Textarea(attrs={'cols':'25','rows':'2'}))
+    def __init__(self, *args, **kwargs):
+        super(lgform, self).__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['address'].widget.attrs['class'] = 'loginTxtbox'
+
+class deptform(forms.Form):
+    name = forms.CharField(label = "Dept Name",max_length = 130,required = True,widget = forms.TextInput(attrs={'size':'35'}))
+   # address = forms.CharField(label = "Address",max_length = 280,required = True,widget = forms.Textarea(attrs={'cols':'25','rows':'0'}))
+    def __init__(self, *args, **kwargs):
+        super(deptform, self).__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs['class'] = 'loginTxtbox'
+
+class bankkform(forms.Form):
+    name = forms.CharField(label = "Dept Name",max_length = 130,required = True,widget = forms.TextInput(attrs={'size':'35'}))
+    sortcode = forms.CharField(label = "Sort Code",max_length = 130,required = True,widget = forms.TextInput(attrs={'size':'35'}))
+    def __init__(self, *args, **kwargs):
+        super(bankkform, self).__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['sortcode'].widget.attrs['class'] = 'loginTxtbox'
+
+
+class desigform(forms.Form):
+    #descode = forms.CharField(label = "Customer Id",max_length = 110,required = True)
+    desname = forms.CharField(label = "Name",max_length = 280,required = True,widget = forms.TextInput(attrs={'size':'35'}))
+    def __init__(self, *args, **kwargs):
+        super(desigform, self).__init__(*args, **kwargs)
+        self.fields['desname'].widget.attrs['class'] = 'loginTxtbox'
+
+
+class categoryform(forms.Form):
+    name = forms.CharField(label = "Dept Name",max_length = 130,required = True,widget = forms.TextInput(attrs={'size':'35'}))
+   # address = forms.CharField(label = "Address",max_length = 280,required = True,widget = forms.Textarea(attrs={'cols':'25','rows':'0'}))
+    def __init__(self, *args, **kwargs):
+        super(categoryform, self).__init__(*args, **kwargs)
+        self.fields['name'].widget.attrs['class'] = 'loginTxtbox'
+
+class allform(forms.Form):
+    TYPE_CHOICES =  [(t.desc, t.desc) for t in tbldesig.objects.all().order_by('desc')]
+    TYPE_CHOICES.insert(0,('Select Designation','Select Designation'))
+    #descode = forms.CharField(label = "Customer Id",max_length = 110,required = True)
+    #desname = forms.ChoiceField(TYPE_CHOICES)
+    level = forms.ChoiceField(label= "Level",choices= [(t.level, t.level) for t in tbllevel.objects.all().order_by('level')])
+    step = forms.ChoiceField(label= "Step",choices= [(t.step, t.step) for t in tblstep.objects.all().order_by('level')])
+    amount = forms.DecimalField(max_digits=20,decimal_places=2,required = True)
+    paydesc = forms.CharField(label = "Name",max_length = 280,required = True)
+
+    def __init__(self, *args):
+        super(allform, self).__init__(*args)
+        self.fields['level'].choices = [(t.level, t.level) for t in tbllevel.objects.all().order_by('level')]
+        self.fields['level'].initial = tbllevel.objects.all().order_by('level')
+        self.fields['step'].choices = [(t.step, t.step) for t in tblstep.objects.all().order_by('level')]
+        self.fields['step'].initial = tblstep.objects.all().order_by('level')
+        self.fields['amount'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['paydesc'].widget.attrs['class'] = 'loginTxtbox'
+
+class spallform(forms.Form):
+    staffid = forms.CharField(label = "Staff Id",max_length = 50,required = True,widget = forms.TextInput(attrs={'readonly':'readonly'}))
+    staffname = forms.CharField(label = "Staff Name",max_length = 310,required = True,widget = forms.TextInput(attrs={'size':'35'}))
+    amount = forms.DecimalField(max_digits=20,decimal_places=2,required = True)
+    paydesc = forms.ChoiceField(label= "Description",choices= [(t.name, t.name) for t in tblspecallow.objects.all().order_by('name')])
+    duration = forms.IntegerField(max_value= 720)
+    effectivedate = forms.CharField(label = 'Effective Date',required= True,max_length= 15,widget=forms.TextInput(attrs = {'readonly':'readonly'}))
+
+    def __init__(self, *args):
+        super(spallform, self).__init__(*args)
+        self.fields['staffid'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['staffname'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['amount'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['duration'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['effectivedate'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['paydesc'].choices = [(t.name, t.name) for t in tblspecallow.objects.all().order_by('name')]
+
+
+class spedform(forms.Form):
+    staffid = forms.CharField(label = "Staff Id",max_length = 50,required = True,widget = forms.TextInput(attrs={'readonly':'readonly'}))
+    staffname = forms.CharField(label = "Staff Name",max_length = 310,required = True,widget = forms.TextInput(attrs={'size':'35'}))
+    amount = forms.DecimalField(max_digits=20,decimal_places=2,required = True)
+    paydesc = forms.ChoiceField(label= "Description",choices= [(t.name, t.name) for t in tblspecialdedcode.objects.all().order_by('name')])
+    duration = forms.IntegerField(max_value= 720)
+    effectivedate = forms.CharField(label = 'Effective Date',required= True,max_length= 15,widget=forms.TextInput(attrs = {'readonly':'readonly'}))
+
+    def __init__(self, *args):
+        super(spedform, self).__init__(*args)
+        self.fields['staffid'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['staffname'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['amount'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['duration'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['effectivedate'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['paydesc'].choices = [(t.name, t.name) for t in tblspecialdedcode.objects.all().order_by('name')]
+
+
+class XlsInputForm(forms.Form):
+    input_excel = forms.FileField(required= True, label= u"Upload the Excel file to import to the system.")
+
+    def clean_input_excel(self):
+        input_excel = self.cleaned_data['input_excel'].name
+        extension = os.path.splitext( input_excel)[1]
+        if not (extension in IMPORT_FILE_TYPES):
+            raise forms.ValidationError( u'%s is not a valid excel file. Please make sure your input file is an excel file (Excel 2007 is NOT supported.' % extension )
+        else:
+            return input_excel
+
+class controlform(forms.Form):
+    recdate = forms.CharField(label = "Choose Date",max_length = 310,required = True)
+    def __init__(self, *args):
+        super(controlform, self).__init__(*args)
+        self.fields['recdate'].widget.attrs['class'] = 'loginTxtbox'
+
+
+class stateform(forms.Form):
+    nationality = forms.ChoiceField(choices = NATION_CHIOCES,label= "Nationality")
+    state = forms.CharField(label = "State Of Origin",max_length = 280,required = True)
+    def __init__(self, *args):
+        super(stateform, self).__init__(*args)
+        self.fields['state'].widget.attrs['class'] = 'loginTxtbox'
+
+class localgovtform(forms.Form):
+    nationalitylg = forms.ChoiceField(choices = NATION_CHIOCES,label= "Nationality")
+    statelg = forms.ChoiceField(choices = STATE_CHIOCES,label= "State Of Origin")
+   # statelg = forms.ModelChoiceField(queryset=tblstate.objects.all().order_by('state'), label= "State Of Origin")
+    localgovt = forms.CharField(label = "Local Government Area",max_length = 280,required = True)
+    def __init__(self, *args):
+        super(localgovtform, self).__init__(*args)
+        self.fields['statelg'].choices = [(t.state, t.state) for t in tblstate.objects.all().order_by('state')]
+        self.fields['statelg'].initial = tblstate.objects.all().order_by('state')
+        self.fields['localgovt'].widget.attrs['class'] = 'loginTxtbox'
+
+class staffname(forms.Form):
+    name = forms.CharField(label = "Staff Name",max_length = 310,required = True,widget=forms.TextInput(attrs={'size':'35'}))
+    def __init__(self, *args):
+        super(staffname, self).__init__(*args)
+        self.fields['name'].widget.attrs['class'] = 'loginTxtbox'
+
+class hmoform(forms.Form):
+    name = forms.CharField(label = "HMO Name",max_length = 110,required = True)
+    address = forms.CharField(label = "HMO Address",max_length = 310,required = True,widget=forms.TextInput(attrs={'size':'35'}))
+    def __init__(self, *args):
+        super(hmoform, self).__init__(*args)
+        self.fields['name'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['address'].widget.attrs['class'] = 'loginTxtbox'
+
+class hmoproviderform(forms.Form):
+    hmo = forms.ChoiceField(choices = NATION_CHIOCES2,label= "Nationality")
+    name1 = forms.CharField(label = "HMO Name",max_length = 310,required = True)
+    address1 = forms.CharField(label = "HMO Address",max_length = 310,required = True,widget=forms.TextInput(attrs={'size':'35'}))
+    def __init__(self, *args):
+        super(hmoproviderform, self).__init__(*args)
+        self.fields['hmo'].choices = [(t.name, t.name) for t in tblhmo.objects.all().order_by('name')]
+        self.fields['hmo'].initial = tblhmo.objects.all().order_by('name')
+        self.fields['name1'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['address1'].widget.attrs['class'] = 'loginTxtbox'
+
+class levelform(forms.Form):
+    level = forms.IntegerField(label = "Level",required = True,widget=forms.TextInput(attrs={'size':'10'}))
+    def __init__(self, *args):
+        super(levelform, self).__init__(*args)
+        self.fields['level'].widget.attrs['class'] = 'loginTxtbox'
+
+class stepform(forms.Form):
+    level2 = forms.ChoiceField(label= "Level",choices= [(t.level, t.level) for t in tbllevel.objects.all().order_by('level')])
+    step = forms.IntegerField(label = "Step",required = True,widget=forms.TextInput(attrs={'size':'10'}))
+    def __init__(self, *args):
+        super(stepform, self).__init__(*args)
+        self.fields['level2'].choices = [(t.level, t.level) for t in tbllevel.objects.all().order_by('level')]
+        self.fields['level2'].initial = tbllevel.objects.all().order_by('level')
+        self.fields['step'].widget.attrs['class'] = 'loginTxtbox'
+
+class savingsform(forms.Form):
+    staffid = forms.CharField(label = "Staff Id",max_length = 50,required = True,widget = forms.TextInput(attrs={'readonly':'readonly'}))
+    staffname = forms.CharField(label = "Staff Name",max_length = 310,required = True,widget = forms.TextInput(attrs={'size':'35'}))
+    amountbf = forms.DecimalField(max_digits=20,decimal_places=2,required = True)
+    contribution = forms.DecimalField(max_digits=20,decimal_places=2,required = True)
+    paydesc = forms.ChoiceField(label= "Description",choices= [(t.name, t.name) for t in tblsavingcode.objects.all().order_by('id')])
+    def __init__(self, *args):
+        super(savingsform, self).__init__(*args)
+        self.fields['paydesc'].choices = [(t.name, t.name) for t in tblsavingcode.objects.all().order_by('id')]
+        self.fields['paydesc'].initial = tblsavingcode.objects.all().order_by('id')
+        self.fields['staffid'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['staffname'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['amountbf'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['contribution'].widget.attrs['class'] = 'loginTxtbox'
+
+class loanform(forms.Form):
+    staffid = forms.CharField(label = "Staff Id",max_length = 50,required = True,widget = forms.TextInput(attrs={'readonly':'readonly'}))
+    staffname = forms.CharField(label = "Staff Name",max_length = 310,required = True,widget = forms.TextInput(attrs={'size':'35'}))
+    amount = forms.DecimalField(max_digits=20,decimal_places=2,required = True)
+    paydesc = forms.ChoiceField(label= "Description",choices= [(t.name, t.name) for t in tblloancode.objects.all().order_by('name')])
+    duration = forms.IntegerField()
+    intrate = forms.IntegerField()
+    effectivedate = forms.CharField(label = 'Effective Date',required= True,max_length= 15,widget=forms.TextInput(attrs = {'readonly':'readonly'}))
+
+    def __init__(self, *args):
+        super(loanform, self).__init__(*args)
+        self.fields['staffid'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['staffname'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['amount'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['intrate'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['duration'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['effectivedate'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['paydesc'].choices = [(t.name, t.name) for t in tblloancode.objects.all().order_by('name')]
+        self.fields['paydesc'].initial = tblloancode.objects.all().order_by('name')
+
+class pensionform(forms.Form):
+    amount = forms.DecimalField(max_digits=20,decimal_places=2,required = True,label='Rate e.g 7.5')
+    def __init__(self, *args):
+        super(pensionform, self).__init__(*args)
+        self.fields['amount'].widget.attrs['class'] = 'loginTxtbox'

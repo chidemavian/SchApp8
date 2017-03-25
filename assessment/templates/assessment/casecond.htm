@@ -1,0 +1,116 @@
+{% extends "assessment/base.htm" %}
+{%block head %}
+    {%block title %}SchApp{%endblock%}
+{%endblock %}
+{%block content%}
+    <table style="width:100%;">
+        <tr>
+            <td colspan="10">
+                <table>
+                    <tr>
+                        <td>Session</td>
+                        <td style="font-size:15px;font-weight:bold;color:blue;">{{ session }}</td>
+                        <td >Class</td>
+                        <td style="font-size:15px;font-weight:bold;color:blue;">{{ klass }}</td>
+                        <td>Arm</td>
+                        <td style="font-size:15px;font-weight:bold;color:blue;">{{ arm }}</td>
+                        <td>Subject</td>
+                        <td style="font-size:15px;font-weight:bold;color:blue;">{{ subject }}</td>
+                        <td style="color:gray;font-size:15px;padding-left:10px;">Click here to print <a href="/assessment/secondary_print_assessment/{{ session1 }}/{{ klass1 }}/{{ arm1 }}/{{ name1 }}/{{ term1 }}/" style="color:blue;font-size:13px;font-weight:bold;">Your Subject Report</a></td>
+                    </tr>
+                    
+                </table>
+
+            </td>
+        </tr>
+        <tr>
+            <td colspan="10">
+
+                <table style="width:100%;background-color:white;border-collapse:collapse;">
+                    <thead >
+                    <tr>
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">S/N</td>
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Admission No</td>
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Name</td>
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Sex</td>
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Subject</td>
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Term</td>
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">C/A 1</td>
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">C/A 2</td>
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">C/A 3</td>
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Exam Score</td>
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for student in data %}
+                        <tr>
+                            <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ forloop.counter }}</td>
+                            <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ student.admissionno }}</td>
+                            <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black"> <a href = "#" style = " color:blue" onclick = "getdialogtry({{student.id}});">{{ student.fullname }}</a> </td>
+                            <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ student.sex }}</td>
+                            <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ student.subject }}</td>
+                            <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ student.term }}</td>
+
+                            <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ student.first_ca }}</td>
+                            <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ student.second_ca }}</td>
+                            <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ student.third_ca }}</td>
+                            <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ student.exam_score }}</td>
+                            <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black"> <a href="#" style="color:blue" onClick= "getdialogtry({{ student.id  }});"> Edit Score </a> </td>
+                            <!--      <td> <a href="/assessment/editca/{{ student.id }}/" style="color:blue" onClick= "return hs.htmlExpand(this, { objectType: 'iframe' } )"> Edit Score </a> </td>-->
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <div id="myDialog" title="Enter Assessment Score">
+    </div>
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#myDialog").hide();
+        });
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialogtry(vid){
+            //alert(vid);
+            var state = vid;
+            var url = "/assessment/getsubjectscore/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialog").html(html);
+                    getdialog();
+                }
+            });
+            return false;
+        }
+
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialog(){
+            var dialogOpts = {
+                autoOpen:true,
+                modal:true,
+                position: ["center", "middle"],
+                height:400,
+                width:410,
+                closeOnEscape:true,
+                show: true,
+                hide: true,
+                bgiframe: true
+            };
+            $("#myDialog").dialog(dialogOpts);
+        }
+
+    </script>
+
+
+
+{%endblock%}

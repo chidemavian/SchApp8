@@ -1,0 +1,180 @@
+{% extends "leave/base.htm" %}
+{%block head %}
+{%block title %}Solutions{%endblock%}
+{%endblock %}
+{%block content%}
+<div class="pmiddle">
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="left" style="border:1px solid black;width:100%;heigth:10%;font-family: verdana;color:black">
+<div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%;height:10%; font-size:12px;color:black">STAFF ON LEAVE</div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+<table  style = "font-family:verdana;font-size:11px;width:80%">
+
+                    <tr>
+
+                        <td colspan="7">
+<form action="" method="post" name ="main" onsubmit="disable(this)">
+<table align ="left" style="width:auto">
+<tr>
+        <td align ="left" style="width:auto">
+Staff Id :
+        </td>
+<td><input id="id_staffid" type="text" name="staffid" readonly="readonly" size="35" value ="{{getdetails.staffid}}" class="loginTxtbox">
+</td>
+ <td>
+Staff Name :
+        </td>
+<td><input id="id_staffname" readonly="readonly"  name="staffname" size="35" class="loginTxtbox" value="{{getdetails.name}}">
+</td>
+<td rowspan =10 valign = "top"><img style = "border:1px solid black;width:70px;height:50px" src ="/static/{{getdetails.picture}}" ></td>
+</tr>
+<tr>
+        <td>
+Sex:
+        </td>
+<td><input id="id_sex" readonly="readonly" type="text" name="sex" size="10" value ="{{getdetails.sex}}"class="loginTxtbox" >
+  <td align ="left" style="width:auto">
+Designation :
+        </td>
+<td ><input id="id_designation" readonly="readonly" type="text" name="designation" size="35" value ="{{getdetails.designation}}" class="loginTxtbox">
+</td>
+</tr>
+<tr>
+       <td>
+Department :
+        </td>
+<td><input id="id_department" readonly="readonly" type="text" name="department" size="35" value ="{{getdetails.department}}" class="loginTxtbox">
+</td>
+</tr>
+<tr><td colspan = "10"><hr> </td></tr>
+<tr>
+<td>
+Leave Type :
+</td>
+<td align ="left" style="width:auto"><select name="trainingtype" id="id_trainingtype">
+{% for pincode in gdept %}
+<option value="{{pincode.name}}">{{pincode.name}}</option>
+ {% endfor %}
+</select>
+</td>
+        <td>
+Description:
+        </td>
+<td><textarea id="id_description"  cols = "20" rows = "2" name="description"  class="loginTxtbox"></textarea>
+</td>
+</tr>
+<tr>
+        <td>
+Duration:
+        </td>
+<td><input id="id_duration"  type="text" name="duration" size="10" class="loginTxtbox">
+</td>
+<td>
+Commencement Date
+</td>
+<td>
+<input id="id_dateofred" readonly="readonly" type="text" name="dateofred" size="10" class="loginTxtbox">
+</td>
+</tr>
+<tr>
+        <td>
+End Date:
+        </td>
+<td><input id="id_enddate" readonly="readonly" size = "10" type="text" name="enddate" class="loginTxtbox" >
+</td>
+</tr>
+<tr>
+
+<td colspan="4" style="text-align:center;">
+
+<input name="submit" type= "submit" value="Submit Staff Leave" >
+ </td>
+
+</tr></table>
+</form>
+<tr>
+
+<td colspan = "7" align ="left" valign = "Top" >
+<input name="submitprint" type= "submit" value="Print Report"  onclick = "openrecprint();">
+<div class="printable">
+
+   <div class = "listbox1">
+   <div class="nameslist1"></div>
+</div>
+</div>
+
+</td>
+</tr>
+</table>
+
+</div>
+
+<script language="javascript" type="text/javascript">
+function openrec()
+{
+  //alert("welcome");
+   var uid = $("#id_staffid").val();
+   var data='userid='+uid;
+
+   //alert(data);
+   $.ajax({
+    type:"POST",
+    url:"/humanresources/leave/staffajaxleave/",
+    data:data,
+    success:function(html) {
+         $(".listbox1").show();
+         $(".nameslist1").html(html);
+
+    }
+
+ });
+  // alert("error");
+   return false;
+
+}
+</script>
+<script>
+$(document).ready(function() {
+    var pickerOpts = {
+        //appendText: "mm/dd/yy",
+        //defaultDate: "+5",
+        showOtherMonths: true,
+        changeMonth: true,
+        changeYear: true,
+        dateFormat:"mm/dd/yy"
+        //showButtonPanel: true
+        // showOn: "button"
+    };
+        $("#id_dateofred").datepicker(pickerOpts);
+        $("#id_enddate").datepicker(pickerOpts);
+         //alert("welcome");
+         $("#id_description").focus();
+         //$(".box").hide();
+});
+</script>
+<script>
+$(document).ready(function() {
+  $(".listbox1").hide();
+   openrec();
+});
+</script>
+<script language="javascript" type="text/javascript">
+function openrecprint()
+{
+  //alert("welcome");
+   $( ".printable" ).print();
+
+
+}
+</script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+</div>
+{%endblock%}

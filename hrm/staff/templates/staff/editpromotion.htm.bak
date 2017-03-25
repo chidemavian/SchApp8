@@ -1,0 +1,247 @@
+{% extends "staff/base.htm" %}
+{%block head %}
+{%block title %}Solutions{%endblock%}
+{%endblock %}
+{%block content%}
+<div class="pmiddle">
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="left" style="border:1px solid black;width:100%;font-family: verdana;color:black">
+<div align ="center" style="background-color:black;border:0px solid black;width:100%;font-size:12px;color:white"> <strong>STAFF PROMOTION </strong> </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+   <table align ="left" style="width:100%">
+       <tr>
+           <td colspan="8">
+
+
+    <form action="" method="post" name ="main" onsubmit="disable(this)">
+    <table align ="left" style="width:100%">
+<tr>
+        <td>
+Staff Id :
+        </td>
+<td align ="left" style="width:auto"><input id="id_staffid" type="text" name="staffid" readonly="readonly" maxlength="50" value = "{{getdetails.staffid}}" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+</td>
+<td rowspan =10 valign = "top"><img style = "border:1px solid black;width:100px;heigth:100px" src ="/static/{{getdetails.picture}}" ></td>
+</tr>
+<tr>
+        <td>
+Staff Name :
+        </td>
+<td><textarea id="id_staffname" readonly="readonly"  name="staffname" cols ="20" rows = "2" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">{{getdetails.name}}</textarea>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+        <td>
+Sex:
+        </td>
+<td><input id="id_sex" readonly="readonly" type="text" name="sex"  value = "{{getdetails.sex}}" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+        <td>
+Current Designation :
+        </td>
+<td><input id="id_olddesignation" readonly="readonly" type="text" name="olddesignation" size="30" value = "{{getdetails.designation}}" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+</td>
+
+</tr>
+<tr>
+       <td>
+New Designation :
+        </td>
+<td align ="left" style="width:auto"><select name="newdesignation" id="id_newdesignation">
+<option selected = "selected" value="{{getdetails.designation}}">{{getdetails.designation}}</option>
+{% for pincode in gdept %}
+<option value="{{pincode.desc}}">{{pincode.desc}}</option>
+ {% endfor %}
+</select>
+</td>
+<td>
+</td>
+</tr>
+
+        <tr>
+            <td>
+                Current Level/Step :
+            </td>
+            <td><input id="id_level" readonly="readonly" type="text" name="level"  size="10" value = "{{getdetails.level}}" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+                <input id="id_step" readonly="readonly" type="text" name="step"  size="10" value = "{{getdetails.step}}" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                New Level/Step :
+            </td>
+            <td align ="left" style="width:auto"><select name="newlevel" id="id_newlevel">
+                <option selected = "selected" value="{{getdetails.level}}">{{getdetails.level}}</option>
+                {% for pincode in level %}
+                    <option value="{{pincode.level}}">{{pincode.level}}</option>
+                {% endfor %}
+            </select>
+                <select name="newstep" id="id_newstep">
+                    <option selected = "selected" value="{{getdetails.step}}">{{getdetails.step}}</option>
+                    {% for pincode in step %}
+                        <option value="{{pincode.step}}">{{pincode.step}}</option>
+                    {% endfor %}
+                </select>
+            </td>
+            <td>
+            </td>
+        </tr>
+
+
+<tr>
+        <td>
+Date Of Promotion :
+        </td>
+<td><input id="id_dateofred" readonly="readonly" type="text" name="dateofred" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+        <td>
+                        </td>
+<td >
+
+<input name="submit" type= "submit" value="Submit Promotion" >
+ </td>
+<td>
+ </td>
+<td>
+</td>
+</tr></table>
+</form>
+           </td>
+       </tr>
+<tr>
+
+<td colspan = 40 align ="left" valign = "Top" >
+<input name="submitprint" type= "submit" value="Print Report"  onclick = "openrecprint();">
+<div class="printable">
+
+   <div class = "listbox1">
+   <div class="nameslist1"></div>
+</div>
+</div>
+
+</td>
+</tr>
+   </table>
+</div>
+
+<script language="javascript" type="text/javascript">
+function openrec()
+{
+  //alert("welcome");
+   var uid = $("#id_staffid").val();
+   var data='userid='+uid;
+
+   //alert(data);
+   $.ajax({
+    type:"POST",
+    url:"/humanresources/staff/ajaxaredeploypromo/",
+    data:data,
+    success:function(html) {
+         $(".listbox1").show();
+         $(".nameslist1").html(html);
+
+    }
+
+ });
+  // alert("error");
+   return false;
+
+}
+</script>
+<script>
+$(document).ready(function() {
+    var pickerOpts = {
+        //appendText: "mm/dd/yy",
+        //defaultDate: "+5",
+        showOtherMonths: true,
+        changeMonth: true,
+        changeYear: true,
+        dateFormat:"mm/dd/yy"
+        //showButtonPanel: true
+        // showOn: "button"
+    };
+        $("#id_dateofred").datepicker(pickerOpts);
+         //alert("welcome");
+         //$("#id_staffname").focus();
+         //$(".box").hide();
+});
+</script>
+<script>
+$(document).ready(function() {
+  $(".listbox1").hide();
+   openrec();
+});
+</script>
+<script language="javascript" type="text/javascript">
+function openrecprint()
+{
+  //alert("welcome");
+   $( ".printable" ).print();
+
+
+}
+</script>
+<script type="text/javascript" language="javascript">
+    function getLGAsteps(){
+        var state = $("#id_newlevel").val();
+        //alert(state)
+        var url = "/humanresources/getnewstep/";
+        var i = 0;
+        var data='userid='+state;
+        $("#id_newstep").val('');
+        $("#id_newstep").html('');
+        if (state != undefined){
+            $.ajax({
+                type: "POST",
+                url: url,
+                data:data,
+                success: function(data){
+                    var options = '';
+                    for (i=0; i<data.length; i++){
+                        options += '<option value="' + data[i] +'">' + data[i] + '</option>'
+                    }
+                    $("#id_newstep").append(options);
+
+                }
+            })
+        }
+    }
+
+</script>
+<script>
+$(document).ready(function() {
+// $(".listbox").hide();
+    //getLGAsteps();
+   $("#id_newlevel").change(function () {
+     getLGAsteps();
+    });
+});
+</script>
+
+<script language="javascript" type="text/javascript">
+    function disable(f)
+    {
+        var button = f.elements['submit'];
+        button.value = 'Processing ...';
+        button.disabled = 'true';
+        return true;
+    }
+</script>
+
+</div>
+{%endblock%}

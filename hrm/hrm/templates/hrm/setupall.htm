@@ -1,0 +1,167 @@
+{% extends "hrm/base.htm" %}
+{%block head %}
+{%block title %}{%endblock%}
+{%endblock %}
+{%block content%}
+<div class="pmiddle">
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="left" style="border:1px solid black;width:100%;heigth:10%;font-family: verdana;color:black">
+<div align ="center" style="background-color:black;border:0px solid black;width:100%;heigth:10%; font-size:12px;color:white"> <strong>ALLOWANCE SET UP  </strong> </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+<table align ="center" style="border:0px solid black;width:100%">
+<tr><td><a href="/hrm/hrm/hrmsetupall/" align ="left" style="background-color:black;border:0px solid black;width:auto;heigth:10%;color:white;width:100%;font-size:11px">Allowance</a></a></td></a></td><td><a href="/hrm/hrmsetuspall/" style="background-color:black;border:0px solid black;width:auto;heigth:10%;color:white;width:100%;font-size:11px"> Special Allowance</td></a><td><a href="/hrm/hrmsetupded/" style="background-color:black;border:0px solid black;width:auto;heigth:10%;color:white;width:100%;font-size:11px">  Deduction</a></td> <td><a href="/hrm/hrmsetuspded/" style="background-color:black;border:0px solid black;width:auto;heigth:10%;color:white;width:auto;font-size:11px">Special Deduction</a></td></tr>
+ <form action="" method="post" name ="main">
+<tr>
+        <td align ="left" style="width:30%">
+Designation Code :
+        </td>
+<td align ="left" style="width:30%">{{ form.descode}}
+</td>
+<td align ="left" style="width:30%">{{ form.descode.errors}}
+</td>
+<td align ="left" valign = "Top" style="width:100%" rowspan = 20>
+<div  class ="listbox" >
+   <div class="nameslist"></div>
+
+</div>
+</td>
+
+</tr>
+<tr>
+        <td>
+Designation Name :
+        </td>
+<td>{{ form.desname}}
+</td>
+<td>{{ form.desname.errors}}
+</td>
+<td>
+</td>
+</tr>
+<tr>
+        <td align ="left" style="width:30%">
+All. Amount :
+        </td>
+<td align ="left" style="width:30%">{{ form.amount}}
+</td>
+<td align ="left" style="width:30%">{{ form.amount.errors}}
+</td>
+
+</tr>
+<tr>
+        <td>
+All. Description :
+        </td>
+<td>{{ form.paydesc}}
+</td>
+<td>{{ form.paydesc.errors}}
+</td>
+<td>
+</td>
+</tr>
+
+<tr>
+        <td align ="left" style="width:30%">
+
+
+                        </td>
+<td align ="left" style="width:30%">
+
+<input name="submit" type= "submit" value="Submit">
+ </td>
+<td align ="left" style="width:30%">
+ </td>
+<td>
+</td>
+</tr>
+</form>
+<tr>
+<td colspan = 8>
+<div class = "box"> </div>
+
+</td>
+</tr>
+</table>
+</div>
+
+<!-- parti-->
+
+<script language="javascript" type="text/javascript">
+function openrec()
+{
+  //alert("welcome");
+   var uid = $("#id_descode").val();
+   var data='userid='+uid;
+
+   //alert(data);
+   $.ajax({
+    type:"POST",
+    url:"/hrm/hrm/ajaxall/",
+    data:data,
+    success:function(html) {
+         $(".box").show();
+         $(".box").html(html);
+
+    }
+
+ });
+  // alert("error");
+   return false;
+
+}
+</script>
+<script>
+$(document).ready(function() {
+        // $("#id_transdate").datepicker();
+         //alert("welcome");
+         $("#id_descode").focus();
+         $(".box").hide();
+});
+</script>
+<script>
+$(document).ready(function() {
+  $(".listbox").hide();
+  $("#id_descode").keyup(function () {
+          //alert("welcome");
+   $("#id_desname").val("");
+   //$("#id_accbal").val("");
+   var uid = $("#id_descode").val();
+   var data='userid='+uid;
+
+   //alert(data);
+   $.ajax({
+    type:"POST",
+    url:"/hrm/hrm/ajax/",
+    data:data,
+    success:function(html) {
+         $(".listbox").show();
+         $(".nameslist").html(html);
+         //$("#test").html(html);
+         $('li').hover(function(){
+         $(this).addClass('hover');
+          },function(){
+         $(this).removeClass('hover');
+          });
+         $('li').click(function(){
+         var newdata = $(this).text();
+         var commsep = newdata.split(",");
+         //$("#id_cusname").val($(this).text()); cusbal
+         $("#id_desname").val(commsep[1]);
+         $("#id_descode").val(commsep[0]);
+         //$("#id_accbal").val(commsep[2]);
+         $('.listbox').hide();
+         openrec()
+
+
+
+          });
+
+    }
+});
+   //alert("error");
+   return false;
+});
+});
+
+</script>
+ {%endblock%}

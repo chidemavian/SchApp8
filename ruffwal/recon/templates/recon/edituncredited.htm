@@ -1,0 +1,140 @@
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <style type="text/css">
+        .error { color: red; }
+    </style>
+</head>
+<body>
+{% load humanize %}
+<div align ="center" style="background-color:white;width:100%;height:10%; font-size:12px;color:red;font-style:italic;"> <strong>Press ESC to close  </strong> </div>
+<div align ="center" style="background-color:gray;border:0px solid black;width:100%;height:10%; font-size:12px;color:white"> <strong>CREDIT LODGEMENT </strong> </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+<form action="/SchApp/account/recon/edituncredited/{{getdetails.id }}/" method="post" name ="main" onsubmit="disable(this)">
+<table align ="center" style="border:0px solid black;width:100%;">
+    <tr>
+        <td align ="left" style="width:auto">
+            Account Name :
+        </td>
+        <td align ="left" style="width:auto">
+            <input type ="Textarea" id="accname" size="35" name="accname" value ="{{getdetails.accname}}" readonly="readonly" readonly="readonly" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+        </td>
+    </tr>
+<tr>
+        <td align ="left" style="width:auto">
+Account Code:
+        </td>
+<td align ="left" style="width:auto">
+<input type ="Textarea" id="acccode" size="25" name="acccode" value ="{{getdetails.acccode}}" readonly="readonly" readonly="readonly" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+</td>
+</tr>
+
+<tr>
+<td align ="left" style="width:auto">
+Amount :
+</td>
+<td align ="left" style="width:auto" >
+<input type ="text" id="amount" size="25" name="amount" value ="{{getdetails.amount}} " readonly="readonly" readonly="readonly" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+</td>
+</tr>
+<tr>
+<td align ="left" style="width:auto">
+Particulars :
+</td>
+<td align ="left" style="width:auto">
+<input type ="text" id="part" size="25" name="part" value ="{{getdetails.particulars}}" readonly="readonly" readonly="readonly" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+</td>
+</tr>
+    <tr>
+        <td align ="left" style="width:auto">
+            Transaction Date :
+        </td>
+        <td align ="left" style="width:auto">
+            <input type ="text" id="udate" size="25" name="udate" value ="{{getdetails.transdate|date:"d/m/Y"}}" readonly="readonly" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+        </td>
+    </tr>
+<tr>
+<td align ="left" style="width:auto">
+Reference No :
+</td>
+<td align ="left" style="width:auto">
+<input type ="text" id="refno" size="25" name="refno" value ="{{getdetails.refno}}" readonly="readonly" readonly="readonly" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+</td>
+</tr>
+<tr>
+<td align ="left" style="width:auto">
+Presented Date :
+</td>
+<td align ="left" style="width:auto">
+<input type ="text" id="pdate" size="25" name="pdate" value ="" readonly ="readonly" readonly="readonly" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+    &nbsp;<span class="error"> Valid Date is required</span>
+</td>
+</tr>
+<tr>
+        <td align ="left" style="width:auto">
+<input type="hidden" name="hcode"
+value="{{getdetails.id}}">
+          </td>
+<td align ="left" style="width:auto;">
+<input name="submit" type= "submit" value=" Credit Lodgement ">
+ </td>
+ </tr> </table>
+</form>
+<script>
+    $(document).ready(function() {
+        var pickerOpts = {
+            //appendText: "mm/dd/yy",
+            //defaultDate: "+5",
+            showOtherMonths: true,
+            changeMonth: true,
+            changeYear: true
+            //showButtonPanel: true
+            // showOn: "button"
+        };
+        $("#pdate").datepicker(pickerOpts);
+
+    });
+
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        // $("#pdate").focus();
+        $('.error').hide();
+        $('.submit').click(function(event){
+            var data=$("#pdate").val();
+            var len=data.length;
+            if (len <= 0){
+                $('.error').show();
+                // $("#pdate").focus();
+                //$('.error').show();
+                event.preventDefault();
+            }
+            else
+            {
+                $('.error').hide();
+            }
+        });
+    });
+</script>
+<script type="text/javascript" >
+    $(document).ready(function() {
+        $("#pdate").keyup(function () {
+            $('.error').hide();
+        });
+    });
+</script>
+
+<script language="javascript" type="text/javascript">
+    function disable(f)
+    {
+        var button = f.elements['submit'];
+        button.value = 'Processing';
+        button.disabled = 'true';
+        return true;
+    }
+</script>
+
+
+</body>
+</html>

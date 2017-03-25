@@ -1,0 +1,68 @@
+{% extends "rsetup/base.htm" %}
+{%block title %}{%endblock%}
+{%block content%}
+
+<div align ="center" style = "width:100%;background:black;color:white;font-size:18px;top:11%"> CHANGE YOUR PASSWORD</div>
+    <form action="" method="post" onsubmit="disable(this)">
+<table align ="center" style="border:0px solid black;background:white;width:100%;height:100%">
+ <tr>
+     <div align="center" style="color:red;font-family:verdana;font-size:20px;text-decoration:blink">{{varerr}}</div>
+      </tr>
+<tr>
+        <td style="width: auto">
+            Old Password
+            </td>
+        <td style="width: auto">
+
+                       {{form.oldpassword}}
+                        </td>
+<td style="width:auto">
+
+            {{form.oldpassword.errors}}
+
+                        </td>
+    </tr>
+     <tr>
+        <td style="width: auto">
+            New Password
+            </td>
+        <td style="width: auto">
+
+                       {{form.password}}
+                        </td>
+<td style="width:auto">
+
+            {{form.password.errors}}
+
+                        </td>
+    </tr>
+     <tr>
+
+        <td style="width: auto">
+        Confirm Password</td>
+        <td style="width: auto">
+                        {{form.password2}}
+            </td>
+ <td style="width:auto">
+            {{form.password2.errors}}
+                       </td>
+    </tr>
+   <tr>
+              <td style="width: 80px">
+            </td>  <td style="width: 80px">
+            <input name="submit" type= "submit" value="Change Password">
+            </td>
+    </tr>
+</table>
+ </form>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+ {%endblock%}

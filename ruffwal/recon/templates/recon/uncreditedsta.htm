@@ -1,0 +1,191 @@
+{% extends "recon/base.htm" %}
+{% load humanize %}
+{%block content%}
+        <div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%;height:3%; font-size:12px;color:white"> <strong>UNCREDITED STATEMENT </strong> </div>
+        <div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+        <table align ="left" style="border:0px solid black;width:auto">
+            <tr><td>
+                <form action="" method="post" name ="main" id = "form1" onsubmit="disable(this)">
+                    <table align ="left" style="border:1px solid black;color:black;background-color:#E6E6E6;width:100%">
+                        <tr>
+                            <td align ="left" style="width:auto;">
+                                Acc Name :
+                            </td>
+                            <td align ="left" style="width:auto;">{{ form.accname}}
+                            </td>
+                            <td align ="left" style="width:auto;">
+                                Acc Code :
+                            </td>
+                            <td align ="left" style="width:auto;">{{ form.acccode}}
+                            </td>
+
+                            <td align ="left" style="width:auto;">
+                                Start Date :
+                            </td>
+                            <td align ="left" style="width:auto;">{{ form.startdate}}&nbsp;{{ form.enddate.errors}}
+                            </td>
+
+                            <td align ="left" style="width:auto;">
+                                End Date :
+                            </td>
+                            <td align ="left" style="width:auto;">{{ form.enddate}}&nbsp;{{ form.startdate.errors}}
+                            </td>
+                            <td>Download In Excel</td>
+                            <td>{{form.excelfile}}</td>
+                            <td align ="left" style="width:auto;">
+
+                                <input name="submit" type= "submit" id = "submit" value="View Report">
+                            </td>
+
+                        </tr>
+                    </table>
+
+                </form>
+            </td></tr>
+            <tr>
+                <td>
+                    <table align ="left" style="border:0px solid black;width:100%">
+                        <tr>
+                            <td>
+                                <input name="submit" type= "submit" value="Print Statement  " onclick="openrecprint();">
+                            </td></tr>
+                        <tr>
+                            <td colspan ="30">
+                                <div class="printable">
+                                    <table align ="left" style="border:0px solid black;width:100%;background-color:white">
+                                        <tr>
+                                            <td colspan="5">
+                                                <table  align ="left" style="border-collapse:collapse;width:100%;background-color:white">
+                                                    <tr>
+                                                        <td rowspan="4" style="text-align:right;">
+                                                            <img style="width: 120px; height: 50px;" src="/static/{{ comp.picture }}" alt="{{ comp.name }}">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+
+                                                        <td style="font-size:14px;font-style:normal;font-weight:bold;text-align:left">{{ comp.name }}</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font-size:12px;font-style:normal;font-weight:bold;text-align:left">{{ comp.address }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font-size:14px;font-style:normal;font-weight:bold;text-align:left"></td>
+                                                    </tr>
+                                                </table>
+
+                                            </td>
+                                        </tr>
+                                        <tr><td colspan ="5" align ="center"> UNCREDITED STATEMENT  FROM  {{ stratdate|date:"F j,Y" }} TO  {{ enddate|date:"F j,Y" }}</td> </tr>
+                                        <tr>
+                                            <td>
+
+
+                                                <table align ="left" style="border-collapse:collapse;width:100%;background-color:white;">
+
+
+                                                    {% for pp in ll %}
+                                                        <!--  <tr><td colspan="10"><hr></td></tr>-->
+                                                        <tr><td style="font-weight:bold;" colspan="2">{{ pp.acccode }}</td>
+                                                            <td style="font-weight:bold;" colspan="2"> {{ pp.accname }} </td>
+                                                            <td style="font-weight:bold;" colspan="2"> {{ pp.opbal }} </td></tr>
+                                                        <!--    <tr><td colspan="10"><hr></td></tr>-->
+                                                        <tr>
+                                                            <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: black;border:1px solid black">Date </td>
+                                                            <td align="left" valign="top" style = "width:auto; height:10px;background-color:#E6E6E6;font-size:11px;color: black;border:1px solid black">Particular</td>
+                                                            <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: black;border:1px solid black">Ref. No </td>
+                                                            <td align="left" valign="top" style = "width:auto; height:10px;background-color:#E6E6E6;font-size:11px;color: black;border:1px solid black">Debit</td>
+                                                            <td align="left" valign="top" style = "width:auto; height:10px;background-color:#E6E6E6;font-size:11px;color: black;border:1px solid black">Credit</td>
+                                                            <td align="left" valign="top" style = "width:auto; height:10px;background-color:#E6E6E6;font-size:11px;color: black;border:1px solid black">Balance</td>
+                                                        </tr>
+                                                        {% for pincode in pp.trans %}
+                                                            <tr>
+                                                            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">   {{ pincode.transdate|date:"F j,Y"}}</td>
+                                                            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.particulars }}</td>
+                                                            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.refno }}</td>
+                                                            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  {{ pincode.debit|intcomma }}</td>
+                                                            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.credit|intcomma}}</td>
+                                                            <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ pincode.balance|intcomma }}</td>
+                                                        {% endfor %}
+
+                                                    </tr>
+                                                    {% endfor %}
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+
+                            </td>
+                        </tr>
+                    </table>
+        </table >
+    <script>
+        $(document).ready(function() {
+            var pickerOpts = {
+                //appendText: "mm/dd/yy",
+                //defaultDate: "+5",
+                showOtherMonths: true,
+                changeMonth: true,
+                changeYear: true
+                //showButtonPanel: true
+                // showOn: "button"
+            };
+            $("#id_startdate").datepicker(pickerOpts);
+            $("#id_enddate").datepicker(pickerOpts);
+            autocomplete();
+        });
+    </script>
+    <script language="javascript" type="text/javascript">
+        function openrecprint()
+        {
+            //alert("welcome");
+            $( ".printable" ).print();
+
+
+        }
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        function autocomplete(){
+            $("#id_accname").autocomplete({
+                //minLength: 0
+                source: "/SchApp/account/recon/ajax/",
+
+                select: function( event, ui ) {
+                    $( "#id_accname" ).val( ui.item.accname );
+                    $( "#id_acccode" ).val( ui.item.acccode );
+                    //$( "#id_accbal" ).val( ui.item.accbal );
+
+                }
+            })
+                    .data( "autocomplete" )._renderItem = function( ul, item ) {
+                return $( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( "<a>" + item.label + "</a>" )
+                        .appendTo( ul );
+            };
+
+        }
+
+    </script>
+
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#id_accname").keyup(function () {
+                // $( "#id_accbal" ).val("");
+                $( "#id_acccode" ).val("");
+            });
+        });
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+{%endblock%}

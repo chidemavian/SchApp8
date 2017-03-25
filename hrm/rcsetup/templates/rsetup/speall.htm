@@ -1,0 +1,285 @@
+{% extends "rsetup/basesetup.htm" %}
+{%block head %}
+    {%block title %}Solutions{%endblock%}
+    {% load humanize %}
+{%endblock %}
+{%block content%}
+
+    <!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+    <div align ="left" style="border:0px solid black;width:100%;font-family: verdana;color:black">
+        <div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%; font-size:12px;color:black">Special Allowance </div>
+        <div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+        <table align ="left" style="width:100%">
+
+            <tr>
+    <td><a href="/hrm/setupall/" style="color:red;width:100%;font-size:15px"> Setup General Allowance </a></td>
+    <td><a href="/hrm/setuspall/" style="color:red;width:100%;font-size:15px"> Setup Special Allowance </a></td>
+</tr>
+<tr>
+</tr>
+            <tr>
+                <td colspan="8">
+
+                    <form action="" method="post" name ="main" onsubmit="disable(this)">
+                        <table style="width:auto;">
+                            <tr>
+                                <td>
+                                    Staff Name :
+                                </td>
+                                <td>{{ form.staffname}}
+                                </td>
+                                <td>{{ form.staffname.errors}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Staff Id :
+                                </td>
+                                <td>{{ form.staffid}}
+                                </td>
+                                <td>{{ form.staffid.errors}}
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    Amount :
+                                </td>
+                                <td>{{ form.amount}}
+                                </td>
+                                <td>{{ form.amount.errors}}
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    Description :
+                                </td>
+                                <td>{{ form.paydesc}}&nbsp;<img src="/static/add.png" style="width:15px;height:15px" onclick="admno();">
+                                </td>
+                                <td>{{ form.paydesc.errors}}
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    Duration In Month (e.g 2):
+                                </td>
+                                <td>{{ form.duration}}
+                                </td>
+                                <td>{{ form.duration.errors}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Effective Date :
+                                </td>
+                                <td>{{ form.effectivedate}}
+                                </td>
+                                <td>{{ form.effectivedate.errors}}
+                                </td>
+
+                            </tr>
+                            <tr>
+
+                                <td colspan="3" style="text-align:center;">
+
+                                    <input name="submit" type= "submit" value="Add Special Allowance">
+                                </td>
+
+                            </tr>
+                        </table>
+
+                    </form>
+
+                </td>
+            </tr>
+            <tr>
+                <td colspan = 8>
+                    <table align ="center" style="width:100%;background-color:white;border-collapse:collapse;">
+                        <tr>
+                            <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Staff Id</td>
+                            <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Staff Nam</td>
+                            <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Description</td>
+                            <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Amount</td>
+                            <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Duration</td>
+                            <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Effective Date</td>
+                            <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Expiry Date</td>
+
+                            {% for pincode in getdetails %}
+
+                                <tr>
+                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ pincode.staffid|upper }}</td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.staffname|title }}</td>
+                                <!-- <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;font-weight:bold;"> <a href="/editspall/{{ pincode.id }}/" style ="color:red;"> {{ pincode.paydes|upper }} </a></td>-->
+                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;font-weight:bold;"> <a href="#" style ="color:red;" onClick= "getdialogtry({{ pincode.id }});" title="Edit Allowance"> {{ pincode.paydes|upper }} </a></td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  {{ pincode.amount|intcomma }} </td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  {{ pincode.duration}} </td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  {{ pincode.effectivedate|date:"F,Y" }} </td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  {{ pincode.expiredate|date:"F,Y" }} </td>
+                            {% endfor %}
+                            </tr>
+                    </table>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="myDialog" title="Edit Account">
+    </div>
+    <script>
+        $(document).ready(function() {
+            var pickerOpts = {
+                //appendText: "mm/dd/yy",
+                //defaultDate: "+5",
+                showOtherMonths: true,
+                changeMonth: true,
+                changeYear: true,
+                dateFormat:"mm/dd/yy"
+            };
+            $("#id_effectivedate").datepicker(pickerOpts);
+            $("#id_staffname").focus();
+            //$(".box").hide();
+
+            autocomplete();
+
+        });
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        function autocomplete(){
+
+            $("#id_staffname").autocomplete({
+                //minLength: 0
+                source: "/hrm/hrm/findstaffname/",
+                focus: function(event, ui){
+                    $("#id_staffname").val(ui.item.name);
+                    //$( "#id_staffname" ).val( ui.item.label.name );
+                    // populateForm(ui.item.value);
+                    return false;
+                },
+                select: function( event, ui ) {
+                    $( "#id_staffid" ).val( ui.item.staffid );
+                    $( "#id_staffname" ).val( ui.item.name );
+                    // $( "#project-description" ).html( ui.item.desc );
+                    //$( "#project-icon" ).attr( "src", "images/" + ui.item.icon );
+                    //openrec();
+
+                    return false;
+                }
+            })
+                    .data( "autocomplete" )._renderItem = function( ul, item ) {
+                return $( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( "<a>" + item.label + "</a>" )
+                        .appendTo( ul );
+            };
+        }
+    </script>
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#id_staffname").keyup(function () {
+                $( "#id_staffid" ).val("");
+            });
+        });
+    </script>
+
+
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#myDialog").hide();
+        });
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        function admno(){
+            //alert(vid);
+            var state = '';
+            var url = "/hrm/getdescription/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialog").html(html);
+                    getdialog();
+                }
+            });
+            return false;
+        }
+
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialog(){
+            var dialogOpts = {
+                autoOpen:true,
+                modal:true,
+                position: ["center", "middle"],
+                height:"auto",
+                width:490,
+                title:'Create Description',//<a href="http://www.adysys.com"></a>' ,
+                closeOnEscape:true,
+                show: true,
+                hide: true,
+                bgiframe: true
+            };
+            $("#myDialog").dialog(dialogOpts);
+        }
+
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        function getdialogtry(vid){
+            //alert(vid);
+            var state = vid;
+            var url = "/hrm/getspallowance/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialog").html(html);
+                    getdialog1();
+                }
+            });
+            return false;
+        }
+
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialog1(){
+            var dialogOpts = {
+                autoOpen:true,
+                modal:true,
+                position: ["center", "middle"],
+                height:300,
+                width:490,
+                title:'Edit Special Allowance',
+                closeOnEscape:true,
+                show: true,
+                hide: true,
+                bgiframe: true
+            };
+            $("#myDialog").dialog(dialogOpts);
+        }
+
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+{%endblock%}

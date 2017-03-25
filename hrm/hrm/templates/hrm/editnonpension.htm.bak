@@ -1,0 +1,126 @@
+{% extends "hrm/base.htm" %}
+{%block head %}
+{%block title %} Solutions{%endblock%}
+{%endblock %}
+{%block content%}
+<div class="pmiddle">
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="left" style="border:1px solid black;width:100%;heigth:10%;font-family: verdana;color:black">
+<div align ="center" style="background-color:black;border:0px solid black;width:100%;heigth:10%; font-size:12px;color:white"> <strong>EDIT NON PENSION RECORD  </strong> </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+<table align ="center" style="border:0px; solid black;width:100%">
+<form action="" method="post" name ="main">
+<tr>
+        <td align ="left" style="width:auto">
+Category :
+        </td>
+<td align ="left" style="width:auto"><select name="category" id="id_category">
+<option selected = "selected" value={{getdetails.category}}>{{getdetails.category}}</option>
+{% for pincode in gdata %}
+<option value={{pincode.name}}>{{pincode.name}}</option>
+ {% endfor %}
+</select>
+</td>
+<tr>
+<tr>
+        <td align ="left" style="width:30%">
+Staff Name :
+        </td>
+<td align ="left" style="width:30%"><input id="id_staffname" type="text" name="staffname" maxlength="310" value ="{{getdetails.staffname}}">
+</td>
+<td align ="left" style="width:30%">
+</td>
+</tr>
+<tr>
+        <td>
+Address :
+        </td>
+<td><textarea id="id_address"  name="address" cols ="20" rows = "3" >{{getdetails.address}}</textarea>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+        <td align ="left" style="width:30%">
+phoneno :
+        </td>
+<td align ="left" style="width:30%"><input id="id_phoneno" type="text" name="phoneno" maxlength="280" value ="{{getdetails.phoneno}}">
+</td>
+<td align ="left" style="width:30%">
+</td>
+
+</tr>
+<tr>
+        <td align ="left" style="width:30%">
+Next of Kin :
+        </td>
+<td align ="left" style="width:30%"><input id="id_nextofkin" type="text" name="nextofkin" maxlength="280" value ="{{getdetails.nextofkin}}">
+</td>
+<td align ="left" style="width:30%">
+</td>
+
+</tr>
+<tr>
+        <td align ="left" style="width:auto">
+Sex :
+        </td>
+<td align ="left" style="width:auto"><select name="sex" id="id_sex">
+<option selected = "selected" value={{getdetails.sex}}>{{getdetails.sex}}</option>
+<option value="NIL">NIL</option>
+<option value="MALE">MALE</option>
+<option value="FEMALE">FEMALE</option>
+</select>
+</td>
+<tr>
+        <td align ="left" style="width:30%">
+Year :
+        </td>
+<td align ="left" style="width:30%"><input id="id_session" type="text" name="session" size = 4 maxlength="280" value ="{{getdetails.session}}">
+</td>
+<td align ="left" style="width:30%">
+</td>
+
+</tr>
+
+<tr>
+        <td align ="left" style="width:30%">
+
+
+                        </td>
+<td align ="left" style="width:30%">
+
+<input name="submit" type= "submit" value="Submit" class = "submit">
+ </td>
+<td align ="left" style="width:30%">
+<a  href ="/humanresources/hrm/deletestaffnonpension/{{getdetails.id}}" style ="color:Black;;font-size:9px"> <img style ="width:25px;heigth:25px" src ="/static/imgs/editdelete.png" >  </a>Delete Record </td>
+ </td>
+<td>
+</td>
+</tr>
+</form>
+<!--
+<tr>
+<td colspan = 8>
+<div class = "box"> </div>
+
+</td>
+</tr>
+-->
+</table>
+</div>
+
+<!-- parti-->
+
+
+<script>
+$(document).ready(function() {
+        // $("#id_transdate").datepicker();
+         //alert("welcome");
+         $("#id_staffid").focus();
+         //$(".box").hide();
+});
+</script>
+
+ {%endblock%}

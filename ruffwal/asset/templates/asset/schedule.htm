@@ -1,0 +1,164 @@
+{% extends "asset/base.htm" %}
+{% load humanize %}
+{%block content%}
+<div align ="center" style="background-color:#ccccc0;border:0px solid black;min-width:40%;height:25px; font-size:12px;color:white;padding-top:10px;"> <strong>ASSETS SCHEDULE  </strong> </div>
+<div align="center" style="color:red;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+    <table align ="left" style="border:0px solid black;width:100%">
+        <tr><td colspan="14"><form action="" method="post" name ="main" onsubmit="disable(this)">
+    <table align ="left" style="border:1px;width:auto;">
+<tr>
+    <td>
+        {{ form.subgrname.label}}
+    </td>
+    <td>{{ form.subgrname}}
+    </td>
+<td>Year : </td>
+<td>{{ form.enddate}}</td>
+    <td>Download Excel : </td>
+    <td>{{ form.excelfile}}</td>
+<td><input name="submit" type= "submit" value=" View Schedule" ></td>
+</tr>
+</table >
+    </form>
+</td></tr>
+
+        <tr>
+            <td colspan="14">
+                {% if all %}
+                <div style="width:100%;"><input name="submit" type= "submit" value="Print List  " onclick="openrecprint();"></div>
+                <div class="printable">
+
+                    <table style="width:100%;border-collapse:collapse;background-color:white" align="left">
+                        <tr>
+                            <td rowspan="3" style="vertical-align:top">
+                                <img  style = "vertical-align:top;left:10%;float:left;padding:5px;border:0px;width:60px;height:60px;float:left" src ="/static/{{ logo }}" >
+                            </td>
+                            <td colspan="10" style="font-weight:bold;font-size:19px;color:#000;text-align:left;">
+                                {{ comp }}
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td colspan="13" style="font-weight:bold;font-size:14px;color:#000000;text-align:left;font-style:italic;">
+                                {{ address }}
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td colspan="13" style="font-weight:bold;font-size:14px;color:#000000;text-align:left;">
+                                ASSETS SCHEDULE FOR {{ year }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="13" style="font-weight:bold;font-size:14px;color:#000000;text-align:left;">
+                                <hr>
+                            </td>
+
+                        </tr>
+                        {% for j in all %}
+                        <tr>
+                            <td colspan="13" style="font-weight:bold;font-size:11px;color:#000000;text-align:left;font-style:italic;">
+                                {{j.sub }}
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black"> S/N</td>
+                            <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black">Name</td>
+                            <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black">Code</td>
+                            <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black">Date Of Purchase</td>
+                            <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black">Depn.Rate</td>
+
+                            <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black">Amount</td>
+                            <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black">Add. Amount</td>
+                            <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black">Total Amt.</td>
+                            <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black">Open. Depn.</td>
+                            <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black">Current Depn.</td>
+                            <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black">Total Depn.</td>
+                            <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black">NBV</td>
+
+                        </tr>
+                        {% for pincode in j.getdetails %}
+
+                        <tr>
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black;text-align:center;"> {{ forloop.counter }}</td>
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black"> {{ pincode.name|upper }}</td>
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black"> {{ pincode.acccode|upper }}</td>
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black"> {{ pincode.datepurchase|date:"d-m-Y" }}</td>
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black;text-align:right;"> {{ pincode.deprate }}</td>
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black;text-align:right;"> {{ pincode.amount }}</td>
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black;text-align:right;"> {{ pincode.additional }}</td>
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black;text-align:right;"> {{ pincode.totamt }}</td>
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black;text-align:right;"> {{ pincode.opendep }}</td>
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black;text-align:right;"> {{ pincode.depyear }}</td>
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black;text-align:right;"> {{ pincode.totdep }}</td>
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black;text-align:right;"> {{ pincode.nbv }}</td>
+
+
+                            {% endfor %}
+
+
+                        </tr>
+
+                            <tr>
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black;text-align:center;"> </td>
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black"> </td>
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black"> </td>
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black"> </td>
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black;font-weight:bold;">TOTAL </td>
+
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black;font-weight:bold;text-align:right;">{{ j.totalamount }}  </td>
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black;font-weight:bold;text-align:right;">{{ j.totaladdition }}  </td>
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black;font-weight:bold;text-align:right;">{{ j.ftotal }}  </td>
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black;font-weight:bold;text-align:right;">{{ j.totalopendepn }} </td>
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black;font-weight:bold;text-align:right;"> {{ j.totalyear }}</td>
+                            <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black;font-weight:bold;text-align:right;"> {{ j.totaldepn }}</td>
+                                <td align="left" valign="top" style = "background-color:white;color:#000000;border:1px solid black;font-weight:bold;text-align:right;"> {{ j.totalnbv }}</td>
+
+                        </tr>
+                        {% endfor %}
+
+                    </table>
+                </div>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+<script type="text/javascript">
+$(document).ready(function() {
+    var pickerOpts = {
+        //appendText: "mm/dd/yy",
+        //defaultDate: "+5",
+        showOtherMonths: true,
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        dateFormat:"yy"
+        // showOn: "button"
+    };
+
+         $("#id_enddate").datepicker(pickerOpts);
+      });
+</script>
+    <script language="javascript" type="text/javascript">
+        function openrecprint()
+        {
+            //alert("welcome");
+            $( ".printable" ).print();
+
+
+        }
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+
+{%endblock%}

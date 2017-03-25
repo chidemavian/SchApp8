@@ -1,0 +1,146 @@
+{% extends "budget/base.htm" %}
+{% load humanize %}
+{%block content%}
+    <div align ="center" style="background-color:#ccccc0;width:100%;height:25px;font-size:14px;color:white;vertical-align:middle;text-align: center;padding-top:10px;"> <strong>PRINT MONTHLY BUDGET  </strong> </div>
+    <div align="center" style="color:red;font-family:verdana;font-size:14px;text-decoration:blink;" > {{varerr}}</div>
+    <table align ="center" style="width:100%">
+        <tr>
+            <td colspan="8">
+                <form action="" method="post" name ="main" id = "form1" onsubmit="disable(this)">
+                    <table align ="left" style="border:1px;color:green;background-color:white;width:auto;font-size:12px">
+                        <tr>
+                            <td>
+                                {{ form.varyear.label}}
+                            </td>
+                            <td>{{ form.varyear}} &nbsp;{{ form.varyear.errors}}
+                            </td>
+                            <td>
+                                {{ form.excelfile.label}}
+                            </td>
+                            <td>{{ form.excelfile}} &nbsp;{{ form.excelfile.errors}}
+                            </td>
+                            <td>
+                                <input name="submit" type= "submit" value="View Report" >
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+        <tr>
+            <td colspan = "8">
+                {% if getdetails %}
+                    <div style="width:100%"><input name="submit" type= "submit" value="Print Report  " onclick="openrecprint();"></div>
+                    <div class="printable">
+
+                        <table align ="center" style="width:100%;background-color:white;border-collapse:collapse;">
+                            <tr>
+                                <td colspan="16">
+                                    <table  align ="left" style="border-collapse:collapse;width:100%;background-color:white">
+                                        <tr>
+                                            <td rowspan="4" style="text-align:right;">
+                                                <img style="width: 120px; height: 50px;" src="/static/{{ comp.picture }}" alt="{{ comp.name }}">
+                                            </td>
+                                        </tr>
+                                        <tr>
+
+                                            <td style="font-size:14px;font-style:normal;font-weight:bold;text-align:left">{{ comp.name }}</td>
+
+                                        </tr>
+                                        <tr>
+                                            <td style="font-size:12px;font-style:normal;font-weight:bold;text-align:left">{{ comp.address }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-size:14px;font-style:normal;font-weight:bold;text-align:left"></td>
+                                        </tr>
+                                    </table>
+
+                                </td>
+                            </tr>
+                            <tr><td colspan ="16" align ="center" style="font-weight:bold;font-size:16px;color:#000;"> {{ headings }} </td>
+
+                            </tr>
+
+                            <tr>
+                                <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle">S/N </td>
+                                <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle">Account Name</td>
+                                <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle"> Account Type</td>
+                                <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle;text-align:right;"> First Month</td>
+                                <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle;text-align:right;"> Second Month</td>
+                                <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle;text-align:right;"> Third Month</td>
+                                <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle;text-align:right;"> Fourth Month</td>
+                                <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle;text-align:right;"> Fifth Month</td>
+                                <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle;text-align:right;"> Sixth Month</td>
+                                <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle;text-align:right;"> Seventh Month</td>
+                                <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle;text-align:right;"> Eighth Month</td>
+                                <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle;text-align:right;"> Ninth Month</td>
+                                <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle;text-align:right;"> Tenth Month</td>
+                                <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle;text-align:right;"> Eleventh Month</td>
+                                <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle;text-align:right;"> Twelfth Month</td>
+                                <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:11px;border:1px solid black;color:#000000;vertical-align:middle;text-align:right;"> Total</td>
+
+
+                            </tr>
+
+                            {% for pincode in getdetails %}
+
+                                <tr>
+                                <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black">{{ forloop.counter }}</td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000;border:1px solid black"> {{ pincode.accname }}</td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black"> {{ pincode.groupname}}</td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;text-align:right;"> {{ pincode.first}}</td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;text-align:right;"> {{ pincode.second}}</td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;text-align:right;"> {{ pincode.third}}</td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;text-align:right;"> {{ pincode.four}}</td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;text-align:right;"> {{ pincode.five}}</td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;text-align:right;"> {{ pincode.six}}</td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;text-align:right;"> {{ pincode.seven}}</td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;text-align:right;"> {{ pincode.eight}}</td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;text-align:right;"> {{ pincode.nine}}</td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;text-align:right;"> {{ pincode.ten}}</td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;text-align:right;"> {{ pincode.eleven}}</td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;text-align:right;"> {{ pincode.twelve}}</td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;font-weight:bold;text-align:right;"> {{ pincode.total}}</td>
+
+                            {% endfor %}
+                            </tr>
+                        </table>
+                    </div>
+                {% else %}
+                    <span style="font-weight:bold;;font-size:12px;"> Please Select Date And Click View Report </span>
+                {% endif %}
+
+            </td>
+        </tr>
+
+    </table >
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function() {
+            //$("#id_varyear").focus();
+            var pickerOpts = {
+                //appendText: "mm/dd/yy",
+                //defaultDate: "+5",
+                showOtherMonths: true,
+                changeMonth: true,
+                changeYear: true,
+                showButtonPanel: true
+                // showOn: "button"
+            };
+            $("#id_varyear").datepicker(pickerOpts);
+        });
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+    <script language="javascript" type="text/javascript">
+        function openrecprint()
+        {
+            $( ".printable" ).print();
+        }
+    </script>
+
+{%endblock%}

@@ -1,0 +1,212 @@
+{% extends "sysadmin/base.htm" %}
+{%block head %}
+{%block title %}{%endblock%}
+{%endblock %}
+{%block content%}
+<div class="pmiddle">
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="left" style="border:1px solid black;width:100%;heigth:10%;font-family: verdana;color:black">
+<div align ="center" style="background-color:black;border:0px solid black;width:100%;height:10%; font-size:12px;color:white"> <strong> CREATE USER  </strong> </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+<table align ="center" style="border:0px solid black;width:100%">
+ <form action="" method="post" name ="main" onsubmit="disable(this)">
+<tr>
+        <td align ="left" style="width:30%">
+User Name :
+        </td>
+<td align ="left" style="width:30%">{{ form.username}}
+</td>
+<td align ="left" style="width:30%">{{ form.username.errors}}
+</td>
+</tr>
+<tr>
+     <td align ="left" style="width:30%">
+Staff Name :
+        </td>
+<td align ="left" style="width:30%">{{ form.staffname}}
+</td>
+<td align ="left" style="width:30%">{{ form.staffname.errors}}
+</td>
+
+</tr>
+
+<tr>
+        <td>
+Expiry Date :
+        </td>
+<td>{{ form.expiredate}}
+</td>
+<td>{{ form.expiredate.errors}}
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan = 20> <hr></td>
+</tr>
+<tr><td colspan = 20 style="vertical-align:top; width:auto;align:left"><strong>Set Up  : Allow {{ form.createacc}}</strong>  </td>
+</tr>
+<tr>
+<td colspan = 20> <hr></td>
+</tr>
+<tr><td colspan = 20 style="vertical-align:top; width:auto;align:left" ><table><tr><td><strong>HRM Module ::</strong></td><td>New Staff{{ form.invoice}}  Edit Staff{{ form.receipt}} </td><td> Staff Education/Proffessional{{ form.payment}} </td><td>Report {{ form.standardledger}}</td></tr></table>    </td>
+</tr>
+<tr>
+<td colspan = 20> <hr></td>
+</tr>
+<tr><td colspan = 20 style="vertical-align:top; width: auto;align:left" ><strong>Manage Staff :: Redeployment/Promotion{{ form.stockin}} Termination/Resignation/Retirement {{ form.stockout}}  Reinstatement{{ form.stockreport}}</strong></td>
+</tr>
+<tr>
+<td colspan = 20> <hr></td>
+</tr>
+<!--<tr><td colspan = 20 style="vertical-align:top; width: auto;align:left" ><td>Non-pensionable{{ form.genledger}}</td><strong>Staff Welfare ::</strong> Job Setup{{ form.jobsetup}}  Additional Job{{ form.addsetup}}  Costing{{ form.jobcosting}}  Return Item{{ form.returnmat}}  Invoice{{ form.wipinvoice}}  Report{{ form.wipreport}}</td>-->
+<tr><td colspan = 20 style="vertical-align:top; width: auto;align:left" ><strong>Leave Module :: Allow  {{ form.statutory}}</strong></td>
+</tr>
+
+<tr>
+<td colspan = 20> <hr></td>
+</tr>
+<tr><td colspan = 20 style="vertical-align:top; width: auto;align:left" ><strong>Training Module :: Allow {{ form.unpresented}}</strong>  </td>
+</tr>
+<tr>
+<td colspan = 20> <hr></td>
+</tr>
+ <tr><td colspan = 20 style="vertical-align:top; width: auto;align:left" ><strong>Payroll Module ::Allow  {{ form.jobsetup}}</strong> </td>
+</tr>
+     <tr>
+     <td colspan = 20> <hr></td>
+     </tr>
+     <tr><td colspan = 20 style="vertical-align:top; width: auto;align:left" ><strong>Disciplinary Module :: Allow  {{ form.addsetup}}</strong></td>
+     </tr>
+<tr>
+<td colspan = 20> <hr></td>
+</tr> <!-- Rollover {{ form.rollover}}-->
+<tr><td colspan = 20 style="vertical-align:top; width: auto;align:left" ><strong>Sys Admin ::Create User  {{ form.createuser}}  Reset User  {{ form.resetuser}}  User Report  {{ form.userreport}}</strong> </td>
+</tr>
+<tr>
+<td colspan = 20> <hr></td>
+</tr>
+<tr>
+        <td align ="left" style="width:30%">
+
+
+                        </td>
+<td align ="left" style="width:30%">
+
+<input name="submit" type= "submit" value="Create User Account">
+ </td>
+<td align ="left" style="width:30%">
+ </td>
+<td>
+</td>
+</tr>
+</form>
+<table style="width:100%;color:black;border-collapse:collapse;">
+ <tr>
+             <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong>UserName </strong></td>
+             <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong>Staff Name</strong></td>
+
+              <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Creation Date</strong></td>
+              <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Expiry Date</strong></td>
+               <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Status</strong></td>
+               <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Created By</strong></td>
+               </tr>
+
+         {% for pincode in getdetails %}
+
+           <tr>
+            <!-- <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="/sysadmin/edituser/{{ pincode.id }}/" style ="color:red" onclick="admno({{ pincode.id }});" title="Edit This User"> {{ pincode.username|upper }} </a></strong></td>-->
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="#" style ="color:red" onclick="admno({{ pincode.id }});" title="Edit This User"> {{ pincode.username|upper }} </a></strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"><strong> {{ pincode.staffname|upper }}</strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.recdate|date:"d-m-Y"}}</strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.expiredate|date:"d-m-Y"}}</strong></td>
+               <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.status|upper}}</strong></td>
+               <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.userid|upper}}</strong></td>
+           {% endfor %}
+
+
+            </tr>
+</table>
+</table>
+</div>
+</div>
+    <div id="myDialog" >
+    </div>
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#myDialog").hide();
+        });
+    </script>
+
+<script type="text/javascript">
+document.getElementById('id_username').focus()
+</script>
+<script>
+$(document).ready(function() {
+    var pickerOpts = {
+        //appendText: "mm/dd/yy",
+        //defaultDate: "+5",
+        showOtherMonths: true,
+        changeMonth: true,
+        changeYear: true,
+        dateFormat:"mm/dd/yy"
+        //showButtonPanel: true
+        // showOn: "button"
+
+    };
+         $("#id_expiredate").datepicker(pickerOpts);
+         //alert("welcome");
+         //$("#id_cuscode").focus();
+});
+</script>
+
+    <script type="text/javascript" language="javascript">
+        function admno(vid){
+            //alert(vid);
+            var state = vid;
+            var url = "/humanresources/sysadmin/getuseraccount/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialog").html(html);
+                    getdialog();
+                }
+            });
+            return false;
+        }
+
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialog(){
+            var dialogOpts = {
+                autoOpen:true,
+                modal:true,
+                position: ["center", "middle"],
+                height:"auto",
+                width:670,
+                title:'Edit Query Setup',
+                closeOnEscape:true,
+                show: true,
+                hide: true,
+                bgiframe: true
+            };
+            $("#myDialog").dialog(dialogOpts);
+        }
+
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+ {%endblock%}

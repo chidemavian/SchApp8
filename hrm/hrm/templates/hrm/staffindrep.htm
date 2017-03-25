@@ -1,0 +1,73 @@
+{% extends "hrm/base.htm" %}
+{%block head %}
+{%block title %}Solutions{%endblock%}
+{%endblock %}
+{%block content%}
+<div class="pmiddle">
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="center" style="border:0px solid black;width:100%;font-family: verdana;color:black">
+<div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%; font-size:12px;color:black"> Staff Report </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:;" > {{varerr}}</div>
+    <form action="" method="post" name ="main" onsubmit="disable(this)">
+    <table align ="left" style="border:0px solid black;width:100%;background-color:;">
+<tr>
+<td align ="left" style="width:auto"> Staff Name  :</td><td align ="left" style="width:auto">{{ form.staffid}}</td>
+<td align ="left" style="width:auto">{{ form.staffid.errors}}</td>
+<td align ="left" style="width:auto"><input name="submit" type= "submit" value="View Report" ></td>
+</tr>
+</table>
+</form>
+</div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            // $("#id_transdate").datepicker();
+            //alert("welcome");
+            $("#id_status").focus();
+            //$(".box").hide();
+
+            autocomplete();
+
+        });
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        function autocomplete(){
+
+            $("#id_staffid").autocomplete({
+                //minLength: 0
+                source: "/hrm/hrm/findstaffname/",
+
+                select: function( event, ui ) {
+                    $( "#id_staffid" ).val( ui.item.staffid );
+                   // $( "#id_staffname" ).val( ui.item.name );
+                    // $( "#project-description" ).html( ui.item.desc );
+                    //$( "#project-icon" ).attr( "src", "images/" + ui.item.icon );
+                    //openrec();
+
+                    return false;
+                }
+            })
+                    .data( "autocomplete" )._renderItem = function( ul, item ) {
+                return $( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( "<a>" + item.label + "</a>" )
+                        .appendTo( ul );
+            };
+
+        }
+
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+
+{%endblock%}

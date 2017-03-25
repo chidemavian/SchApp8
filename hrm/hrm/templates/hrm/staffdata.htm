@@ -1,0 +1,277 @@
+{% extends "hrm/base.htm" %}
+{%block head %}
+{%block title %}{%endblock%}
+{%endblock %}
+{%block content%}
+<div class="pmiddle">
+    <div align ="left" style="border:0px solid black;width:100%;font-family:verdana;font-size:11px;color:black">
+      <div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%;font-size:12px;color:black">STAFF BIO DATA </div>
+       <div align="center" style="color:red;font-family:verdana;font-size:16px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+         <form action="" method="post" name ="main" enctype="multipart/form-data" onsubmit="disable(this)">
+          <table align ="center" style="width:140%;">
+    <tr>
+         <td>Staff Id :</td>
+         <td>{{ form.staffid}}<img src="/static/add.png" style="width:15px;height:15px" onclick="admno();"></td>
+         <td>Staff Name:</td>
+         <td>{{ form.name}}</td>
+         <td rowspan="14" style="vertical-align:top;;">{{ form.picture}}<br><img src="/static/pics.png" alt="Browse file" style="padding:2px"></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+<!--<td rowspan = 10> </td>-->
+    </tr>
+<tr>
+    <td>Address :</td>
+    <td>{{ form.address}}</td>
+    <td>Phone No:</td>
+    <td>{{ form.phoneno}}</td>
+    <td></td>
+</tr>
+<tr>
+     <td>Date Of Birth:</td>
+     <td>{{ form.dateofbirth}}</td>
+     <td>Sex :</td>
+     <td>{{ form.sex}}</td>
+     <td></td>
+</tr>
+<tr>
+    <td>Marital Status:</td>
+    <td>{{ form.maritalstatus}}</td>
+    <td>Nationality:</td>
+    <td>{{ form.nationality}}</td>
+    <td></td>
+</tr>
+<tr>
+    <td>State Of Origin:</td>
+    <td>{{ form.stateoforigin}}</td>
+    <td>LGA:</td>
+    <td>{{ form.localgovt}}</td>
+    <td></td>
+</tr>
+<tr>
+     <td>E-mail:</td>
+     <td>{{ form.email}}</td>
+     <td>Next Of Kin :</td>
+     <td>{{ form.nextofkin}}</td>
+     <td></td>
+</tr>
+<tr>
+     <td>Address(NOK):</td>
+     <td>{{ form.nextofkinaddress}}</td>
+     <td>Phone(NOK):</td>
+     <td>{{ form.nextofkinphone}}</td>
+     <td></td>
+</tr>
+<!--<tr> <td colspan = 50> <hr></td></tr>-->
+<tr>
+     <td>Department:</td>
+     <td>{{ form.department}}</td>
+     <td>Designation:</td>
+     <td>{{ form.designation}}</td>
+</tr>
+<tr>
+    <td>Res. Date :</td>
+    <td>{{ form.dateofresum}}</td>
+    <td>Qualification :</td>
+    <td>{{ form.qualification}}</td>
+</tr>
+<tr>
+     <td>Branch:</td>
+     <td>{{ form.branch}}</td>
+     <td>Residing State :</td>
+     <td>{{ form.profession}}</td>
+</tr>
+<tr>
+     <td>1st Guarantor:</td>
+     <td>{{ form.firstguarantor}}</td>
+     <td>Address:</td>
+     <td>{{ form.firstguarantoraddress}}</td>
+</tr>
+<tr>
+     <td>2nd Guarantor:</td>
+     <td>{{ form.secondguarantor}}</td>
+     <td>Address:</td>
+     <td>{{ form.secondguarantoraddress}}</td>
+</tr>
+<tr>
+        <td>Level :</td>
+        <td>{{ form.level}}</td>
+        <td>Step:</td>
+        <td>{{ form.step}}</td>
+</tr>
+<tr>
+     <td></td>
+<td>
+<input name="submit" type= "submit" value="Submit Staff Data">
+ </td>
+<td>
+ </td>
+<td>
+</td>
+</tr>
+</table>
+</form>
+
+</div>
+</div>
+
+<!-- parti-->
+<script>
+$(document).ready(function() {
+    var pickerOpts = {
+        //appendText: "mm/dd/yy",
+        //defaultDate: "+5",
+        showOtherMonths: true,
+        changeMonth: true,
+        changeYear: true,
+        dateFormat:"dd/mm/yy"
+        //showButtonPanel: true
+        // showOn: "button"
+    };
+         $("#id_dateofbirth").datepicker(pickerOpts);
+         $("#id_dateofresum").datepicker(pickerOpts);
+         $("#id_staffid").focus();
+         getSTATEs();
+         getLGAsteps();
+
+});
+</script>
+
+    <script type="text/javascript" language="javascript">
+        function getSTATEs(){
+            var state = $("#id_nationality").val();
+            //alert(state)
+            var url = "/hrm/getstate/";
+            var i = 0;
+            var data='userid='+state;
+            $("#id_stateoforigin").val('');
+            $("#id_stateoforigin").html('');
+            if (state != undefined){
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data:data,
+                    success: function(data){
+                        var options = '';
+                        for (i=0; i<data.length; i++){
+                            options += '<option value="' + data[i] +'">' + data[i] + '</option>'
+                        }
+                        $("#id_stateoforigin").append(options);
+                        getLGAs();
+                    }
+                })
+            }
+        }
+
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getLGAs(){
+            var state = $("#id_nationality").val() + "," +  $("#id_stateoforigin").val() ;
+            //alert(state);
+            var url = "/hrm/getlocal/";
+            var i = 0;
+            var data='userid='+state;
+            $("#id_localgovt").val('');
+            $("#id_localgovt").html('');
+            if (state != undefined){
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data:data,
+                    success: function(data){
+                        var options = '';
+                        for (i=0; i<data.length; i++){
+                            options += '<option value="' + data[i] +'">' + data[i] + '</option>'
+                        }
+                        $("#id_localgovt").append(options);
+                    }
+                })
+            }
+        }
+
+    </script>
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#id_nationality").change(function () {
+                getSTATEs();
+            });
+        });
+
+    </script>
+
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#id_stateoforigin").change(function () {
+                getLGAs();
+            });
+        });
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        function getLGAsteps(){
+            var state = $("#id_level").val();
+            //alert(state)
+            var url = "/hrm/getnewstep/";
+            var i = 0;
+            var data='userid='+state;
+            $("#id_step").val('');
+            $("#id_step").html('');
+            if (state != undefined){
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data:data,
+                    success: function(data){
+                        var options = '';
+                        for (i=0; i<data.length; i++){
+                            options += '<option value="' + data[i] +'">' + data[i] + '</option>'
+                        }
+                        $("#id_step").append(options);
+
+                    }
+                })
+            }
+        }
+    </script>
+    <script>
+        $(document).ready(function() {
+// $(".listbox").hide();
+            $("#id_level").change(function () {
+                getLGAsteps();
+            });
+        });
+    </script>
+    <script type="text/javascript" language="javascript">
+        function admno(){
+            var state = "t";//$("#id_admitted_session").val() ;
+            //alert(state);
+            var url = "/hrm/hrm/getstaffno/";
+            var i = 0;
+            var data='userid='+state;
+            $("#id_staffid").val('');
+            $("#id_staffid").html('');
+            if (state != undefined){
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data:data,
+                    success: function(data){
+                        var options = data;
+                        $("#id_staffid").val(options) ;
+                    }
+                })
+            }
+        }
+
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+ {%endblock%}

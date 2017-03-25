@@ -1,0 +1,380 @@
+{% extends "rsetup/basesetup.htm" %}
+{%block head %}
+    {%block title %}Solutions{%endblock%}
+    {% load humanize %}
+{%endblock %}
+{%block content%}
+
+    <!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+    <div align ="left" style="border:0px solid black;width:100%;font-family: verdana;color:black">
+        <div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%; height:4%;font-size:12px;color:black"> LOAN DEDUCTION SETUP </div>
+        <div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+        <table align ="left" style="width:100%">
+    <tr>
+        <td><a href="/hrm/setupded/" style="width:auto;color:red;font-size:15px"> General Deduction </a></td>
+        <td><a href="/hrm/setupsded/" style="width:auto;color:red;font-size:15px"> Special Deduction </a></td>
+        <td><a href="/hrm/savings/" style="width:auto;color:red;font-size:15px"> Savings Deduction </a></td>
+        <td><a href="/hrm/loan/" style="width:auto;color:red;font-size:15px"> Loan Deduction </a></td>
+        <td><a href="#" style="width:auto;color:red;font-size:15px" onclick="admnorate();">Edit Pension Rate </a></td>
+        <td><a href="#" style="width:auto;color:red;font-size:15px" onclick="admnoratesavings();">Edit Savings Name </a></td>
+    </tr>
+            <tr>
+                <td colspan="8">
+
+                    <form action="" method="post" name ="main" onsubmit="disable(this)">
+                        <table style="width:auto;">
+                            <tr>
+                                <td>
+                                    Staff Name :
+                                </td>
+                                <td>{{ form.staffname}}
+                                </td>
+                                <td>{{ form.staffname.errors}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Staff Id :
+                                </td>
+                                <td>{{ form.staffid}}
+                                </td>
+                                <td>{{ form.staffid.errors}}
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    Amount :
+                                </td>
+                                <td>{{ form.amount}}
+                                </td>
+                                <td>{{ form.amount.errors}}
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    Interest rate (e.g 5,10):
+                                </td>
+                                <td>{{ form.intrate}}
+                                </td>
+                                <td>{{ form.intrate.errors}}
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    Description :
+                                </td>
+                                <td>{{ form.paydesc}}&nbsp;<img src="/static/add.png" style="width:15px;height:15px" onclick="admno();">
+                                </td>
+                                <td>{{ form.paydesc.errors}}
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    Duration In Month (e.g 2):
+                                </td>
+                                <td>{{ form.duration}}
+                                </td>
+                                <td>{{ form.duration.errors}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Effective Date :
+                                </td>
+                                <td>{{ form.effectivedate}}
+                                </td>
+                                <td>{{ form.effectivedate.errors}}
+                                </td>
+
+                            </tr>
+                            <tr>
+
+                                <td colspan="3" style="text-align:center;">
+
+                                    <input name="submit" type= "submit" value="Submit Loan" >
+                                </td>
+
+                            </tr>
+                        </table>
+
+                    </form>
+
+                </td>
+            </tr>
+            <tr>
+                <td colspan = 8>
+                    <table align ="center" style="width:100%;background-color:white;border-collapse:collapse;">
+                        <tr>
+                            <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Staff Id</td>
+                            <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Staff Name</td>
+                            <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Description</td>
+                            <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Loan Amount</td>
+                            <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Interest Rate</td>
+                            <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Monthly Repayment</td>
+                            <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Duration</td>
+                            <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Effective Date</td>
+                            <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Expiry Date</td>
+
+                            {% for pincode in getdetails %}
+
+                                <tr>
+                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ pincode.staffid|upper }}</td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.staffname|title }}</td>
+                                <!-- <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;font-weight:bold;"> <a href="/editspall/{{ pincode.id }}/" style ="color:red;"> {{ pincode.paydes|upper }} </a></td>-->
+                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;font-weight:bold;"> <a href="#" style ="color:red;" onClick= "getdialogtry({{ pincode.id }});" title="Edit Loan"> {{ pincode.paydes|upper }} </a></td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  {{ pincode.amount|intcomma }} </td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  {{ pincode.intrate}} </td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  {{ pincode.monthlyepayment|intcomma}} </td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  {{ pincode.duration}} </td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  {{ pincode.effectivedate|date:"F,Y" }} </td>
+                                <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  {{ pincode.expiredate|date:"F,Y" }} </td>
+                            {% endfor %}
+                            </tr>
+                    </table>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="myDialog" title="Edit Account">
+    </div>
+
+    <!-- parti-->
+
+
+
+    <script>
+        $(document).ready(function() {
+            var pickerOpts = {
+                //appendText: "mm/dd/yy",
+                //defaultDate: "+5",
+                showOtherMonths: true,
+                changeMonth: true,
+                changeYear: true,
+                dateFormat:"mm/dd/yy"
+            };
+            $("#id_effectivedate").datepicker(pickerOpts);
+            $("#id_staffname").focus();
+            //$(".box").hide();
+
+            autocomplete();
+
+        });
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        function autocomplete(){
+
+            $("#id_staffname").autocomplete({
+                //minLength: 0
+                source: "/hrm/hrm/findstaffname/",
+                focus: function(event, ui){
+                    $("#id_staffname").val(ui.item.name);
+                    //$( "#id_staffname" ).val( ui.item.label.name );
+                    // populateForm(ui.item.value);
+                    return false;
+                },
+                select: function( event, ui ) {
+                    $( "#id_staffid" ).val( ui.item.staffid );
+                    $( "#id_staffname" ).val( ui.item.name );
+                    // $( "#project-description" ).html( ui.item.desc );
+                    //$( "#project-icon" ).attr( "src", "images/" + ui.item.icon );
+                    //openrec();
+
+                    return false;
+                }
+            })
+                    .data( "autocomplete" )._renderItem = function( ul, item ) {
+                return $( "<li></li>" )
+                        .data( "item.autocomplete", item )
+                        .append( "<a>" + item.label + "</a>" )
+                        .appendTo( ul );
+            };
+        }
+    </script>
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#id_staffname").keyup(function () {
+                $( "#id_staffid" ).val("");
+            });
+        });
+    </script>
+
+
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#myDialog").hide();
+        });
+    </script>
+    <script type="text/javascript" language="javascript">
+        function admno(){
+            //alert(vid);
+            var state = 'test';
+            var url = "/hrm/getdescriptionloan/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialog").html(html);
+                    getdialog();
+                }
+            });
+            return false;
+        }
+
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialog(){
+            var dialogOpts = {
+                autoOpen:true,
+                modal:true,
+                position: ["center", "middle"],
+                height:"auto",
+                width:490,
+                title:'Create Description',
+                closeOnEscape:true,
+                show: true,
+                hide: true,
+                bgiframe: true
+            };
+            $("#myDialog").dialog(dialogOpts);
+        }
+
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        function getdialogtry(vid){
+            //alert(vid);
+            var state = vid;
+            var url = "/hrm/getloan/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialog").html(html);
+                    getdialog1();
+                }
+            });
+            return false;
+        }
+
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialog1(){
+            var dialogOpts = {
+                autoOpen:true,
+                modal:true,
+                position: ["center", "middle"],
+                height:300,
+                width:490,
+                title:'Delete Loan Deduction',
+                closeOnEscape:true,
+                show: true,
+                hide: true,
+                bgiframe: true
+            };
+            $("#myDialog").dialog(dialogOpts);
+        }
+
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+<script type="text/javascript" language="javascript">
+        function admnorate(){
+            //alert(vid);
+            var state = '';
+            var url = "/hrm/getpension/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialog").html(html);
+                    getdialogp();
+                }
+            });
+            return false;
+        }
+
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialogp(){
+            var dialogOpts = {
+                autoOpen:true,
+                modal:true,
+                position: ["center", "middle"],
+                height:"auto",
+                width:490,
+                title:'Update Pension Rate',
+                closeOnEscape:true,
+                show: true,
+                hide: true,
+                bgiframe: true
+            };
+            $("#myDialog").dialog(dialogOpts);
+        }
+
+    </script>
+<script type="text/javascript" language="javascript">
+        function admnoratesavings(){
+            //alert(vid);
+            var state = '';
+            var url = "/hrm/getsavingsname/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialog").html(html);
+                    getdialog1();
+                }
+            });
+            return false;
+        }
+
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialog1(){
+            var dialogOpts = {
+                autoOpen:true,
+                modal:true,
+                position: ["center", "middle"],
+                height:"auto",
+                width:490,
+                title:'Update Savings Name',
+                closeOnEscape:true,
+                show: true,
+                hide: true,
+                bgiframe: true
+            };
+            $("#myDialog").dialog(dialogOpts);
+        }
+
+    </script>
+{%endblock%}

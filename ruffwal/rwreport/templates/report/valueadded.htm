@@ -1,0 +1,118 @@
+{% extends "report/base.htm" %}
+{% load humanize %}
+{%block content%}
+<div align ="center" style="background-color:#ccccc0;border:0px solid black;min-width:40%;height:3%; font-size:12px;color:white"> <strong>VALUE ADDED STATEMENT  </strong> </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+<table align ="left" style="border:0px solid black;width:70%">
+        <tr><td>
+            <form action="" method="post" name ="main" onsubmit="disable(this)">
+    <table align ="left" style="border:1px;width:100%">
+<tr>
+<td>Select Year : </td>
+<td>{{ form.varyear}}</td>
+    <td>Download Excel : </td>
+    <td>{{ form.excelfile}}</td>
+<td><input name="submit" type= "submit" value=" View Value Added"></td>
+</tr>
+</table >
+</form>
+</td></tr>
+        <tr>
+            <td>
+                <table align ="left" style="border:0px solid black;width:100%">
+                    <tr>
+                        <td>
+                            <input name="submit" type= "submit" value="Print Report  " onclick="openrecprint();">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan ="30">
+                            <div class="printable">
+                                <table align ="center" style="border:0px solid black;width:100%;background-color:white">
+                                    <tr>
+                                        <td>
+                                            <table align ="left" style="border:0px solid black;width:100%;background-color:white">
+                                                <tr>
+                                                    <td align="left" valign="top" style = "width:auto;background-color:white;font-size:9px"><strong> </strong></td>
+                                                    <td align="left" valign="top" style = "width:auto;background-color:white;font-size:9px"><strong></strong></td>
+                                                    <td align="left" valign="top" style = "width:auto;background-color:white;font-size:12px" colspan = "3"><img align ="center" style = "left:10%;float:left;padding:5px;border:0px;width:55px;heigth:55px" src ="/static/{{comp.picture}}" > {{comp.name}}<br>{{comp.address}}</td>
+
+                                                </tr>
+                                                <tr><td colspan ="15" align ="center"> VALUE ADDED STATEMENT FOR THE YEAR ENDED  {{ endyear|date:"F j,Y" }}</td> </tr>
+
+                                            </table>
+                                        </td></tr>
+
+                                    <tr>
+                                        <td>
+                                            <table align ="left" style="border:0px solid black;width:100%;background-color:white">
+                                                {% for j in ll  %}
+
+
+                                                <tr><td colspan="15"><table> <tr><td>{{ j.name }}</td>
+                                                   </tr>
+
+                                                {% for pincode in j.data %}
+                                                    <tr>
+                                                    <td align="left" valign="top" style = "background-color:#ffffff;font-size:11px;width:auto;color:black;"></td>
+                                                    <td align="left" valign="top" style = "background-color:#ffffff;font-size:11px;width:auto;color:black;"></td>
+                                                    <td align="left" valign="top" style = "background-color:#ffffff;font-size:11px;width:auto;color:black;">{{ pincode.name }}</td>
+                                                    <td align="left" valign="top" style = "background-color:#ffffff;font-size:11px;width:auto;color:black;"></td>
+                                                    <td align="left" valign="top" style = "background-color:#ffffff;font-size:11px;width:auto;color:black;"></td>
+                                                    <td align="left" valign="top" style = "background-color:#ffffff;font-size:11px;width:auto;color:black;">   {{ pincode.recamount}}</td>
+                                                    <td align="left" valign="top" style = "background-color:#ffffff;font-size:11px;width:auto;color:black;"></td>
+                                                    <td align="left" valign="top" style = "background-color:#ffffff;font-size:11px;width:auto;color:black;"></td>
+                                                    <td align="left" valign="top" style = "background-color:#ffffff;font-size:11px;width:auto;color:black;"> {{ pincode.perc }}</td>
+
+
+                                                {% endfor %}
+
+                                                </tr>
+                                                {% endfor %}
+                                            </table>
+                                        </td></tr>
+                                </table>
+
+                            </td>
+                            </tr>
+                            </table></div>
+
+                </td></tr></table>
+ </table>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            var pickerOpts = {
+                //appendText: "mm/dd/yy",
+                //defaultDate: "+5",
+                showOtherMonths: true,
+                changeMonth: true,
+                changeYear: true,
+                showButtonPanel: true
+                // showOn: "button"
+            };
+            $("#id_varyear").datepicker(pickerOpts);
+
+        });
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        function openrecprint()
+        {
+            //alert("welcome");
+            $( ".printable" ).print();
+
+
+        }
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+{%endblock%}

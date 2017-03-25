@@ -1,0 +1,182 @@
+{% extends "hrm/base.htm" %}
+{%block head %}
+{%block title %}LYXNEDGE Solutions{%endblock%}
+{% load humanize %}
+{%endblock %}
+{%block content%}
+<div class="pmiddle">
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="left" style="border:1px solid black;width:100%;heigth:5%;font-family: verdana;color:black">
+<div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%;heigth:10%; font-size:12px;color:black"> <strong>SPECIAL ALLOWANCE  </strong> </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+<table align ="center" style="border:0px solid black;width:100%">
+ <form action="" method="post" name ="main">
+<tr>
+        <td align ="left" style="width:30%">
+Staff Id :
+        </td>
+<td align ="left" style="width:30%">{{ form.staffid}}
+</td>
+<td align ="left" style="width:30%">{{ form.staffid.errors}}
+</td>
+<td align ="left" valign = "Top" style="width:100%" rowspan = 20>
+<div  class ="listbox" >
+   <div class="nameslist"></div>
+
+</div>
+</td>
+</tr>
+<tr>
+        <td align ="left" style="width:30%">
+Staff Name :
+        </td>
+<td align ="left" style="width:30%">{{ form.staffname}}
+</td>
+<td align ="left" style="width:30%">{{ form.staffname.errors}}
+</td>
+</tr>
+<tr>
+        <td>
+Amount :
+        </td>
+<td>{{ form.amount}}
+</td>
+<td>{{ form.amount.errors}}
+</td>
+<td>
+</td>
+</tr>
+<tr>
+        <td align ="left" style="width:30%">
+Description :
+        </td>
+<td align ="left" style="width:30%">{{ form.paydesc}}
+</td>
+<td align ="left" style="width:30%">{{ form.paydesc.errors}}
+</td>
+
+</tr>
+
+<tr>
+        <td align ="left" style="width:30%">
+
+
+                        </td>
+<td align ="left" style="width:30%">
+
+<input name="submit" type= "submit" value="Add Special Allowance" class = "submit">
+ </td>
+<td align ="left" style="width:30%">
+ </td>
+<td>
+</td>
+</tr>
+</form>
+<tr>
+<td colspan = 8>
+<table align ="center" style="border:1px; solid black;width:100%">
+ <tr>
+             <td align="center" valign="top" style = "width=auto; height=10px;background-color:gray;font-size:11px"><strong>Staff Id</strong></td>
+             <td align="center" valign="top" style = "width=auto; height=10px;background-color:gray;font-size:11px"><strong>Staff Name</strong></td>
+              <td align="center" valign="top" style = "width=auto; height=10px;background-color:gray;font-size:11px"><strong>Description</strong></td>
+               <td align="center" valign="top" style = "width=auto; height=10px;background-color:gray;font-size:11px"><strong>Amount</strong></td>
+
+         {% for pincode in getdetails %}
+
+           <tr>
+              <td align="left" valign="top" style = "background-color:gray;font-size:11px;width:auto;color:yellow"><strong> {{ pincode.staffid|upper }}</strong></td>
+              <td align="left" valign="top" style = "background-color:gray;font-size:11px;width:auto;color:yellow"><strong> {{ pincode.staffname|upper }}</strong></td>
+              <td align="left" valign="top" style = "background-color:gray;font-size:12px;width:auto;color:blue"> <strong><a href="/humanresources/hrm/editspall/{{ pincode.id }}/" style ="color:white"> {{ pincode.paydes|upper }} </a></strong></td>
+               <td align="left" valign="top" style = "background-color:gray;font-size:12px;width:auto;color:blue"> <strong> {{ pincode.amount|intcomma }} </strong></td>
+
+
+           {% endfor %}
+            </tr>
+</table>
+
+</td>
+</tr>
+</table>
+</div>
+
+<!-- parti-->
+
+<script language="javascript" type="text/javascript">
+function openrec()
+{
+  //alert("welcome");
+   var uid = $("#id_staffid").val();
+   var data='userid='+uid;
+
+   //alert(data);
+   $.ajax({
+    type:"POST",
+    url:"/humanresources/hrm/eduajaxall/",
+    data:data,
+    success:function(html) {
+         $(".box").show();
+         $(".box").html(html);
+
+    }
+
+ });
+  // alert("error");
+   return false;
+
+}
+</script>
+<script>
+$(document).ready(function() {
+        // $("#id_transdate").datepicker();
+         //alert("welcome");
+         $("#id_staffid").focus();
+         //$(".box").hide();
+});
+</script>
+<script>
+$(document).ready(function() {
+  $(".listbox").hide();
+  $("#id_staffid").keyup(function () {
+          //alert("welcome");
+   $("#id_staffname").val("");
+   //$("#id_accbal").val("");
+   var uid = $("#id_staffid").val();
+   var data='userid='+uid;
+
+   //alert(data);
+   $.ajax({
+    type:"POST",
+    url:"/humanresources/hrm/eduajax/",
+    data:data,
+    success:function(html) {
+         $(".listbox").show();
+         $(".nameslist").html(html);
+         //$("#test").html(html);
+         $('li').hover(function(){
+         $(this).addClass('hover');
+          },function(){
+         $(this).removeClass('hover');
+          });
+         $('li').click(function(){
+         var newdata = $(this).text();
+         var commsep = newdata.split(",");
+         //$("#id_cusname").val($(this).text()); cusbal
+         $("#id_staffname").val(commsep[1]);
+         $("#id_staffid").val(commsep[0]);
+         //$("#id_accbal").val(commsep[2]);
+         $('.listbox').hide();
+        // openrec()
+
+
+
+          });
+
+    }
+});
+   //alert("error");
+   return false;
+});
+});
+
+</script>
+ {%endblock%}

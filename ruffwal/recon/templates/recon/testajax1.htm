@@ -1,0 +1,89 @@
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <style type="text/css">
+        .error { color: red; }
+        .error1 { color: red; }
+        .error2 { color: red; }
+    </style>
+</head>
+  {% load humanize %}
+  <body>
+<table align ="center"  style="width:100%;background-color:white;border-collapse:collapse;">
+ <tr>
+             <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong>Account Code </strong></td>
+             <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong>Account Name</strong></td>
+     <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Ref.No</strong></td>
+              <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Particular</strong></td>
+               <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Amount</strong></td>
+     <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Date</strong></td>
+
+               </tr>
+
+         {% for pincode in gdata %}
+
+           <tr>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"><strong> {{ pincode.acccode|upper }}</strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong> {{ pincode.accname|upper }} </strong></td>
+           <!--  <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="/recon/editunpresented/{{ pincode.id }}/" style ="color:red"> {{ pincode.refno}}</a></strong></td>-->
+
+             <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="#" style ="color:red" onClick= "getdialogtry({{ pincode.id  }});"> {{ pincode.refno}}</a></strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.particulars}}</strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.amount|intcomma}}</strong></td>
+             <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.transdate|date:"d-m-Y"}}</strong></td>
+
+                         {% endfor %}
+            </tr>
+</table>
+<div id="myDialog" title="Edit Account">
+</div>
+
+<script type="text/javascript" >
+    $(document).ready(function() {
+        $("#myDialog").hide();
+    });
+</script>
+<script type="text/javascript" language="javascript">
+    function getdialogtry(vid){
+        //alert(vid);
+        var state = vid;
+        var url = "/SchApp/account/recon/getpresented/";
+        var i = 0;
+        var data='userid='+state;
+        $.ajax({
+            type:"POST",
+            url:url,
+            data:data,
+            success:function(html) {
+                //$("#myDialog").show();
+                $("#myDialog").html(html);
+                getdialog();
+            }
+        });
+        return false;
+    }
+
+</script>
+<script type="text/javascript" language="javascript">
+    function getdialog(){
+        var dialogOpts = {
+            autoOpen:true,
+            modal:true,
+            position: ["center", "middle"],
+            height:350,
+            width:490,
+            title:'Present Cheque',
+            closeOnEscape:true,
+            show: true,
+            hide: true,
+            bgiframe: true
+        };
+        $("#myDialog").dialog(dialogOpts);
+    }
+
+</script>
+
+
+  </body>
+</html>

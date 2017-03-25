@@ -1,0 +1,128 @@
+{% extends "setup/basesetup.htm" %}
+{%block content%}
+<div align ="center" style="background-color:;border:0px solid black;width:100%;height:4%; font-size:12px;color:white"> <strong> CREATE INVENTORY  </strong> </div>
+<div align="center" style="color:red;font-family:courier;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+<form action="/SchApp/account/inventory/" method="post" name ="main" onsubmit="disable(this)">
+<table align ="left" style="width:auto;">
+<tr>
+        <td>
+Name :
+        </td>
+<td>{{ form.subgrname}}
+</td>
+<td>{{ form.subgrname.errors}}
+</td>
+</tr>
+
+<tr>
+        <td>
+Account name :
+        </td>
+<td>{{ form.accname}}
+</td>
+<td>{{ form.accname.errors}}
+</td>
+</tr>
+<tr>
+        <td>
+
+
+                        </td>
+<td>
+
+<input name="submit" type= "submit" value="   Create Inventory  " >
+ </td>
+<td>
+ </td>
+</tr>
+    </table>
+</form>
+<table style="width:100%;border-collapse:collapse;background-color:white">
+ <tr>
+             <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black"><strong>Stock Name</strong></td>
+              <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black"><strong>Stock Code </strong></td>
+              <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black"><strong> Account Name</strong></td>
+              <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;color:#000000;vertical-align:middle;border:1px solid black"><strong> Account Code</strong></td>
+               </tr>
+         {% for pincode in getdetails %}
+
+           <tr>
+              <!--<td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="/editstock/{{ pincode.acccode }}/" style ="color:red"> {{ pincode.stockname|upper }} </a></strong></td>-->
+             <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="#" style ="color:red" onClick= "getdialogtry({{ pincode.acccode  }});"> {{ pincode.stockname|upper }} </a></strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"><strong> {{ pincode.acccode|upper }}</strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.subname|upper}}</strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.subcode|upper}}</strong></td>
+           {% endfor %}
+
+
+            </tr>
+</table>
+<script type="text/javascript">
+document.getElementById('id_accname').focus()
+</script>
+    <div id="myDialog" title="Edit Stock">
+    </div>
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#myDialog").hide();
+        });
+    </script>
+    <script type="text/javascript">
+        document.getElementById('id_subname').focus()
+    </script>
+    <script language="javascript" type="text/javascript">
+        function openrecprint()
+        {
+            $( ".printable" ).print();
+        }
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialogtry(vid){
+            //alert(vid);
+            var state = vid;
+            var url = "/SchApp/account/getstock/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialog").html(html);
+                    getdialog();
+                }
+            });
+            return false;
+        }
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialog(){
+            var dialogOpts = {
+                autoOpen:true,
+                modal:true,
+                position: ["center", "middle"],
+                height:220,
+                width:410,
+                title:'Edit Stock' ,
+                closeOnEscape:true,
+                show: true,
+                hide: true,
+                bgiframe: true
+            };
+            $("#myDialog").dialog(dialogOpts);
+        }
+
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+{%endblock%}

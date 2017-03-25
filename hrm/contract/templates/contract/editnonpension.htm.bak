@@ -1,0 +1,406 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional/EN">
+<html>
+<head>
+    <title> CapitalExpert :- Human Resources And Payroll </title>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+    <style type="text/css">
+        .error { color: red; }
+        .error1 { color: red; }
+        .error2 { color: red; }
+        .error3 { color: red; }
+        .error4 { color: red; }
+        .error5 { color: red; }
+        .error6 { color: red; }
+        .error7 { color: red; }
+        .error8 { color: red; }
+        .error9 { color: red; }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error').hide();
+            $('.submit').click(function(event){
+                var data=$("#staffname").val();
+                var len=data.length;
+                if (len <= 0){
+                    $('.error').show();
+                    $("#staffname").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error').hide();
+                }
+
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error1').hide();
+            $('.submit').click(function(event){
+                var data=$("#address").val();
+                var len=data.length;
+                if (len <= 0){
+                    $('.error1').show();
+                    $("#address").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error1').hide();
+                }
+
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error2').hide();
+            $('.submit').click(function(event){
+                var data=$("#phoneno").val();
+                var len=data.length;
+                if (len <= 0){
+                    $('.error2').show();
+                    $("#phoneno").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error2').hide();
+                }
+
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error3').hide();
+            $('.submit').click(function(event){
+                var data=$("#nextofkin").val();
+                var len=data.length;
+                if (len <= 0){
+                    $('.error3').show();
+                    $("#nextofkin").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error3').hide();
+                }
+
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error4').hide();
+            $('.submit').click(function(event){
+                var data=$("#nextofkinphone").val();
+                var len=data.length;
+                if (len <= 0){
+                    $('.error4').show();
+                    $("#nextofkinphone").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error4').hide();
+                }
+
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error5').hide();
+            $('.submit').click(function(event){
+                var data=$("#accno").val();
+                var len=data.length;
+                if (len <= 0){
+                    $('.error5').show();
+                    $("#accno").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error5').hide();
+                }
+
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error6').hide();
+            $('.submit').click(function(event){
+                var data0=$("#allowance").val();
+                var len=data0.length;
+                if (len <= 0){
+                    $('.error6').show();
+                    $("#allowance").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error6').hide();
+                }
+                //*********************************************************
+                if (jQuery.isNumeric(data0) == true){
+
+                }
+                else
+                {
+                    $('.error6').show();
+                    $("#allowance").focus();
+                    event.preventDefault();
+                }
+                //**********************************************************
+
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error7').hide();
+            $('.submit').click(function(event){
+                var data1=$("#deduction").val();
+                var len=data1.length;
+                if (len <= 0){
+                    $('.error7').show();
+                    $("#deduction").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error7').hide();
+                }
+                //*********************************************************
+                if (jQuery.isNumeric(data1) == true){
+
+                }
+                else
+                {
+                    $('.error7').show();
+                    $("#deduction").focus();
+                    event.preventDefault();
+                }
+                //**********************************************************
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error8').hide();
+            $('.submit').click(function(event){
+                var data2=$("#overtime").val();
+                var len=data2.length;
+                if (len <= 0){
+                    $('.error8').show();
+                    $("#overtime").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error8').hide();
+                }
+                //*********************************************************
+                if (jQuery.isNumeric(data2) == true){
+
+                }
+                else
+                {
+                    $('.error8').show();
+                    $("#overtime").focus();
+                    event.preventDefault();
+                }
+                //**********************************************************
+
+            });
+        });
+    </script>
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#staffname").keyup(function () {
+                $('.error').hide();
+            });
+            $("#address").keyup(function () {
+                $('.error1').hide();
+            });
+            $("#phoneno").keyup(function () {
+                $('.error2').hide();
+            });
+            $("#nextofkin").keyup(function () {
+                $('.error3').hide();
+            });
+            $("#nextofkinphone").keyup(function () {
+                $('.error4').hide();
+            });
+            $("#accno").keyup(function () {
+                $('.error5').hide();
+            });
+            $("#allowance").keyup(function () {
+                $('.error6').hide();
+            });
+            $("#deduction").keyup(function () {
+                $('.error7').hide();
+            });
+            $("#overtime").keyup(function () {
+                $('.error8').hide();
+            });
+        });
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+    <style type="text/css">
+        .loginTxtbox
+        {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            color: #000;
+            text-align: left;
+            border: #4772A9 1px solid;
+            height: 16px;
+        }
+    </style>
+
+</head>
+<body >
+<div align ="center" style="background-color:black;border:0px solid black;width:100%;heigth:10%; font-size:12px;color:white"> <strong>EDIT CONTRACT STAFF RECORD  </strong> </div>
+
+<form action="/humanresources/contract/editcontract/{{ getdetails.id }}/" method="post" name ="main" onsubmit="disable(this)">
+<table align ="left" style="width:auto;">
+
+
+<tr>
+        <td>
+Staff Name :
+        </td>
+<td><input id="staffname" type="text" name="staffname" size="35" value ="{{getdetails.staffname}}" class="loginTxtbox">
+</td>
+<td> &nbsp;<span class="error"> Staff Name is required</span></td>
+</tr>
+<tr>
+        <td>
+Address :
+        </td>
+<td><input id="address"  type="text" name="address" size="35" class="loginTxtbox" value="{{getdetails.address}}">
+</td>
+    <td> &nbsp;<span class="error1"> Address is required</span></td>
+</tr>
+<tr>
+        <td>
+Phone Number :
+        </td>
+<td><input id="phoneno" type="text" name="phoneno" size="25" class="loginTxtbox" value ="{{getdetails.phoneno}}">
+</td>
+    <td> &nbsp;<span class="error2"> Phone Number is required</span></td>
+</tr>
+<tr>
+        <td>
+Next of Kin :
+        </td>
+<td><input id="nextofkin" type="text" name="nextofkin" size="25" value ="{{getdetails.nextofkin}}" class="loginTxtbox">
+</td>
+    <td> &nbsp;<span class="error3"> Next of Kin is required</span></td>
+</tr>
+<tr>
+        <td>
+            Next of Kin Phone:
+        </td>
+<td><input id="nextofkinphone" type="text" name="nextofkinphone" size="25" value ="{{getdetails.nextofkinphone}}" class="loginTxtbox">
+</td>
+    <td> &nbsp;<span class="error4"> Next of Kin is required</span></td>
+</tr>
+    <tr>
+        <td>
+
+            Bank Name:
+        </td>
+        <td><select name="accname" id="accname">
+            <option selected = "selected" value="{{getdetails.accname}}">{{getdetails.accname}}</option>
+            {% for pincode in bank %}
+                <option value="{{pincode.name}}">{{pincode.name}}</option>
+            {% endfor %}
+        </select>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Account No :
+        </td>
+        <td><input type ="text" id="accno" size="25" name="accno" value ="{{getdetails.accno}}" class="loginTxtbox">
+        </td>
+        <td> &nbsp;<span class="error5"> Account Number is required</span></td>
+    </tr>
+    <tr>
+        <td>
+            Monthly Allowance :
+        </td>
+        <td><input type ="text" id="allowance" size="25" name="allowance" value ="{{getdetails.allowance}}" class="loginTxtbox">
+        </td>
+        <td> &nbsp;<span class="error6"> Valid Allowance is required</span></td>
+    </tr>
+    <tr>
+        <td>
+            Monthly Deduction :
+        </td>
+        <td><input type ="text" id="deduction" size="25" name="deduction" value ="{{getdetails.deduction}}" class="loginTxtbox">
+        </td>
+        <td> &nbsp;<span class="error7"> Valid Deduction is required</span></td>
+    </tr>
+    <tr>
+        <td>
+            Overtime :
+        </td>
+        <td><input type ="text" id="overtime" size="25" name="overtime" value ="{{getdetails.overtime}}" class="loginTxtbox">
+        </td>
+        <td> &nbsp;<span class="error8"> Valid Amount is required</span></td>
+    </tr>
+<tr>
+    <td>
+        <a  href ="/contract/deletecontract/{{getdetails.id}}" style ="color:Black;;font-size:9px"> <img style ="width:25px;height:25px" src ="/static/imgs/editdelete.png" >  </a>Delete Record
+    </td>
+<td colspan="2">
+<input name="submit" type= "submit" value="Update Staff Record" >
+ </td>
+
+</tr>
+</table>
+</form>
+<script>
+$(document).ready(function() {
+        // $("#id_transdate").datepicker();
+         //alert("welcome");
+         $("#staffname").focus();
+         //$(".box").hide();
+});
+</script>
+</body>
+</html>

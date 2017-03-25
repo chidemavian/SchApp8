@@ -1,0 +1,89 @@
+{% extends "leave/base.htm" %}
+{%block head %}
+{%block title %}{%endblock%}
+{%endblock %}
+{%block content%}
+<div class="pmiddle">
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="left" style="border:1px solid black;width:100%;heigth:10%;font-family:verdana;font-size:11px;color:black">
+<div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%;height:5%; font-size:14px;color:black">STAFF ON LEAVE</div>
+<div align="center" style="color:red;font-family:verdana;font-size:16px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+<table  style = "font-family:verdana;font-size:12px;width:85%">
+
+                    <tr>
+
+                        <td colspan="2" style="vertical-align: top; text-align: left; height: 397px;width:100%">
+                            <form action="" method="post" name ="main" >
+<table align ="center" style="border:0px solid black;width:100%">
+<tr>
+        <td align ="left" style="width:auto">
+Staff Name :
+        </td>
+<td align ="left" style="width:auto" >{{ form.name}}
+</td>
+</tr>
+
+</table>
+</form>
+</td></tr>
+<tr>
+<td  colspan = 40 align ="left" valign = "Top" >
+<div class = "listbox1">
+<div class="nameslist1"></div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+
+<!-- parti-->
+<script>
+$(document).ready(function() {
+                 $("#id_name").focus();
+
+});
+</script>
+<script>
+$(document).ready(function() {
+  $(".listbox1").hide();
+  $("#id_name").keyup(function () {
+          //alert("welcome");
+   //$("#id_desname").val("");
+   //$("#id_accbal").val("");
+   var uid = $("#id_name").val();
+   var data='userid='+uid;
+
+   //alert(data);
+   $.ajax({
+    type:"POST",
+    url:"/hrm/leave/staffajax/",
+    data:data,
+    success:function(html) {
+         $(".listbox1").show();
+         $(".nameslist1").html(html);
+         //$("#test").html(html);
+         $('li').hover(function(){
+         $(this).addClass('hover');
+          },function(){
+         $(this).removeClass('hover');
+          });
+         $('li').click(function(){
+         var newdata = $(this).text();
+         var commsep = newdata.split(",");
+         //$("#id_cusname").val($(this).text()); cusbal
+        // $("#id_desname").val(commsep[1]);
+         //$("#id_descode").val(commsep[0]);
+         //$("#id_accbal").val(commsep[2]);
+         //$('.listbox').hide();
+         //openrec()
+          });
+    }
+});
+   //alert("error");
+   return false;
+});
+});
+
+</script>
+</div>
+ {%endblock%}

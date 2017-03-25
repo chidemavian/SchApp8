@@ -1,0 +1,81 @@
+{% extends "newyear/baseposting.htm" %}
+{% load humanize %}
+{%block content%}
+        <div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+        <table align ="left" style="border:0px solid black;width:100%">
+            <tr><td>
+                <form action="" method="post" name ="main" id = "form1">
+                    <div align = "center" style ="border:1px;color:white;background-color:black;font-size:14px"> <strong>Account Search</strong> </div>
+                    <table align ="left" style="border:1px;color:green;width:50%">
+
+                        <tr>
+                            <td align ="left" valign = "Top" colspan =4>
+                            <td align ="left" valign = "Top" style="width:auto">
+                                Account Name :
+                            </td>
+                            <td align ="left" valign = "Top" style="width:auto;">{{ form.transid}}
+                            </td>
+                            <td align ="left" valign = "Top" style="width:auto;">{{ form.transid.errors}}
+                            </td>
+                    </table>
+                </form>
+            </td>
+            </tr>
+
+            <tr>
+                <td colspan="15">
+                    <table align ="left" style="border:1px;color:green;width:100%">
+                        <tr><td>
+                            <div  class ="listbox1" >
+                                <div class="nameslist1"></div>
+
+                            </div></td></tr>
+                    </table>
+                </td>
+            </tr>
+
+
+        </table >
+    <script type="text/javascript ">
+$(document).ready(function() {
+  $(".listbox1").hide();
+  $("#id_transid").keyup(function () {
+          //alert("welcome");
+   //$("#id_accname").val("");
+
+   var uid = $("#id_transid").val();
+   var data='userid='+uid;
+
+   //alert(data);
+   $.ajax({
+    type:"POST",
+    url:"/SchApp/account/newyear/paymentajaxcodesea/",
+    data:data,
+    success:function(html) {
+         $(".listbox1").show();
+         $(".nameslist1").html(html);
+         //$("#test").html(html);
+         $('li').hover(function(){
+         $(this).addClass('hover1');
+          },function(){
+         $(this).removeClass('hover1');
+          });
+         $('li').click(function(){
+         var newdata = $(this).text();
+         var commsep = newdata.split(",");
+         //$("#id_cusname").val($(this).text()); cusbal
+         //$("#id_accname").val(commsep[1]);
+         //$("#id_acccode").val(commsep[0]);
+         //$('.listbox').hide();
+          });
+
+    }
+});
+   //alert("error");
+   return false;
+});
+});
+</script>
+
+
+{%endblock%}

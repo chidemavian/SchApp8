@@ -1,0 +1,80 @@
+<html>
+<head>
+<title>  SchApp 7.0 - Enterprise School Software</title>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<link rel="shortcut icon" href="/static/favicon.png" />
+<link type="text/css" rel="Stylesheet" href="/static/JS/jquery-ui.css" />
+<script type="text/javascript" src='/static/JS/jquery-1.5.js'></script>
+<script type="text/javascript" src='/static/JS/jquery.validate.js'></script>
+<script type='text/javascript' src='/static/JS/csrf_tokenizer.js'></script>
+<script type='text/javascript' src='/static/JS/jquery.js'></script>
+<script type='text/javascript' src='/static/JS/jquery-ui.js'></script>
+<script type='text/javascript' src='/static/JS/jquery-1.7.1.min.js'></script>
+<script type='text/javascript' src='/static/JS/jquery-ui-1.8.18.custom.min.js'></script>
+<script type='text/javascript' src='/static/JS/myprint.js'></script>
+<script type='text/javascript' src='/static/JS/jquery-1.7.1.min.js'></script>
+<script type='text/javascript' src='/static/JS/jquery-ui-1.8.18.custom.min.js'></script>
+<link rel="stylesheet" type="text/css" href="/static/JS/css/hot-sneaks/jquery-ui-1.8.18.custom.css" />
+<script type='text/javascript' src='/static/JS/myprint.js'></script>
+<link type="text/css" rel="Stylesheet" href="/static/CSS/new_body_style.css" />
+
+<script type=text/javascript>
+    $(document).ready(function() {
+        openrecmainhrm();
+    });
+</script>
+<script language="javascript" type="text/javascript">
+    function openrecmainhrm()
+    {
+        var data='userid='+'test';
+        $.ajax({
+            type:"POST",
+            url:"/header/",
+            data:data,
+            success:function(html) {
+                $(".boxnn").show();
+                $(".boxnn").html(html);
+            }
+        });
+        return false;
+    }
+</script>
+
+</head>
+
+<body>
+
+    <div id="wrapper"> 
+
+        <div id="header"> 
+            <div id="app_name">SchApp 7.0 - Enterprise School Solution</div>
+            <div class="boxnn">
+            </div>
+        </div>
+
+        <div id="content" >
+
+            <div id="content_left_other">
+                {%block content%}
+                {%endblock%}
+            </div>
+
+            <div id="content_right_other_student">
+                <div class="side_menu_header">Menu Items</div>
+                <ul class="side_menu">
+                    <li><a href="/hrm/query/setup/">Setup Query</a></li>
+                    <li><a href="/hrm/query/staffquery/">Issue Query</a></li>
+                    <li><a href="/hrm/query/report/">Query Report</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div id="footer"></div>
+
+    </div>
+
+
+</body>
+
+</html>

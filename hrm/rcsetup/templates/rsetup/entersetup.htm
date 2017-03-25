@@ -1,0 +1,152 @@
+{% extends "rsetup/basesetup.htm" %}
+{%block title %}{%endblock%}
+{%block content%}
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="left" style="border:px solid black;width:100%;font-family: verdana;color:black">
+<div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%;font-size:12px;color:black"> BRANCH SETUP</div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+
+<table align ="left" style="width:100%;" id = "table1">
+<tr>
+   <td colspan="8">
+
+      <form action="" method="post" name ="main" onsubmit="disable(this)">
+
+      <table style="width:auto;">
+
+    <tr>
+        <td>
+            Name
+            </td>
+        <td>
+
+            {{form.name}}
+
+        </td>
+        <td>
+
+            {{form.name.errors}}
+
+        </td>
+    </tr>
+<tr>
+        <td>
+            Address
+            </td>
+        <td>
+            {{form.address}}
+                       </td>
+      <td>
+            {{form.address.errors}}
+                       </td>
+ </tr>
+<tr>
+
+        <td colspan="3" style="text-align: center">
+
+          <input name="submit" type= "submit" value="   Create Branch  ">
+       </td>
+</tr>
+</table>
+ </form>
+        </td>
+    </tr>
+<tr>
+    <td colspan="8">
+ <table style="width:100%;color:black;border-collapse:collapse;">
+ <tr>
+            <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black">S/N</td> 
+             <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black">Branch Name</td>
+              <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black">Branch Address</td>
+               </tr>
+
+         {% for pincode in getdetails %}
+           <tr>
+            <!-- <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="/editlg/{{ pincode.id }}/" style ="color:red;">{{ pincode.lgname|upper }}</a></strong></td>-->
+             <td align="center" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"><a style ="color:black;" >{{forloop.counter }}</a></td>
+
+             <td align="center" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"><a href="#" style ="color:red;" onclick="admno({{ pincode.id }});" title="Edit this branch">{{ pincode.lgname|upper }}</a></td>
+              <td align="center" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ pincode.lgaddress|upper }}</td>
+        {% endfor %}
+            </tr>
+</table>
+
+    </td>
+</tr>
+    </table>
+
+</div>
+    <div id="myDialog" >
+    </div>
+<!-- parti-->
+
+<script type="text/javascript">
+document.getElementById('id_subname').focus()
+</script>
+<script language="javascript" type="text/javascript">
+function printPage(table1){
+          alert("welcome");
+            var printElement = document.getElementById('table1');
+            $(printElement).printArea({mode: "popup", popClose: false});
+        };
+
+</script>
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#myDialog").hide();
+        });
+    </script>
+    <script type="text/javascript" language="javascript">
+        function admno(vid){
+            //alert(vid);
+            var state = vid;
+            var url = "/hrm/getbranch/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialog").html(html);
+                    getdialog();
+                }
+            });
+            return false;
+        }
+
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialog(){
+            var dialogOpts = {
+                autoOpen:true,
+                modal:true,
+                position: ["center", "middle"],
+                height:"auto",
+                width:490,
+                title:'Edit Branch',
+                closeOnEscape:true,
+                show: true,
+                hide: true,
+                bgiframe: true
+            };
+            $("#myDialog").dialog(dialogOpts);
+        }
+
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+
+
+
+ {%endblock%}

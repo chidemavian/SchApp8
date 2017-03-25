@@ -1,0 +1,79 @@
+{% extends "rwadmin/base.htm" %}
+{%block head %}
+    {%block title %}{%endblock%}
+{%endblock %}
+{%block content%}
+
+    <div class="adv1"><div class="advin" align="left" ><img style ="width:25px;height:25px;float:left;" src ="/static/imgs/loogo.png" ></div> <div class="advout" align="right"> Welcome, {{varuser|upper}} |<a href="/welcome/"> Main Page </a>|<a href="/logoutuser/"> Log Out </a></div></div>
+    <div class="pmiddle">
+        <!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>
+  <div align ="left" style="border:1px solid black;width:100%;heigth:10%;font-family: verdana;color:black">-->
+        <div align ="center" style="background-color:black;border:0px solid black;width:100%;height:10%; font-size:12px;color:white"> <strong>USER REPORT  </strong> </div>
+        <div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+        <table align ="left" style="border:0px solid black;width:100%">
+            <img src="/static/imgs/printer.jpeg" style="width:30px;height: 30px "  onclick="openrecprint();" >
+            <tr>
+                <td colspan ="30">
+                    <div class="printable">
+                        <table align ="center" style="border:0px solid black;width:100%;background-color:white">
+                            <tr>
+                                <td>
+                                    <table align ="left" style="border:0px solid black;width:100%;background-color:white">
+                                        <tr>
+                                            <td align="left" valign="top" style = "width:auto;background-color:white;font-size:9px"><strong> </strong></td>
+                                            <td align="left" valign="top" style = "width:auto;background-color:white;font-size:9px"><strong></strong></td>
+                                            <td align="left" valign="top" style = "width:auto;background-color:white;font-size:12px" colspan = "3"><img align ="center" style = "left:10%;float:left;padding:5px;border:0px;width:55px;heigth:55px" src ="/static/{{comp.picture}}" > {{comp.name}}<br>{{comp.address}}</td>
+
+                                        </tr>
+                                        <tr><td colspan ="15" align ="center">USER REPORT</td> </tr>
+
+                                    </table>
+                                </td></tr>
+
+                            <tr>
+                                <td>
+
+
+                                    <table align ="left" style="border:0px solid black;width:100%;background-color:white">
+
+                                        <tr>
+                                            <td align="left" valign="top" style = "width:auto;height:10px;background-color:#ffffff;font-size:11px;color: black;">Username </td>
+                                            <td align="left" valign="top" style = "width:auto; height:10px;background-color:#ffffff;font-size:11px;color: black;">Staff Name</td>
+                                            <td align="left" valign="top" style = "width:auto;height:10px;background-color:#ffffff;font-size:11px;color: black;">Registration Date </td>
+                                         </tr>
+
+                                        <tr><td colspan="10"><hr></td></tr>
+
+                                        {% for pincode in getdetails %}
+                                            <tr>
+                                            <td align="left" valign="top" style = "background-color:#ffffff;font-size:11px;width:auto;color:black;"> {{ pincode.username }}</td>
+                                            <td align="left" valign="top" style = "background-color:#ffffff;font-size:11px;width:auto;color:black;"> {{ pincode.staffname }}</td>
+                                            <td align="left" valign="top" style = "background-color:#ffffff;font-size:11px;width:auto;color:black;">   {{ pincode.recdate|date:"F j,Y"}}</td>
+                                        {% endfor %}
+
+                                        </tr>
+
+                                    </table>
+                                </td></tr>
+                        </table>
+
+                    </div>
+                </td></tr>
+        </table>
+    </div>
+
+    <!-- parti-->
+
+    <script type="text/javascript">
+        document.getElementById('id_username').focus()
+    </script>
+    <script language="javascript" type="text/javascript">
+        function openrecprint()
+        {
+            //alert("welcome");
+            $( ".printable" ).print();
+
+
+        }
+    </script>
+{%endblock%}

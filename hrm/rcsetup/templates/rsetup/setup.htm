@@ -1,0 +1,127 @@
+{% extends "rsetup/basesetup.htm" %}
+{%block head %}
+{%block title %}{%endblock%}
+{%endblock %}
+{%block content%}
+
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="left" style="border:1px solid black;width:100%;font-family: verdana;color:black">
+<div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%;font-size:12px;color:black"> CREATE DESIGNATION </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+<table align ="center" style="border:0px solid black;width:100%">
+<tr>
+    <td colspan="8">
+
+
+ <form action="" method="post" name ="main" onsubmit="disable(this)">
+  <table style="width:auto;">
+<tr>
+        <td>
+Designation Name :
+        </td>
+<td>{{ form.desname}}
+</td>
+<td>{{ form.desname.errors}}
+</td>
+</tr>
+
+<tr>
+
+<td colspan="3" style="text-align:center;">
+
+<input name="submit" type= "submit" value="Submit" >
+ </td>
+<td>
+</td>
+</tr>
+</table>
+</form>
+    </td>
+</tr>
+<tr>
+<td colspan = 8>
+<table style="width:auto;color:black;border-collapse:collapse;">
+ <tr>
+     <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black">S/N</td>
+
+ <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black">Designation</td>
+ </tr>
+         {% for pincode in getdetails %}
+
+           <tr>
+             <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ forloop.counter }}</td>
+            <!-- <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="/editdesgn/{{ pincode.id }}/" style ="color:red;"> {{ pincode.desc|upper }} </a></strong></td>-->
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"><a href="#" style ="color:red;" onclick="admno({{ pincode.id }});" title="Edit This Designation"> {{ pincode.desc|upper }} </a></td>
+
+
+           {% endfor %}
+            </tr>
+</table>
+
+</td>
+</tr>
+</table>
+
+</div>
+
+    <div id="myDialog" >
+    </div>
+<!-- parti-->
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#myDialog").hide();
+        });
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        function admno(vid){
+            //alert(vid);
+            var state = vid;
+            var url = "/hrm/getdesignation/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialog").html(html);
+                    getdialog();
+                }
+            });
+            return false;
+        }
+
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialog(){
+            var dialogOpts = {
+                autoOpen:true,
+                modal:true,
+                position: ["center", "middle"],
+                height:"auto",
+                width:490,
+                title:'Edit Designation',
+                closeOnEscape:true,
+                show: true,
+                hide: true,
+                bgiframe: true
+            };
+            $("#myDialog").dialog(dialogOpts);
+        }
+
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+
+ {%endblock%}

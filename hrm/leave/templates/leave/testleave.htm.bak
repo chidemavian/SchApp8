@@ -1,0 +1,42 @@
+<!-- Created: 31/08/2011 by NANA -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional/EN">
+<html>
+  <head>
+    <title>Untitled</title>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <meta name="generator" content="PyScripter">
+  </head>
+  <body>
+<table style="width:100%;color:black;border-collapse:collapse;">
+ <tr>
+     <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong>S/N</strong></td>
+               <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong>Staff Id</strong></td>
+              <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Name</strong></td>
+                      <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Designation</strong></td>
+       <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Department</strong></td>
+       <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Type Of Leave</strong></td>
+       <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Description</strong></td>
+       <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Duration</strong></td>
+      <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Commence Date</strong></td>
+      <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> End Date</strong></td>
+                                             </tr>
+      <!--  <tr> <td colspan = "15" align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:9px;color:black"><hr></td></tr>-->
+         {% for pincode in gdata %}
+
+           <tr>
+             <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ forloop.counter}}</strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.staffid}}</strong></td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.staffname}}</strong></td>
+                     <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.designation}}</strong></td>
+      <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.department}}</strong></td>
+      <td align="left" valign="top"style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="/humanresources/leave/deletestaff/{{ pincode.id }}" style ="color:blue" title="Click to Delete This Leave">{{ pincode.traintype}}</a></strong></td>
+      <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.description}}</strong></td>
+      <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.duration}}</strong></td>
+      <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.commdate}}</strong></td>
+      <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.enddate}}</strong></td>
+                         {% endfor %}
+            </tr>
+</table>
+
+  </body>
+</html>

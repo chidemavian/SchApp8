@@ -1,0 +1,46 @@
+{% extends "rwadmin/base.htm" %}
+{%block head %}
+    {%block title %}{%endblock%}
+    {% load humanize %}
+{%endblock %}
+
+{% block content %}
+<form action="" method="post" enctype="multipart/form-data" onsubmit="disable(this)">
+<table style="width:auto;">
+
+    <tr>
+        <td colspan="5" style="font-size:15px;text-align:center;font-weight:bold;background:#ccccc0;color:#000000;height:25px;">
+            Delete Transaction
+        </td>
+    </tr>
+    <tr>
+        <td colspan="5" style="font-size:15px;text-align:center;font-weight:bold;color:red">
+            {{succ}}
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Trans Id
+        </td>
+        <td>
+            {{ form.username }}
+        </td>
+        <td>
+            <input name="submit" type= "submit" value="Delete Transaction "/>
+        </td>
+
+    </tr>
+</table>
+    </form>
+
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,213 @@
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <style type="text/css">
+        .error { color: red; }
+        .error1 { color: red; }
+        .error2 { color: red; }
+        .error3 { color: red; }
+        .error4 { color: red; }
+    </style>
+
+</head>
+<body>
+<div align="center" style="color:red;">Press ESC to  Exit</div>
+    <form action="/changepassword/" method="post" onsubmit="disable(this)">
+<table align ="center" style="border:0px solid black;background:white;width:100%;height:100%">
+ <tr>
+        <td>
+            Old Password
+            </td>
+        <td>                       {{form.oldpassword}}
+            &nbsp;<span class="error"> * Field required</span>
+                        </td>
+<td>
+            {{form.oldpassword.errors}}
+                        </td>
+    </tr>
+     <tr>
+        <td>
+            New Password
+            </td>
+        <td>
+
+                       {{form.password}}
+            &nbsp;<span class="error1"> * Field required</span>
+                        </td>
+<td>
+
+            {{form.password.errors}}
+
+                        </td>
+    </tr>
+     <tr>
+
+        <td>
+        Confirm Password</td>
+        <td>
+                        {{form.password2}}
+            &nbsp;<span class="error2"> * Field required</span>
+            </td>
+ <td>
+            {{form.password2.errors}}
+                       </td>
+    </tr>
+   <tr>
+                <td colspan="2" style="text-align:center;">
+            <input name="submit" type= "submit" value="Change Password" >
+            </td>
+    </tr>
+    
+    <tr>
+        <td colspan="2" style="text-align:center;">
+            <span class="error3"> Reconfirm Your New Password !</span>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="text-align:center;">
+            <input type="hidden" value="{{ pass }}" name="pass" id="id_pass">
+            &nbsp;<span class="error4"> Invalid Old Password</span>
+        </td>
+    </tr>
+</table>
+    </form>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#id_oldpassword").focus();
+        $('.error').hide();
+        $('.error3').hide();
+        $('.submit').click(function(event){
+            var data=$("#id_oldpassword").val();
+            alert(data);
+            var len=data.length;
+            if (len <= 0){
+                $('.error').show();
+                $("#id_oldpassword").focus();
+                //$('.error').show();
+                event.preventDefault();
+            }
+            else
+            {
+                $('.error').hide();
+            }
+
+
+            //**********************************************************
+        });
+    });
+</script>
+<script type="text/javascript" >
+    $(document).ready(function() {
+        $("#id_oldpassword").keyup(function () {
+            $('.error').hide();
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.error1').hide();
+        $('.submit').click(function(event){
+            var data=$("#id_password").val();
+            var len=data.length;
+            if (len <= 0){
+                $('.error1').show();
+                $("#id_password").focus();
+                //$('.error').show();
+                event.preventDefault();
+            }
+            else
+            {
+                $('.error1').hide();
+            }
+        });
+    });
+</script>
+<script type="text/javascript" >
+    $(document).ready(function() {
+        $("#id_password").keyup(function () {
+            $('.error1').hide();
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.error2').hide();
+        $('.submit').click(function(event){
+            var data=$("#id_password2").val();
+            var len=data.length;
+            if (len <= 0){
+                $('.error2').show();
+                $("#id_password2").focus();
+                //$('.error').show();
+                event.preventDefault();
+            }
+            else
+            {
+                $('.error2').hide();
+            }
+        });
+    });
+</script>
+<script type="text/javascript" >
+    $(document).ready(function() {
+        $("#id_password2").keyup(function () {
+            $('.error2').hide();
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.error3').hide();
+        $('.submit').click(function(event){
+            var data1 = $("#id_password").val();
+            var data2 = $("#id_password2").val();
+            if (data1 == data2){
+                $('.error3').hide();
+            }
+            else
+            {
+                $('.error3').show();
+                $("#id_password2").focus();
+                //$('.error').show();
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.error4').hide();
+        $('.submit').click(function(event){
+            var data1  =  $("#id_oldpassword").val();
+            var data2 = $("#id_pass").val();
+            if (data1 == data2){
+                $('.error4').hide();
+            }
+            else
+            {
+                $('.error4').show();
+                $("#id_oldpassword").focus();
+                //$('.error').show();
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+
+<script language="javascript" type="text/javascript">
+    function disable(f)
+    {
+        var button = f.elements['submit'];
+        button.value = 'Processing';
+        button.disabled = 'true';
+        return true;
+    }
+</script>
+
+
+</body>
+</html>

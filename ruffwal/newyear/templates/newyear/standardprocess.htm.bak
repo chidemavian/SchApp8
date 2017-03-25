@@ -1,0 +1,80 @@
+{% extends "newyear/baseposting.htm" %}
+{% load humanize %}
+{%block content%}
+<div align ="center" style="background-color:gray;border:0px solid black;width:100%;heigth:10%; font-size:12px;color:white"> <strong>STANDARD JOURNAL PROCESS  </strong> </div>
+<div align="center" style="color:red;font-family:verdana;font-size:20px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+<form action="" method="post" name ="main" id = "form1" onsubmit="disable(this)">
+<table align ="left" style="border:1px;color:red;background-color:#E6E6E6;width:30%">
+<tr>
+        <td align ="left" style="width:100%">
+Month :
+        </td>
+<td align ="left" style="width:100%">{{ form.monthly}}
+</td>
+<td align ="left" style="width:100%" colspan = 2>{{ form.monthly.errors}}
+</td>
+<td align ="left" style="width:100%">
+
+<input name="submit" type= "submit" value="Process" >
+ </td>
+</tr>
+    </table>
+</form>
+<tr>
+<td colspan=30>
+
+
+<table align ="center" style="border:1px solid black;width:100%">
+ <tr>
+             <td align="center" valign="top" style = "width:40px; height:10px;background-color:gray;font-size:11px"><strong>DR Code </strong></td>
+             <td align="center" valign="top" style = "width:40px; height:10px;background-color:gray;font-size:11px"><strong>DR Account</strong></td>
+              <td align="center" valign="top" style = "width:40px; height:10px;background-color:gray;font-size:11px"><strong> Particular</strong></td>
+              <td align="center" valign="top" style = "width:40px ;height:10px;background-color:gray;font-size:11px"><strong> Amount</strong></td>
+               <td align="center" valign="top" style = "width:40px; height:10px;background-color:gray;font-size:11px"><strong> Ref. No</strong></td>
+              <td align="center" valign="top" style = "width:40px ;height:10px;background-color:gray;font-size:11px"><strong> CR Code</strong></td>
+              <td align="center" valign="top" style = "width:40px ;height:10px;background-color:gray;font-size:11px"><strong> CR Name</strong></td>
+                <td align="center" valign="top" style = "width:40px ;height:10px;background-color:gray;font-size:11px"><strong> Duration</strong></td>
+               </tr>
+
+         {% for pincode in getdetails %}
+
+           <tr>
+              <td align="left" valign="top" style = "background-color:gray;font-size:11px;width:10px;color:blue"><strong> {{ pincode.acccode|upper }}</strong></td>
+              <td align="left" valign="top" style = "background-color:gray;font-size:12px;width:57%;color:blue"> <strong><a href="/eduflox/account/newyear/editstandard/{{ pincode.id }}/" style ="color:white"> {{ pincode.accname|upper }} </a></strong></td>
+
+              <td align="left" valign="top" style = "background-color:gray;font-size:11px;width:100%;color:blue"> <strong>{{ pincode.particular}}</strong></td>
+              <td align="left" valign="top" style = "background-color:gray;font-size:11px;width:100%;color:blue"> <strong>{{ pincode.amount|intcomma}}</strong></td>
+
+              <td align="left" valign="top" style = "background-color:gray;font-size:11px;width:100%;color:blue"> <strong>{{ pincode.refno}}</strong></td>
+              <td align="left" valign="top" style = "background-color:gray;font-size:11px;width:100%;color:blue"> <strong>{{ pincode.cracccode|upper}}</strong></td>
+              <td align="left" valign="top" style = "background-color:gray;font-size:11px;width:100%;color:blue"> <strong>{{ pincode.craccname|upper}}</strong></td>
+               <td align="left" valign="top" style = "background-color:gray;font-size:11px;width:100%;color:blue"> <strong>{{ pincode.duration}}</strong></td>
+           {% endfor %}
+            </tr>
+</table>
+</td>
+<td></td>
+<td></td>
+<td></td>
+
+</tr>
+</table>
+
+<script>
+$(document).ready(function() {
+         $("#id_monthly").datepicker();
+         //alert("welcome");
+         $("#id_monthly").focus();
+});
+</script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+{%endblock%}

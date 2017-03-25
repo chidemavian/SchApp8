@@ -1,0 +1,154 @@
+{% extends "contract/base.htm" %}
+{% load humanize %}
+{%block content%}
+    <div class="pmiddle">
+        <!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+
+            <div align ="center" style="background-color:black;border:0px solid black;width:100%;heigth:10%; font-size:12px;color:white"> <strong>SCHEDULE TO BANK  </strong> </div>
+            <div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+        <table align ="left" style="border:0px solid black;width:100%">
+            <tr><td>
+                <form action="/hrmes/contract/contracttobank/" method="post" name ="main" onsubmit="disable(this)">
+            <table align ="left" style="border:1px solid black;width:auto;background-color:gray;">
+
+                    <tr>
+                        <td>
+                            Bank Name :
+                        </td>
+                        <td>{{ form.bankname}}
+                        </td>
+                        <td>
+                            Select Date :
+                        </td>
+                        <td>{{ form.caldate}}
+                        </td>
+                        <td>
+                            Download Excel File :
+                        </td>
+                        <td>{{ form.excelfile}}
+                        </td>
+                         <td>
+
+                            <input name="submit" type= "submit" value="View Report" >
+                        </td>
+                        <td>{{ form.caldate.errors}}
+                        </td>
+
+
+                    </tr>
+
+            </table>
+            </form>
+            </td></tr>
+            <tr>
+                <td>
+                    <table align ="left" style="border:0px solid black;width:100%">
+                    <tr>
+                        <td colspan="30">
+                            <input name="submitprint" type= "submit" value="Print Report"  onclick = "openrecprint();">
+                        </td>
+                    </tr>
+
+                        <tr>
+                            <td colspan ="30">
+                                <div class="printable">
+                                    <table align ="left" style="border:0px solid black;width:100%;background-color:white">
+                                        <tr>
+                                            <td colspan ="15" >
+                                                <table align ="left" style="border:0px solid black;width:auto;background-color:white">
+                                                    <tr>
+                                                    <td align="left" valign="top" style = "width:auto;background-color:white;font-size:9px"><strong> </strong></td>
+                                                    <td align="left" valign="top" style = "width:auto;background-color:white;font-size:9px"><strong></strong></td>
+                                                    <td align="left" valign="top" style = "width:auto;background-color:white;font-size:12px" colspan = "3"><img align ="center" style = "left:10%;float:left;padding:5px;border:0px;width:55px;heigth:55px" src ="/static/{{comp.picture}}" > {{comp.name}}<br>{{comp.address}}</td>
+
+                                                    </tr>
+                                                    <tr><td colspan ="15" align ="center"><strong> {{ bankname }} ::{{ disdate }} - STAFF SALARY </strong></td>
+                                                    <td style="float:right;">{{ printdate }}</td>
+                                                    </tr>
+
+                                                </table>
+                                            </td></tr>
+                                        <tr>
+                                            <td colspan ="15" >
+                                                <table align ="left" style="width:80%;color:black;border-collapse:collapse;">
+                                                    <tr>
+                                                        <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> S/N</strong></td>
+
+                                                       <!-- <td align="left" valign="top" style = "width:auto; height:10px;background-color:white;font-size:8px"><strong>Bank Name</strong></td>-->
+                                                        <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Staff Name</strong></td>
+                                                        <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Account Number</strong></td>
+                                                        <td align="left" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black;text-align:right;"><strong> Net Pay</strong></td>
+                                                     </tr>
+
+
+                                                <!--
+                                                    <tr>
+                                                        <td align="left" valign="top" style = "font-size:8px;width:auto;color:black"> <strong>{{ gdept.name}}</strong></td>
+                                                    </tr>
+                                                    <td align="left" valign="top" style = "font-size:8px;width:auto;color:black"> <strong>{{ forloop.counter}}</strong></td>
+                                                    -->
+                                                    {% for j in ll %}
+                                                    {% for pincode in j.staffdata %}
+                                                        <tr>
+                                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ forloop.counter}}</td>
+
+                                                        <!--<td align="left" valign="top" style = "font-size:8px;width:auto;color:black"> <strong>{{ pincode.bankname}}</strong></td>-->
+                                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.staffname|title}}</td>
+                                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.accno}}</td>
+                                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;text-align:right"> {{ pincode.netpay}}</td>
+                                                                     {% endfor %}
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"></td>
+
+                                                        <!--<td align="left" valign="top" style = "font-size:8px;width:auto;color:black"> <strong>{{ pincode.bankname}}</strong></td>-->
+                                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"></td>
+                                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;font-weight:bold;"> TOTAL</td>
+                                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:blue;border:1px solid black;text-align:right;font-weight:bold;"> {{ j.totalnet }}</td>
+
+                                                    </tr>
+                                                    {% endfor %}
+                                                </table>
+                                            </td></tr>
+                                    </table>
+                 </div>
+             </td>
+        </tr>
+    </table>
+        </table>
+    </div>
+    <script>
+        $(document).ready(function() {
+            var pickerOpts = {
+                //appendText: "mm/dd/yy",
+                //defaultDate: "+5",
+                showOtherMonths: true,
+                changeMonth: true,
+                changeYear: true
+                //showButtonPanel: true
+               // showOn: "button"
+
+            };
+            $("#id_caldate").datepicker(pickerOpts);
+        });
+    </script>
+        <script language="javascript" type="text/javascript">
+            function openrecprint()
+            {
+                //alert("welcome");
+                $( ".printable" ).print();
+
+
+            }
+        </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+{%endblock%}

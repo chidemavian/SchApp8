@@ -1,0 +1,163 @@
+{% extends "setup/basesetup.htm" %}
+{%block head %}
+{%endblock %}
+{%block content%}
+
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>
+<div align ="left" style="border:1px solid black;width:100%;heigth:10%;font-family: verdana;color:black">-->
+<div align ="center" style="background-color:black;border:0px solid black;width:100%;height:10%; font-size:12px;color:white"> <strong>DEBTORS CREATION  </strong> </div>
+<div align="center" style="color:red;font-family:courier;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+<table align ="center" style="border:0px solid black;width:100%;">
+    <tr><td colspan="8">
+        <form action="/SchApp/account/receivables/" method="post" name ="main" onsubmit="disable(this)">
+    <table align ="left" style="width:auto;">
+<tr>
+        <td>
+Name :
+        </td>
+<td>{{ form.accname}}
+</td>
+<td>{{ form.accname.errors}}
+</td>
+</tr>
+<tr>
+        <td>
+Address :
+        </td>
+<td>{{ form.address}}
+</td>
+<td>{{ form.address.errors}}
+</td>
+</tr>
+<tr>
+        <td>
+Phone Number :
+        </td>
+<td>{{ form.phoneno}}
+</td>
+<td>{{ form.phoneno.errors}}
+</td>
+</tr>
+<tr>
+<td style="text-align:center" colspan="3">
+<input name="submit" type= "submit" value="Create Debtors">
+ </td>
+</tr>
+    </table>
+    </form>
+    </td></tr>
+    <tr>
+        <td colspan="8">
+            <table align ="left" style="border:0px solid black;width:100%">
+               <!-- <img src="/static/imgs/printer.jpeg" style="width:30px;height: 30px "  onclick="openrecprint();" >-->
+                <tr>
+                    <td>
+                        <input name="submit" type= "submit" value="Print Debtors List  " onclick="openrecprint();">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan ="30">
+                        <div class="printable">
+                            <table align ="left" style="width:100%;background-color:white;border-collapse:collapse;">
+
+                                <tr>
+                                    <td>
+                                        <table align ="left" style="width:100%;background-color:white;border-collapse:collapse;">
+                                            <tr>
+                                                <td align="left" valign="top" style = "width:auto;height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle;"><strong>Code </strong></td>
+
+                                                <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong>Name</strong></td>
+                                                <td align="left" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Address</strong></td>
+                                                <td align="left" valign="top" style = "width:auto ;height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"><strong> Phone</strong></td>
+                                            </tr>
+                                                {% for pincode in getdetails %}
+                                                    <tr>
+                                                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:black;border:1px solid black;"><strong> {{ pincode.acccode|upper }}</strong></td>
+                                                   <!-- <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:red;border:1px solid black;"> <strong><a href="/editdebtors/{{ pincode.acccode }}/" style ="color:red;"> {{ pincode.accname|upper }} </a></strong></td>-->
+                                                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:red;border:1px solid black;"> <strong><a href="#" style ="color:red;" onClick= "getdialogtry({{ pincode.id }});"> {{ pincode.accname|upper }} </a></strong></td>
+                                                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:black;border:1px solid black;"> <strong>{{ pincode.address|upper}}</strong></td>
+                                                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:black;border:1px solid black;"> <strong>{{ pincode.phoneno|upper}}</strong></td>
+                                                {% endfor %}
+
+                                                </tr>
+                                        </table>
+                                    </td></tr>
+                            </table>
+                        </div>
+
+                    </td>
+                </tr>
+            </table>
+</table>
+<div id="myDialog" title="Edit Account">
+</div>
+
+<script type="text/javascript">
+document.getElementById('id_accname').focus()
+</script>
+    <script language="javascript" type="text/javascript">
+        function openrecprint()
+        {
+            //alert("welcome");
+            $( ".printable" ).print();
+        }
+    </script>
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#myDialog").hide();
+        });
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialogtry(vid){
+            //alert(vid);
+            var state = vid;
+            //alert(state);
+            var url = "/SchApp/account/getdebtor/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialog").html(html);
+                    getdialog();
+                }
+            });
+            return false;
+        }
+
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialog(){
+            var dialogOpts = {
+                autoOpen:true,
+                modal:true,
+                position: ["center", "middle"],
+                height:250,
+                width:410,
+                title:'Edit Debtor Record',
+                closeOnEscape:true,
+                show: true,
+                hide: true,
+                bgiframe: true
+            };
+            $("#myDialog").dialog(dialogOpts);
+        }
+
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+
+ {%endblock%}

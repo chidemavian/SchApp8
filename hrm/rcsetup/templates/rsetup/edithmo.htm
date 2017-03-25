@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional/EN">
+<html>
+<head>
+    <title> </title>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <style type="text/css">
+        .error { color: red; }
+        .error1 { color: red; }
+        .error2 { color: red; }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            $('.error').hide();
+            $('.submit').click(function(event){
+                var data=$("#accname").val();
+                var len=data.length;
+                if (len <= 0){
+                    $('.error').show();
+                    $("#accname").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error').hide();
+                }
+
+
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+          //  $("#contribution").focus();
+            $('.error1').hide();
+            $('.submit').click(function(event){
+                var data1=$("#subname").val();
+                var len=data1.length;
+                if (len <= 0){
+                    $('.error1').show();
+                    $("#subname").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error1').hide();
+                }
+
+
+            });
+        });
+    </script>
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            var pickerOpts = {
+                //appendText: "mm/dd/yy",
+                //defaultDate: "+5",
+                showOtherMonths: true,
+                changeMonth: true,
+                changeYear: true,
+                dateFormat:"mm/dd/yy"
+            };
+           // $("#effectivedate").datepicker(pickerOpts);
+            //$("#amount").focus();
+            $("#accname").keyup(function () {
+                $('.error').hide();
+            });
+            $("#subname").keyup(function () {
+                $('.error1').hide();
+            });
+        });
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+    <style type="text/css">
+        .loginTxtbox
+        {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            color: #000;
+            text-align: left;
+            border: #4772A9 1px solid;
+            height: 16px;
+        }
+    </style>
+
+</head>
+<body >
+
+            <form action="/hrm/edithmo/{{ getdetails.id }}/" method="post" name ="main" onsubmit="disable(this)">
+            <table align ="center" style="width:100%;">
+                <tr>
+                    <td colspan="2" style="background-color:black;width:100%;font-size:12px;color:white;font-style:italic;text-align:center">
+                        <strong>Edit HMO </strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="background-color:white;width:100%;font-size:12px;color:red;font-style:italic;text-align:center">
+                        <strong>Press ESC to close  </strong>
+                    </td>
+                </tr>
+                    <tr>
+                        <td>
+                            HMO Name :
+                        </td>
+                        <td><input type ="text" id="accname" size="35" name="accname" value ="{{getdetails.name}}" class="loginTxtbox">
+                            &nbsp;<span class="error"> Name is required</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            HMO Address :
+                        </td>
+                        <td><input type ="text" id="subname" size="35" name="subname" value ="{{getdetails.address}}" class="loginTxtbox">
+                            &nbsp;<span class="error1"> Address is required</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <a  href ="/deletehmo/{{getdetails.id}}" style ="color:Black;;font-size:9px"> <img style ="width:25px;height:25px" src ="/static/imgs/editdelete.png" >  </a>Delete
+                            <input name="hcode" type= "hidden" value="{{getdetails.name}}">
+                        </td>
+                        <td>
+                            <input name="submit" type= "submit" value="  Update HMO  ">
+                        </td>
+
+                    </tr>
+            </table>
+            </form>
+
+</body>
+</html>

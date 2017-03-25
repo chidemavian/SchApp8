@@ -1,0 +1,27 @@
+{% extends 'base2.html' %}
+{% block content %}
+    <h1>FORUM :</h1>
+    <div style="background-color:#e6e6fa;position:relative;padding:10px " align="center">
+        <div style="background-color:#e6e6fa;font-size: 14px;color:red;text-decoration:blink;width:100%;height:10%" align="center">{{ varerr }}</div>
+        <form method="post" action="">
+            <table style="background-color:#f5f5f5; color:#000000;width:100%;" border="0" cellpadding="2" cellspacing="2"  align="center">
+                <tr>
+                    <td colspan="4">
+                        <h2>Recover Your Password</h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td>E-mail :</td>
+                    <td> {{ form.email }}</td>
+                    <td>{{ form.email.errors }}</td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td> <input name="submit" type= "submit" value="Submit "></td>
+                    <td></td>
+                </tr>
+            </table>
+        </form>
+        </div>
+{% endblock %}

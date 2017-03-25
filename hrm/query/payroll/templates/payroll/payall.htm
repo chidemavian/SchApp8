@@ -1,0 +1,137 @@
+{% extends "payroll/base.htm" %}
+{%block head %}
+    {%block title %}Solutions{%endblock%}
+{%endblock %}
+{% load humanize %}
+{%block content%}
+    <div class="pmiddle">
+
+       {% if lh %}
+
+        <table align ="left" style="width:auto;height:842px;">
+            <tr>
+                <td colspan="6">
+                    <input name="submitprint" type= "submit" value="Print Report"  onclick = "openrecprint();">
+                </td>
+            </tr>
+            <tr>
+                <td colspan ="6">
+                    <div class="printable">
+                        <table align ="left" style="border:0px solid black;width:100%;">
+                        {% for jk in lh %}
+                            <tr style="height:461px;vertical-align:top;width:100%;">
+                                <td style="height:421px;vertical-align:top;width:100%">
+
+
+                                <table align ="left" style="border:1px solid black;width:100%;height:421px;">
+
+                                <tr style="vertical-align:top">
+                                    <td align="left" valign="top" style = "width:auto;background-color:white;font-size:12px" colspan = "5"><img align ="center" style = "left:10%;float:left;padding:5px;border:0px;width:60px;height:60px" src ="/static/{{jk.comp.picture}}" > {{jk.comp.name}}<br>{{jk.comp.address}}</td>
+
+                                </tr>
+                                <tr><td colspan ="5" align ="center">{{jk.disdate }} - STAFF PAYSLIP </td>
+                                    <td colspan ="5" style="float:right;font-size:10px;">{{ printdate }}</td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan ="15" align="left" valign="top" style = "font-size:12px;width:auto;color:black;font-family:verdana;"> <strong>Staff Id :: {{ jk.staffid}}</strong></td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan ="15" align="left" valign="top" style = "font-size:12px;width:auto;color:black;font-family:verdana;"> <strong>Staff Name :: {{jk.staffname}}</strong></td>
+
+                                </tr>
+                                <tr>
+                                    <td colspan ="15" align="left" valign="top" style = "font-size:12px;width:auto;color:black;font-family:verdana;"> <strong>Designation :: {{ jk.desig}}</strong></td>
+                                </tr>
+                                <tr style="vertical-align:top">
+                                    <td>
+                                        <table align ="left" style="width:100%">
+                                            <tr style="vertical-align:top">
+                                                <td align="left" valign="top" colspan="5">
+                                                    <table align="left" style="width:100%">
+                                                        <tr>
+                                                            <td style="width:100%" align="center" colspan="5">Allowance</td>
+                                                        </tr>
+
+                                                        {% for p in jk.allowance %}
+
+                                                            <tr>
+                                                            <td align="left" valign="top" style = "font-size:10px;width:auto;color:black"> {{ p.alldes|title}}</td>
+                                                            <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;text-align:right;"> {{ p.allamount}}</td>
+                                                            </tr>
+                                                        {% endfor %}
+
+                                                        <tr><td colspan ="15"> <hr> </td> </tr>
+                                                        <tr>
+                                                            <td align="right" valign="top" style = "font-size:12px;width:auto;color:black ;"> Total Allowance ::</td>
+                                                            <td align="left" valign="top" style = "font-size:12px;width:auto;color:black ;text-align:right"> {{ jk.totalall}}</td>
+                                                        </tr>
+                                                        <tr><td colspan ="15"> <hr> </td> </tr>
+                                                    </table>
+                                                </td>
+                                                <td align="left" valign="top" colspan="5">
+                                                    <table align="right" style="width:100%" >
+                                                        <tr>
+                                                            <td style="width:100%" align="center" colspan="5">Deduction</td>
+                                                        </tr>
+
+                                                        {% for p in jk.deduction %}
+
+                                                            <tr>
+                                                            <td align="left" valign="top" style = "font-size:10px;width:auto;color:black"> {{ p.deddes|title}}</td>
+                                                            <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;text-align:right">{{ p.dedamount}}</td>
+                                                            <td align="left" valign="top" style = "font-size:10px;width:auto;color:black;text-align:right">{{ p.outstanding}}</td>
+                                                            </tr>
+                                                        {% endfor %}
+
+                                                        <tr><td colspan ="15"> <hr> </td> </tr>
+                                                        <tr>
+                                                            <td align="right" valign="top" style = "font-size:12px;width:auto;color:black;"> Total Deduction ::</td>
+                                                            <td align="left" valign="top" style = "font-size:12px;width:auto;color:black ;text-align:right"> {{ jk.totalded}}</td>
+                                                        </tr>
+                                                        <tr><td colspan ="15"> <hr> </td> </tr>
+
+
+                                                    </table></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan ="15" align="center" valign="top" style = "font-size:14px;width:auto;color:black;font-family:verdana;"> <strong>Net Pay :: {{ jk.netpay}}</strong>
+
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td></tr>
+
+                              </table>
+                                </td>
+                            </tr>
+
+<!--
+                                <tr>
+                                    <td>
+                                        <img src="/static/bgimg.png/" alt=""  height="90px">
+                                    </td>
+                                </tr>-->
+
+
+                        {% endfor %}
+                        </table>
+                    </div>
+
+                </td>
+            </tr>
+        </table>
+    {% endif %}
+    </div>
+<script language="javascript" type="text/javascript">
+    function openrecprint()
+    {
+        //alert("welcome");
+        $( ".printable" ).print();
+
+
+    }
+</script>
+{%endblock%}

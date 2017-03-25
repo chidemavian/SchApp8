@@ -1,0 +1,217 @@
+{% extends "report/base.htm" %}
+{% load humanize %}
+{%block content%}
+        <div align ="center" style="background-color:#ccccc0;min-width:100%;height:18px;font-size:17px;color:Black;padding-top:5px;"> Debtors' List</div>
+        <div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+        <table align ="left" style="border:1px solid black;width:100%">
+            <tr><td>
+                <form action="" method="post" name ="main" onsubmit="disable(this)">
+                    <table align ="left" style="border:1px solid black;width:100%;color:#000000;">
+                          <tr>
+                              <td> {{form.admitted_class.label}}</td>
+                              <td>{{ form.admitted_class}}</td>
+                              <td> {{form.admitted_arm.label}}</td>
+                              <td>{{ form.admitted_arm}}</td>
+                            <td>{{ form.excelfile.label}}</td>
+                            <td>{{ form.excelfile}}</td>
+                             <td>{{ form.excelfile1.label}}</td>
+                            <td>{{ form.excelfile1}}</td>
+                            <td><input name="submit" type= "submit" value=" View Report " ></td>
+                        </tr>
+                    </table >
+                </form>
+            </td></tr>
+            <tr>
+                <td>
+
+                  {% if ll %}
+                    <table align ="left" style="border:0px solid black;width:100%">
+                        <tr>
+                            <td>
+                                <input name="submit" type= "submit" value="Print Report  " onclick="openrecprint();">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan ="30">
+                                <div class="printable">
+                                    <table align ="center" style="border:0px solid black;width:100%;background-color:white">
+                                        <tr>
+                                            <td>
+                                                <table align ="left" style="border:1px solid black;width:100%;background-color:white">
+                                                    <tr>
+                                                    <!--    <td align="left" valign="top" style = "width:auto;background-color:white;font-size:9px"><strong> </strong></td>
+                                                        <td align="left" valign="top" style = "width:auto;background-color:white;font-size:9px"><strong></strong></td>-->
+                                                        <td align="left" valign="top" style = "width:auto;background-color:white;font-size:12px" colspan = "3"><img align ="center" style = "left:10%;float:left;padding:5px;border:0px;width:55px;heigth:55px" src ="/static/{{comp.picture}}" ></td>
+                                                        <td align = "center" style="font-size:27px;color:Black">{{comp.name}}
+                                                        <br> <fg align ="center"style="font-size:12px;color:Black"> {{comp.address}} </fg>
+                                                        <br> <tp colspan ="15" align ="center" style="font-size:27px"> Debtors' List for {{admitted_class}}, {{currse}} </tp></td>
+
+                                                    </tr>
+                                                    
+                                                    <tr>
+                                                     <!--   <td colspan ="15" align ="center" style="font-size:27px"> Debtors' List for {{admitted_class}}, {{currse}} </td>-->
+                                                        <td style= "font-size:8px; font-weight:bold"> Printed Date:{{vvtoday}}, By:{{varuser}}
+                                                        </td>
+                                                    </tr>
+
+                                                </table>
+                                            </td></tr>
+
+                                        <tr>
+                                            <td>
+                                                <table align ="left" style="border-collapse:collapse;width:100%;background-color:white;">
+
+                                                    <tr>
+                                                        <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;border:1px solid black;font-weight:bold;text-align:center;">S/N</td>
+                                                        <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;border:1px solid black;font-weight:bold;text-align:center;">Account Code</td>
+                                                        <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;border:1px solid black;font-weight:bold;text-align:center;">Account Name</td>
+                                                        <!--<td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;border:1px solid black;font-weight:bold;text-align:center;">Last Transaction Date</td>-->
+                                                        <td align="left" valign="top" style = "width:auto;height:10px;background-color:#E6E6E6;font-size:11px;color: #000000;border:1px solid black;font-weight:bold;text-align:center;">Account Balance</td>
+                                                    </tr>
+                                                   <!-- <tr><td colspan="10"><hr></td></tr> onmouseover="getdialogtry({{ pincode.pid}});"-->
+                                                        {% for pincode in ll%}
+                                                            <tr>
+
+                                                            <td align="left" valign="top" style = "text-align:center;background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">   {{ forloop.counter}}</td>
+                                                            <td align="left" valign="top" style = "text-align:center;background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">   {{ pincode.acc.acccode}}</td>
+                                                         <!--  <td align="left" valign="top" style = "text-align:center;background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"><a href="#" style ="color:blue" onmouseover="getdialogtry({{ pincode.pid}});"  onclick="getdialog({{ pincode.pid}});" > {{ pincode.acc.accname }}</a></td>-->
+                                                             <td align="left" valign="top" style = "text-align:center;background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"><a href="#" style ="color:blue" onclick="getdialogtry({{ pincode.id}});" > {{ pincode.acc.accname }}</a></td>
+                                                            <!--<td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ pincode.acc.lasttrandate|date:"F j,Y" }}</td>-->
+                                                            
+                                                                {% if pincode.pos = '0.00' %}
+                                                            <td align="left" valign="top" style = "text-align:center;background-color:white;font-size:11px;width:auto;color:red;border:1px solid black">{{ pincode.pos }}</td>
+                                                             {% else %}
+                                                            <td align="left" valign="top" style = "text-align:center;background-color:white;font-size:11px;width:auto;color:#00d455;border:1px solid black">{{ pincode.pos }}</td>
+                                                            {% endif %}                                                         
+                                                    </tr>
+                                                    {% endfor %}
+                                                    <tr>
+                                                        <!--<td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"></td>-->
+                                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"></td>
+                                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"></td>
+                                                        <td align="center" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;font-weight:bold;"></td>
+                                                        <td align="left" valign="top" style = "text-align:center;background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;font-weight:bolder;"></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <!--<td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"></td>-->
+                                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"></td>
+                                                        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"></td>
+                                                        <td align="center" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;font-weight:bold;">Total :</td>
+                                                        <td align="left" valign="top" style = "text-align:center;background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black;font-weight:bolder;">{{ totbal }}</td>
+
+                                                    </tr>
+                                                 </table>
+                                            </td></tr>
+                                    </table>
+
+                                </div>
+                            </td></tr>
+                    </table>
+        {% endif %}
+        </table>
+    <div id="myDialog">
+    </div>
+    <script language="javascript" type="text/javascript">
+        function openrecprint()
+        {
+            $( ".printable" ).print();
+        }
+    </script>
+    <script language="javascript" type="text/javascript">
+        function diaclose()
+        {
+            $("#myDialog").dialog("close");
+        }
+    </script>
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#myDialog").hide();
+        });
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialogtry(vid){
+            //alert(vid);
+            var state = vid +':'+ $("#id_enddate").val();
+            var url = "/SchApp/account/report/getministatement/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialog").html(html);
+                    getdialog();
+                }
+            });
+            return false;
+        }
+
+    </script>
+  <!--      <script type="text/javascript" language="javascript">
+        function getdialogtry(vid){
+            //alert(vid);
+            var state = vid;
+            var url = "/SchApp/account/report/getministatement/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialog").html(html);
+                    getdialog();
+                }
+            });
+            return false;
+        }
+
+    </script> -->
+    <script type="text/javascript" language="javascript">
+        function getdialog(){
+            var dialogOpts = {
+                autoOpen:true,
+                modal:true,
+                position: ["center", "middle"],
+                height:"auto",
+                width:750,
+                title:'Account Statement',
+                closeOnEscape:true,
+                show: true,
+                hide: true,
+                bgiframe: true
+            };
+            $("#myDialog").dialog(dialogOpts);
+        }
+
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            var pickerOpts = {
+                //appendText: "mm/dd/yy",
+                //defaultDate: "+5",
+                showOtherMonths: true,
+                changeMonth: true,
+                changeYear: true,
+                showButtonPanel: true
+                // showOn: "button"
+            };
+            $("#id_enddate").datepicker(pickerOpts);
+            //$("#id_startdate").val("01/01/2011");
+        });
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+{%endblock%}

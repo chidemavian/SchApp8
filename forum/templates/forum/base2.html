@@ -1,0 +1,34 @@
+{% extends 'base2.html' %}
+{% block content %}
+    <h1>FORUM :</h1>
+    <p>Welcome to our forum.This platform provides an avenue to register and post your comment about our company</p>
+    <div style="background-color:#e6e6fa;position:relative;padding:10px " align="center">
+        <div style="background-color:#e6e6fa;font-size: 14px;color:red;text-decoration:blink;width:100%;height:10%" align="center">{{ varerr }}</div>
+    <form method="post" action="">
+    <table style="background-color:#f5f5f5; color:#000000;" border="0" cellpadding="2" cellspacing="2"  align="center">
+     <tr>
+         <td colspan="4">
+             <h2>Existing User - Log In</h2>
+         </td>
+     </tr>
+    <tr>
+      <td>E-mail :</td>
+      <td> {{ form.email }}</td>
+       <td>{{ form.email.errors }}</td>
+    </tr>
+        <tr>
+            <td>Password :</td>
+            <td> {{ form.password }}</td>
+            <td>{{ form.password.errors }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td> <input name="submit" type= "submit" value="Log In to Comment"></td>
+            <td></td>
+        </tr>
+    </table>
+    </form>
+    <p>New User <a href="/forum/registration/"> Register</a></p>
+     <p>Recover Your  <a href="/forum/recover password/"> Password</a></p>
+</div>
+{% endblock %}

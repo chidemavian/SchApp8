@@ -1,0 +1,242 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional/EN">
+<html>
+<head>
+<title> CapitalExpert :- Human Resources And Payroll </title>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+<style type="text/css">
+    .error { color: red; }
+    .error1 { color: red; }
+    .error2 { color: red; }
+    .error3 { color: red; }
+
+</style>
+<script type="text/javascript">
+    $(document).ready(function() {
+        //$("#accname").focus();
+        $('.error').hide();
+        $('.submit').click(function(event){
+            var data=$("#nameofsch").val();
+            var len=data.length;
+            if (len <= 0){
+                $('.error').show();
+                $("#nameofsch").focus();
+                //$('.error').show();
+                event.preventDefault();
+            }
+            else
+            {
+                $('.error').hide();
+            }
+
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        //$("#accname").focus();
+        $('.error1').hide();
+        $('.submit').click(function(event){
+            var data=$("#courseofstu").val();
+            var len=data.length;
+            if (len <= 0){
+                $('.error1').show();
+                $("#courseofstu").focus();
+                //$('.error').show();
+                event.preventDefault();
+            }
+            else
+            {
+                $('.error1').hide();
+            }
+
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        //$("#accname").focus();
+        $('.error2').hide();
+        $('.submit').click(function(event){
+            var data=$("#entryyear").val();
+            var len=data.length;
+            if (len <= 0){
+                $('.error2').show();
+                $("#entryyear").focus();
+                //$('.error').show();
+                event.preventDefault();
+            }
+            else
+            {
+                $('.error2').hide();
+            }
+
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        //$("#accname").focus();
+        $('.error3').hide();
+        $('.submit').click(function(event){
+            var data=$("#exityear").val();
+            var len=data.length;
+            if (len <= 0){
+                $('.error3').show();
+                $("#exityear").focus();
+                //$('.error').show();
+                event.preventDefault();
+            }
+            else
+            {
+                $('.error3').hide();
+            }
+
+        });
+    });
+</script>
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+<style type="text/css">
+    .loginTxtbox
+    {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        color: #000;
+        text-align: left;
+        border: #4772A9 1px solid;
+        height: 16px;
+    }
+</style>
+
+</head>
+<body>
+<div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%; font-size:12px;color:black"> <strong>EDIT STAFF EDUCATION RECORD  </strong> </div>
+ <form action="/hrm/hrm/editstaffedu/{{ getdetails.id }}/" method="post" name ="main" onsubmit="disable(this)">
+<table align ="center" style="width:100%">
+    <tr>
+        <td colspan="2" style="background-color:white;width:100%;font-size:12px;color:red;font-style:italic;text-align:center">
+            <strong>Press ESC to close  </strong>
+        </td>
+    </tr>
+<tr>
+        <td>
+Staff Id :
+        </td>
+<td><input id="staffid" type="text" name="staffid" size="35" value ="{{getdetails.staffid}}" readonly="readonly" class="loginTxtbox">
+</td>
+</tr>
+<tr>
+        <td>
+Staff Name :
+        </td>
+<td><input id="staffname" readonly="readonly" type="text" name="staffname" size="35" value ="{{getdetails.staffname}}" class="loginTxtbox">
+</td>
+</tr>
+<tr>
+        <td>
+Institution Attended :
+        </td>
+<td><input id="nameofsch" type="text" name="nameofsch"  size="37" value ="{{getdetails.nameofsch}}" class="loginTxtbox">
+    &nbsp;<span class="error"> Institution Name is required</span>
+</td>
+
+</tr>
+<tr>
+        <td>
+Course Studied :
+        </td>
+<td><input id="courseofstu" type="text" name="courseofstu" size="37" value ="{{getdetails.courseofstu}}" class="loginTxtbox">
+    &nbsp;<span class="error1"> Course is required</span>
+</td>
+</tr>
+<tr>
+        <td>
+Certificate Obtained:
+        </td>
+<td><select name="certificateob" id="id_certificateob">
+<option selected = "selected" value="{{getdetails.certificateob}}">{{getdetails.certificateob}}</option>
+<option value="SSCE">SSCE</option>
+<option value="GRADE 2">GRADE 2</option>
+<option value="NCE">NCE</option>
+<option value="OND">OND</option>
+<option value="ND">ND</option>
+<option value="HND">HND</option>
+<option value="BSC">BSC</option>
+<option value="BTECH">BTECH</option>
+<option value="B.EDU">B.EDU</option>
+<option value="B.ENG">B.ENG</option>
+<option value="LLB">LLB</option>
+<option value="MBBL">MBBL</option>
+<option value="MBA">MBA</option>
+<option value="MSC">MSC</option>
+<option value="MBA">MBA</option>
+<option value="PHD">PHD</option>
+<option value="OTHERS">OTHERS</option>
+</select>
+</td>
+</tr>
+<tr>
+        <td>
+Grade Obtained :
+        </td>
+<td><select name="gradeobtained" id="id_gradeobtained">
+<option selected = "selected" value="{{getdetails.gradeobtained}}">{{getdetails.gradeobtained}}</option>
+<option value="PASS">PASS</option>
+<option value="MERIT">MERIT</option>
+<option value="LOWER CREDIT">LOWER CREDIT</option>
+<option value="UPPER CREDIT">UPPER CREDIT</option>
+<option value="DINSTICTION">DINSTICTION</option>
+<option value="THIRD CLASS">THIRD CLASS</option>
+<option value="SECOND CLASS LOWER">SECOND CLASS LOWER</option>
+<option value="SECOND CLASS UPPER">SECOND CLASS UPPER</option>
+<option value="FIRST CLASS">FIRST CLASS</option>
+<option value="OTHERS">OTHERS</option>
+</select>
+</td>
+</tr>
+<tr>
+        <td>
+Entry Year :
+        </td>
+<td><input type="text" name="entryyear" id="entryyear" size = 4 maxlength = 4 value ="{{getdetails.entryyear}}" class="loginTxtbox">
+    &nbsp;<span class="error2"> Entry Year is required</span>
+</td>
+</tr>
+<tr>
+        <td>
+Exit Year :
+        </td>
+<td><input type="text" name="exityear" id="exityear" size = 4 maxlength = 4 value ="{{getdetails.exityear}}" class="loginTxtbox">
+    &nbsp;<span class="error3"> Exit Year is required</span>
+</td>
+</tr>
+
+<tr>
+    <td>
+        <a  href ="/hrm/hrm/deletestaffedu/{{getdetails.id}}" style ="color:Black;;font-size:9px"> <img style ="border:0px; width:25px;height:25px" src ="/static/imgs/editdelete.png" >  </a>Delete Record
+    </td>
+<td>
+<input name="submit" type= "submit" value="Update Staff Academic Record">
+ </td>
+</tr>
+</table>
+</form>
+<script>
+$(document).ready(function() {
+        // $("#id_transdate").datepicker();
+         //alert("welcome");
+         $("#nameofsch").focus();
+         //$(".box").hide();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,691 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional/EN">
+<html>
+<head>
+    <title> CapitalExpert :- Human Resources And Payroll </title>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <style type="text/css">
+        .error { color: red; }
+        .error1 { color: red; }
+        .error2 { color: red; }
+        .error3 { color: red; }
+        .error4 { color: red; }
+        .error5 { color: red; }
+        .error6 { color: red; }
+        .error7 { color: red; }
+        .error8 { color: red; }
+        .error9 { color: red; }
+        .error10 { color: red; }
+        .error11 { color: red; }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error').hide();
+            $('.submit').click(function(event){
+                var data=$("#staffid").val();
+                var len=data.length;
+                if (len <= 0){
+                    $('.error').show();
+                    $("#staffid").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error').hide();
+                }
+
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error1').hide();
+            $('.submit').click(function(event){
+                var data=$("#name").val();
+                var len=data.length;
+                if (len <= 0){
+                    $('.error1').show();
+                    $("#name").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error1').hide();
+                }
+
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error2').hide();
+            $('.submit').click(function(event){
+                var data=$("#address").val();
+                var len=data.length;
+                if (len <= 0){
+                    $('.error2').show();
+                    $("#address").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error2').hide();
+                }
+
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error3').hide();
+            $('.submit').click(function(event){
+                var data=$("#phoneno").val();
+                var len=data.length;
+                if (len <= 0){
+                    $('.error3').show();
+                    $("#phoneno").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error3').hide();
+                }
+
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error4').hide();
+            $('.submit').click(function(event){
+                var data=$("#email").val();
+                var len=data.length;
+                if (len <= 0){
+                    $('.error4').show();
+                    $("#email").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error4').hide();
+                }
+
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error5').hide();
+            $('.submit').click(function(event){
+                var data=$("#nextofkin").val();
+                var len=data.length;
+                if (len <= 0){
+                    $('.error5').show();
+                    $("#nextofkin").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error5').hide();
+                }
+
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error6').hide();
+            $('.submit').click(function(event){
+                var data=$("#nextofkinaddress").val();
+                var len=data.length;
+                if (len <= 0){
+                    $('.error6').show();
+                    $("#nextofkinaddress").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error6').hide();
+                }
+
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error7').hide();
+            $('.submit').click(function(event){
+                var data=$("#nextofkinphone").val();
+                var len=data.length;
+                if (len <= 0){
+                    $('.error7').show();
+                    $("#nextofkinphone").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error7').hide();
+                }
+
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error8').hide();
+            $('.submit').click(function(event){
+                var data=$("#firstguarantor").val();
+                var len=data.length;
+                if (len <= 0){
+                    $('.error8').show();
+                    $("#firstguarantor").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error8').hide();
+                }
+
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error9').hide();
+            $('.submit').click(function(event){
+                var data=$("#firstguarantoraddress").val();
+                var len=data.length;
+                if (len <= 0){
+                    $('.error9').show();
+                    $("#firstguarantoraddress").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error9').hide();
+                }
+
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error10').hide();
+            $('.submit').click(function(event){
+                var data=$("#secondguarantor").val();
+                var len=data.length;
+                if (len <= 0){
+                    $('.error10').show();
+                    $("#secondguarantor").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error10').hide();
+                }
+
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            //$("#accname").focus();
+            $('.error11').hide();
+            $('.submit').click(function(event){
+                var data=$("#secondguarantoraddress").val();
+                var len=data.length;
+                if (len <= 0){
+                    $('.error11').show();
+                    $("#secondguarantoraddress").focus();
+                    //$('.error').show();
+                    event.preventDefault();
+                }
+                else
+                {
+                    $('.error11').hide();
+                }
+
+            });
+        });
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+    <style type="text/css">
+        .loginTxtbox
+        {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            color: #000;
+            text-align: left;
+            border: #4772A9 1px solid;
+            height: 16px;
+        }
+    </style>
+
+</head>
+<body>
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%; font-size:12px;color:white"> <strong>EDIT STAFF DATA  </strong> </div>
+<div align="center" style="color:red;font-family:verdana;font-size:17px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+<form action="/hrm/hrm/editstaffid/{{ getdetails.id }}/" method="post" name ="main" enctype="multipart/form-data" onsubmit="disable(this)">
+<table align ="center" style="width:100%">
+<tr>
+    <td colspan="6" style="background-color:white;width:100%;font-size:12px;color:red;font-style:italic;text-align:center">
+        <strong>Press ESC to close  </strong>
+    </td>
+</tr>
+
+<tr>
+        <td align ="left" style="width:auto">
+Staff Id :
+        </td>
+<td align ="left" style="width:auto"><input id="staffid" type="text" name="staffid" size="25" value = "{{getdetails.staffid}}" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+    &nbsp;<span class="error"> Staff Id is required</span>
+</td>
+     <td align ="left" style="width:auto">
+Staff Name:
+        </td>
+
+<td align ="left" style="width:auto"><textarea id="name" name="name"  rows="2" cols="20"  style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">{{getdetails.name}}</textarea>
+    &nbsp;<span class="error1"> Staff Name is required</span>
+</td>
+<td rowspan ="6"><img style = "border:1px solid black;width:100px;height:100px" src ="/static/{{getdetails.picture}}" ><br><input id="id_picture" type="file" name="picture" size="5" ></td>
+</tr>
+<tr>
+        <td align ="left" style="width:auto">
+Address :
+        </td>
+<td align ="left" style="width:auto"><textarea id="address" rows="2" cols="20" name="address" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">{{getdetails.address}}</textarea>
+    &nbsp;<span class="error2"> Address is required</span>
+</td>
+
+     <td align ="left" style="width:auto">
+Phone No:
+        </td>
+
+<td align ="left" style="width:auto"><input id="phoneno" type="text" name="phoneno" size="25" value = "{{getdetails.phoneno}}" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+    &nbsp;<span class="error3"> Phone No is required</span>
+</td>
+</tr>
+<tr>
+      <td align ="left" style="width:auto">
+Date Of Birth:
+        </td>
+<td align ="left" style="width:auto"><input id="id_dateofbirth" readonly="readonly" type="text" name="dateofbirth" size="25" value = "{{getdetails.dateofbirth|date:"d/m/Y"}}" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+</td>
+        <td align ="left" style="width:auto">
+Sex :
+        </td>
+<td align ="left" style="width:auto"><select name="sex" id="id_sex">
+<option selected = "selected" value="{{getdetails.sex}}">{{getdetails.sex}}</option>
+<option value="MALE">MALE</option>
+<option value="FEMALE">FEMALE</option>
+</select>
+</td>
+</tr>
+<tr>
+        <td align ="left" style="width:auto">
+Marital Status :
+        </td>
+<td align ="left" style="width:auto"><select name="maritalstatus" id="id_maritalstatus">
+<option selected = "selected" value="{{getdetails.maritalstatus}}">{{getdetails.maritalstatus}}</option>
+<option value="SINGLE">SINGLE</option>
+<option value="MARRIED">MARRIED</option>
+<option value="DIVORCE">DIVORCE</option>
+<option value="WIDOW">WIDOW</option>
+</select>
+</td>
+
+     <td align ="left" style="width:auto">
+
+Nationality:
+        </td>
+
+<td align ="left" style="width:auto"><select name="nationality" id="id_nationality">
+<option selected = "selected" value="{{getdetails.nationality}}">{{getdetails.nationality}}</option>
+<option value="NIGERIAN">NIGERIAN</option>
+<option value="NON-NIGERIAN">NON-NIGERIAN</option>
+</select>
+</td>
+
+</tr>
+<tr>
+     <td align ="left" style="width:auto">
+
+State Of Origin:
+        </td>
+<td align ="left" style="width:auto"><select name="stateoforigin" id="id_stateoforigin">
+<option selected = "selected" value="{{getdetails.stateoforigin}}">{{getdetails.stateoforigin}}</option>
+    {% for pincode in state %}
+        <option value="{{pincode.state}}">{{pincode.state}}</option>
+    {% endfor %}
+</select>
+</td>
+        <td align ="left" style="width:auto">
+Local Govt. Of Origin:
+        </td>
+    <td align ="left" style="width:auto"><select name="localgovt" id="id_localgovt">
+        <option selected = "selected" value="{{getdetails.localgovt}}">{{getdetails.localgovt}}</option>
+        {% for pincode in localgt %}
+            <option value="{{pincode.localgovt}}">{{pincode.localgovt}}</option>
+        {% endfor %}
+    </select>
+    </td>
+</tr>
+<tr>
+     <td align ="left" style="width:auto">
+E-Mail:
+        </td>
+<td align ="left" style="width:auto"><input id="email" type="text" name="email" size="25" value = "{{getdetails.email}}" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+    &nbsp;<span class="error4"> Email is required</span>
+</td>
+        <td align ="left" style="width:auto">
+    Next Of Kin :
+        </td>
+
+<td align ="left" style="width:auto"><textarea id="nextofkin" type="text" rows="2" cols="20" name="nextofkin" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">{{getdetails.nextofkin}}</textarea>
+    &nbsp;<span class="error5"> Enter next of kin</span></td>
+</tr>
+<tr>
+     <td align ="left" style="width:auto">
+Next Of Kin Address:
+        </td>
+<td align ="left" style="width:auto"><textarea id="nextofkinaddress" type="text" rows="2" cols="20" name="nextofkinaddress" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">{{getdetails.nextofkinaddress}}</textarea>
+    &nbsp;<span class="error6"> Enter next of kin Address</span>
+</td>
+        <td align ="left" style="width:auto">
+Next Of Kin Phone :
+        </td>
+<td align ="left" style="width:auto"><input id="nextofkinphone" type="text" name="nextofkinphone" size="25" value ="{{getdetails.nextofkinphone}}" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+    &nbsp;<span class="error7"> Enter next of kin Phone</span>
+</td>
+</tr>
+<tr> <td colspan = 50> <hr> </td></tr>
+
+<tr>
+          <td align ="left" style="width:auto">
+Date Of Resumption :
+        </td>
+<td align ="left" style="width:auto"><input id="id_dateofresum" readonly="readonly" type="text" name="dateofresum"  value = "{{getdetails.dateofresum|date:"d/m/Y"}}" size="25" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">
+</td>
+
+        <td align ="left" style="width:auto">
+Qualification :
+        </td>
+<td align ="left" style="width:auto"><select name="qualification" id="id_qualification">
+<option selected = "selected" value="{{getdetails.qualification}}">{{getdetails.qualification}}</option>
+<option value="SSCE">SSCE</option>
+<option value="GRADE 2">GRADE 2</option>
+<option value="NCE">NCE</option>
+<option value="OND">OND</option>
+<option value="ND">ND</option>
+<option value="HND">HND</option>
+<option value="BSC">BSC</option>
+<option value="BTECH">BTECH</option>
+<option value="B.EDU">B.EDU</option>
+<option value="B.ENG">B.ENG</option>
+<option value="LLB">LLB</option>
+<option value="MBBL">MBBL</option>
+<option value="MBA">MBA</option>
+<option value="MSC">MSC</option>
+<option value="MBA">MBA</option>
+<option value="PHD">PHD</option>
+<option value="OTHERS">OTHERS</option>
+</select>
+</td>
+</tr>
+<tr>
+     <td align ="left" style="width:auto">
+Branch:
+        </td>
+<td align ="left" style="width:auto"><select name="branch" id="id_branch">
+<option selected = "selected" value="{{getdetails.branch}}">{{getdetails.branch}}</option>
+ {% for pincode in glocal %}
+<option value="{{pincode.lgname}}">{{pincode.lgname}}</option>
+ {% endfor %}
+
+</select>
+</td>
+        <td align ="left" style="width:auto">
+Residing State :
+        </td>
+<td align ="left" style="width:auto"><select name="profession" id="id_profession">
+    <option selected = "selected" value="{{getdetails.profession}}">{{getdetails.profession}}</option>
+    {% for pincode in state %}
+        <option value="{{pincode.state}}">{{pincode.state}}</option>
+    {% endfor %}
+</select>
+</td>
+</tr>
+
+<tr>
+     <td align ="left" style="width:auto">
+First Guarantor:
+        </td>
+<td align ="left" style="width:auto"><textarea id="firstguarantor" rows="2" cols="20" type="text" name="firstguarantor" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">{{getdetails.firstguarantor}}</textarea>
+    &nbsp;<span class="error8"> Enter First Guarantor</span>
+</td>
+        <td align ="left" style="width:auto">
+First Guarantor Address :
+        </td>
+<td align ="left" style="width:auto"><textarea id="firstguarantoraddress" type="text" rows="2" cols="20" name="firstguarantoraddress" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">{{getdetails.firstguarantoraddress}}</textarea>
+    &nbsp;<span class="error9"> Enter First Guarantor Address</span>
+</td>
+</tr>
+<tr>
+     <td align ="left" style="width:auto">
+Second Guarantor:
+        </td>
+<td align ="left" style="width:auto"><textarea id="secondguarantor" type="text"rows="2" cols="20"  name="secondguarantor" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">{{getdetails.secondguarantor}}</textarea>
+    &nbsp;<span class="error10"> Enter Second Guarantor</span>
+</td>
+        <td align ="left" style="width:auto">
+Second Guarantor Address
+        </td>
+<td align ="left" style="width:auto"><textarea id="secondguarantoraddress" type="text"  rows="2" cols="20" name="secondguarantoraddress" style="border: #4772A9 1px solid;font-family: Arial, Helvetica, sans-serif;font-size: 12px;color: #000;text-align: left;height:16px;">{{getdetails.secondguarantoraddress}}</textarea>
+    &nbsp;<span class="error11"> Enter Second Guarantor Address</span>
+</td>
+</tr>
+<tr>
+    <td align ="left" style="width:auto">
+        Department:
+    </td>
+    <td align ="left" style="width:auto"><select name="department" id="id_department">
+        <option selected = "selected" value="{{getdetails.department}}">{{getdetails.department}}</option>
+        {% for pincode in gdept %}
+            <option value="{{pincode.name}}">{{pincode.name}}</option>
+        {% endfor %}
+    </select>
+    </td>
+    <td align ="left" style="width:auto">
+        Status :
+    </td>
+    <td align ="left" style="width:auto"><select name="status" id="id_status">
+        <option selected = "selected" value="{{getdetails.status}}">{{getdetails.status}}</option>
+        <option value="ACTIVE">ACTIVE</option>
+        <option value="INACTIVE">INACTIVE</option>
+    </select>
+    </td>
+</tr>
+
+
+<tr>
+        <td align ="left" style="width:30%">
+            <input type="hidden" name="hcode"
+                   value="{{getdetails.staffid}}">
+            <input type="hidden" name="hcode1"
+                   value="{{getdetails.name}}">
+
+                        </td>
+<td align ="left" style="width:30%">
+
+<input name="submit" type= "submit" value="Update Staff Record" >
+ </td>
+
+<td align ="left" style="width:30%">
+ </td>
+<td>
+</td>
+</tr>
+</table>
+</form>
+<!-- parti-->
+<script>
+$(document).ready(function() {
+    var pickerOpts = {
+        //appendText: "mm/dd/yy",
+        //defaultDate: "+5",
+        showOtherMonths: true,
+        changeMonth: true,
+        changeYear: true,
+        dateFormat:"dd/mm/yy"
+        //showButtonPanel: true
+        // showOn: "button"
+    };
+         $("#id_dateofbirth").datepicker(pickerOpts);
+         $("#id_dateofresum").datepicker(pickerOpts);
+         $("#id_staffid").focus();
+        // getSTATEs();
+
+});
+</script>
+
+    <script type="text/javascript" language="javascript">
+        function getSTATEs(){
+            var state = $("#id_nationality").val();
+            //alert(state)
+            var url = "/hrm/getstate/";
+            var i = 0;
+            var data='userid='+state;
+            $("#id_stateoforigin").val('');
+            $("#id_stateoforigin").html('');
+            if (state != undefined){
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data:data,
+                    success: function(data){
+                        var options = '';
+                        for (i=0; i<data.length; i++){
+                            options += '<option value="' + data[i] +'">' + data[i] + '</option>'
+                        }
+                        $("#id_stateoforigin").append(options);
+                        getLGAs();
+                    }
+                })
+            }
+        }
+
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getLGAs(){
+            var state = $("#id_nationality").val() + "," +  $("#id_stateoforigin").val() ;
+            //alert(state);
+            var url = "/hrm/getlocal/";
+            var i = 0;
+            var data='userid='+state;
+            $("#id_localgovt").val('');
+            $("#id_localgovt").html('');
+            if (state != undefined){
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data:data,
+                    success: function(data){
+                        var options = '';
+                        for (i=0; i<data.length; i++){
+                            options += '<option value="' + data[i] +'">' + data[i] + '</option>'
+                        }
+                        $("#id_localgovt").append(options);
+                    }
+                })
+            }
+        }
+
+    </script>
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#id_nationality").change(function () {
+                getSTATEs();
+            });
+        });
+
+    </script>
+
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#id_stateoforigin").change(function () {
+                getLGAs();
+            });
+        });
+    </script>
+
+    <script type="text/javascript" language="javascript">
+        function getLGAsteps(){
+            var state = $("#id_level").val();
+            //alert(state)
+            var url = "/hrm/getnewstep/";
+            var i = 0;
+            var data='userid='+state;
+            $("#id_step").val('');
+            $("#id_step").html('');
+            if (state != undefined){
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data:data,
+                    success: function(data){
+                        var options = '';
+                        for (i=0; i<data.length; i++){
+                            options += '<option value="' + data[i] +'">' + data[i] + '</option>'
+                        }
+                        $("#id_step").append(options);
+
+                    }
+                })
+            }
+        }
+    </script>
+    <script>
+        $(document).ready(function() {
+// $(".listbox").hide();
+            $("#id_level").change(function () {
+                getLGAsteps();
+            });
+        });
+    </script>
+
+
+
+</body>
+</html>

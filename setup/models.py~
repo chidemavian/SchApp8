@@ -1,0 +1,69 @@
+from django.db import models
+from schoolexpert.utils import PhoneNumberValidator
+
+subject_category = (
+    ('NONE', 'NONE'), ('JS', 'JS'), ('Art', 'Art'), ('Science', 'Science'), ('Commercial', 'Commercial'))
+
+states = [(state, state) for state in sorted(['Abia', 'Abuja FCT', 'Adamawa', 'Akwa Ibom', 'Anambra', 'Bauchi', 'Bayelsa', 'Benue',
+              'Borno', 'Cross River', 'Delta', 'Ebonyi', 'Edo', 'Ekiti', 'Enugu', 'Gombe', 'Imo',
+              'Jigawa', 'Kaduna', 'Kano', 'Katsina', 'Kebbi', 'Kogi', 'Kwara', 'Lagos', 'Nassarawa',
+              'Niger', 'Ogun', 'Ondo', 'Osun', 'Oyo', 'Plateau', 'Rivers', 'Sokoto', 'Taraba', 'Yobe',
+              'Zamfara'])]
+
+class Subject(models.Model):
+    category = models.CharField('Class', max_length=25, choices=subject_category)
+    subject = models.CharField('Subject', max_length=75)
+    ca = models.FloatField('CA')
+    exam = models.FloatField('Exam')
+    num = models.IntegerField()
+
+    class Meta:
+        unique_together = ('category', 'subject')
+
+    def save(self, *args, **kwargs):
+        numDict = {"ENGLISH LANGUAGE": 1, "MATHEMATICS": 2, "UNDEFINED": -1}
+        self.subject = self.subject.upper()
+
+        self.num = numDict[self.subject if self.subject in numDict.keys() else "UNDEFINED"]
+        super(Subject, self).save(*args, **kwargs)
+
+class Class(models.Model):
+    klass = models.CharField('Class', max_length=25, unique=True)
+
+    def save(self, *args, **kwargs):
+        self.klass = self.klass.upper()
+        super(Class, self).save(*args, **kwargs)
+
+class Arm(models.Model):
+    arm = models.CharField('Arm', max_length=25, unique=True)
+
+    def save(self, *args, **kwargs):
+        self.arm = self.arm.upper()
+        super(Arm, self).save(*args, **kwargs)
+
+class Role(models.Model):
+    role = models.CharField('Role', max_length=75, unique=True)
+
+class Department(models.Model):
+    department = models.CharField('Department', max_length=75, unique=True)
+
+class House(models.Model):
+    house = models.CharField('House', max_length=75, unique=True)
+
+class School(models.Model):
+    name = models.CharField('Name', max_length=75)
+    address = models.CharField('Address', max_length=200)
+    city = models.CharField('City', max_length=25)
+    state = models.CharField('State', max_length=25, choices=states)
+    phonenumber = models.CharField('Telephone', max_length=15, validators=[PhoneNumberValidator])
+    email = models.EmailField('Email', max_length=75)
+    website = models.URLField('Website', max_length=200)
+    logo = models.ImageField('School Logo', upload_to='school-logo', null=True, editable=False)
+    principals_name = models.CharField("Principal's Name", max_length=75)
+
+class LGA(models.Model):
+    state = models.CharField('State', max_length=25, choices=states)
+    lga = models.CharField('L.G.A.', max_length=25)
+
+    class Meta:
+        ordering = ('state', 'lga')

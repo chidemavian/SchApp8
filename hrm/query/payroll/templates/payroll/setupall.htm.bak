@@ -1,0 +1,141 @@
+{% extends "payroll/base.htm" %}
+{%block head %}
+{%block title %}{%endblock%}
+{%endblock %}
+{%block content%}
+<div class="pmiddle">
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="left" style="border:1px solid black;width:100%;font-family: verdana;color:black">
+<div align ="center" style="background-color:black;border:0px solid black;width:100%;font-size:12px;color:white"> <strong>STAFF WORKING DAYS CREATION  </strong> </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+
+<table style="width:100%;">
+<tr>
+    <td colspan="8">
+
+<form action="" method="post" name ="main" onsubmit="disable(this)">
+<table align ="left" style="width:auto;">
+<tr>
+        <td>
+Select Date :
+        </td>
+<td>{{ form.payrolldate}}
+</td>
+<td>{{ form.payrolldate.errors}}
+</td>
+</tr>
+
+<tr>
+
+<td colspan="3" style="text-align:center;">
+
+<input name="submit" type= "submit" value="Submit Working days">
+ </td>
+</tr>
+    </table>
+</form>
+    </td>
+</tr>
+<tr>
+    <td colspan="8">
+    {% if stafflist %}
+        <table style="width:100%;color:black;border-collapse:collapse;">
+
+    <tr>
+        <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Staff Id</strong></td>
+        <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Staff Name</strong></td>
+        <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong>Designation</strong></td>
+        <td align="left" valign="top" style = "width:auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong> Worked Day</strong></td>
+    </tr>
+
+    {% for pincode in stafflist %}
+
+        <tr>
+        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong> {{ pincode.staffid }} </strong></td>
+        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.name|title}}</strong></td>
+        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.designation }}</strong></td>
+        <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="#" style ="color:red" onclick="admno({{ pincode.id }});" title="Edit {{ pincode.name}} Worked Days "> {{ pincode.workedday }} </a></strong></td>
+      <!--  <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="/payroll/editworked/{{ pincode.id }}/" style ="color:red"> {{ pincode.workedday }} </a></strong></td>-->
+    {% endfor %}
+    </tr>
+  </table>
+  {% endif %}
+    </td>
+</tr>
+</table>
+</div>
+</div>
+<!-- parti-->
+
+<script>
+$(document).ready(function() {
+    var pickerOpts = {
+        //appendText: "mm/dd/yy",
+        //defaultDate: "+5",
+        showOtherMonths: true,
+        changeMonth: true,
+        changeYear: true,
+        dateFormat:"mm/dd/yy"
+        //showButtonPanel: true
+        // showOn: "button"
+    };
+         $("#id_payrolldate").datepicker(pickerOpts);
+         //alert("welcome");
+         //$("#id_payrolldate").focus();
+
+});
+</script>
+
+    <div id="myDialog" >
+    </div>
+
+    <script type="text/javascript" language="javascript">
+        function admno(vid){
+            //alert(vid);
+            var state = vid;
+            var url = "/humanresources/payroll/getworkedday/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialog").html(html);
+                    getdialog();
+                }
+            });
+            return false;
+        }
+
+    </script>
+    <script type="text/javascript" language="javascript">
+        function getdialog(){
+            var dialogOpts = {
+                autoOpen:true,
+                modal:true,
+                position: ["center", "middle"],
+                height:"auto",
+                width:550,
+                title:'Edit Worked Days ',
+                closeOnEscape:true,
+                show: true,
+                hide: true,
+                bgiframe: true
+            };
+            $("#myDialog").dialog(dialogOpts);
+        }
+
+    </script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+ {%endblock%}

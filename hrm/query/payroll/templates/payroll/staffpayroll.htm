@@ -1,0 +1,85 @@
+{% extends "payroll/base.htm" %}
+{%block head %}
+{%block title %}Solutions{%endblock%}
+{%endblock %}
+{%block content%}
+<div class="pmiddle">
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>-->
+<div align ="left" style="border:1px solid black;width:100%;font-family: verdana;color:black">
+<div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%; font-size:12px;color:black"> Compute Payroll</div>
+<div align="center" style="color:red;font-family:verdana;font-size:25px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
+    <form action="" method="post" name ="main" onsubmit="disable(this)">
+<table align ="left" style="border:1px solid black;width:auto;background-color:gray;">
+<tr>
+        <td>
+Select Date :
+        </td>
+<td>{{ form.caldate}}
+</td>
+<td>{{ form.caldate.errors}}
+</td>
+<td colspan="3" style="text-align:center;">
+<input name="submit" type= "submit" value="Compute Payroll" onclick="admno()">
+ </td>
+</tr>
+</table>
+</form>
+</div>
+    <div id="myDialog" style="width:300px;height:200px;" >
+        <img src="/static/loading.gif"  style="width:50px;height:50px;float:left;" >
+        <span style="font-size:20px;width:100%"> Please allow this Operation to finish. It might take a minute or more.</span>
+    </div>
+</div>
+
+
+<!-- parti-->
+<script>
+$(document).ready(function() {
+
+    var pickerOpts = {
+        //appendText: "mm/dd/yy",
+        //defaultDate: "+5",
+        showOtherMonths: true,
+        changeMonth: true,
+        changeYear: true,
+        dateFormat:"mm/dd/yy"
+        //showButtonPanel: true
+
+        // showOn: "button"
+    };
+         $("#id_caldate").datepicker(pickerOpts);
+         //alert("welcome");
+        // $("#id_staffid").focus();
+         //$(".box").hide();
+});
+</script>
+    
+    <script type="text/javascript" >
+        $(document).ready(function() {
+            $("#myDialog").hide();
+        });
+    </script>
+    <script type="text/javascript" language="javascript">
+        function admno(){
+            //alert('Good');
+            $("#myDialog").show();
+
+        }
+
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing ...';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+
+
+
+
+ {%endblock%}
