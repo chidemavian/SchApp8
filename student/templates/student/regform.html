@@ -3,12 +3,10 @@
 {%  load humanize %}
 <form id="form1" action="/student/editregistration/" method="post" enctype="multipart/form-data" onsubmit="disable(this)">
 
-<table style="text-align: left; vertical-align: text-top;width:100%;" >
+<table style="text-align: left; width:100%;" >
+
 <tr >
-    <td colspan="4"  style="background-color:#ffffff;font-size:13px;color:red;font-weight:bold;text-decoration:blink;text-align:center" >{{ varerr }} </td>
-</tr>
-<tr >
-    <td colspan="4"  style="background-color: #ccccc0;color:#000000;text-align:center;" > Bio Data</td>
+    <td colspan="7"  style="background-color: #ccccc0;color:#000000;text-align:center;" > Bio Data</td>
 </tr>
 <tr>
     <td><label for="id_surname">Surname</label></td>
@@ -21,10 +19,10 @@
     <td><label for="id_othername">Other Names</label></td>
     <td><input id="id_othername" type="text" name="othername" maxlength="75" value="{{ data.othername }}" class="loginTxtbox" /></td>
     <td><label for="id_address">Address</label></td>
-    <td><textarea id="id_address" rows="3" cols="25" name="address" class="loginTxtbox1">{{ data.address }}</textarea> </td>
+    <td><textarea id="id_address" rows="1" cols="30" name="address" class="loginTxtbox1">{{ data.address }}</textarea> </td>
 </tr>
 <tr>
-    <td><label for="id_sex">Sex</label></td>
+    <td><label for="id_sex">Gender</label></td>
     <td><select name="sex" id="id_sex">
         <option selected = "selected" value="{{data.sex}}">{{data.sex}}</option>
         <option value="Female">Female</option>
@@ -91,7 +89,7 @@
 <td><input id="id_studentpicture" type="file" name="studentpicture" size="5" />&nbsp;</td> -->
 </tr>
 <tr>
-    <td colspan="4" class="sectionCaption" style="background-color: #ccccc0;color:#000000;text-align:center;font-weight:ld;">Parent/Guardian</td>
+    <td colspan="7" class="sectionCaption" style="background-color: #ccccc0;color:#000000;text-align:center;font-weight:ld;">Parent/Guardian</td>
 </tr>
 <tr>
     <td><label for="id_fathername">Name</label></td>
@@ -110,7 +108,7 @@
     <td><input id="id_fatheremail" type="text" name="fatheremail" maxlength="200" value="{{data.fatheremail }}" class="loginTxtbox"/></td>
 </tr>
 <tr>
-    <td colspan="4" class="sectionCaption" style="background-color: #ccccc0;color:#000000;text-align:center;">Academics</td>
+    <td colspan="7" class="sectionCaption" style="background-color: #ccccc0;color:#000000;text-align:center;">Academics</td>
 </tr>
 <tr>
     <td><label for="id_prev_school">Former School</label></td>

@@ -17,12 +17,26 @@ import xlwt
 
 currse = currentsession.objects.get(id = 1)
 
+
+def autocomplete(request):
+    term = request.GET.get('term')
+    #p =  request.GET.get('query')
+    #print p
+    qset = Student.objects.filter(fullname__contains=term,admitted_session = sessi,gone = False)[:10]
+
+    suggestions = []
+    for i in qset:
+        suggestions.append({'label': '%s :%s :%s :%s ' % (i.admissionno, i.fullname,i.admitted_class,i.admitted_arm), 'admno': i.admissionno,'name':i.fullname,'klass':i.admitted_class,'arm':i.admitted_arm})
+    return suggestions
+
+
 def index(request):
     return render_to_response('student/base.html', {})
 
 def wel(request):
     if  "userid" in request.session:
-        return render_to_response('student/wel.html')
+        varuser=request.session['userid']
+        return render_to_response('student/wel.html',{'varuser':varuser})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -185,9 +199,9 @@ def register(request):
                    return HttpResponseRedirect('/student/success/')
            else:
                varerr = "All Fields Are Required"
-           return render_to_response('student/register.html', {'varerr':varerr,'form': form}, RequestContext(request))
+           return render_to_response('student/register.html', {'varuser':varuser,'varerr':varerr,'form': form}, RequestContext(request))
         else:
-            return render_to_response('student/register.html', {'varerr':varerr,'form': form}, RequestContext(request))
+            return render_to_response('student/register.html', {'varuser':varuser,'varerr':varerr,'form': form}, RequestContext(request))
 
     else:
         return HttpResponseRedirect('/login/')
@@ -410,11 +424,7 @@ def editreg(request):
         if uenter == False :
             return HttpResponseRedirect('/unauthorised/')
         varerr =''
-        #form = StudentRegistrationForm
-        # searchform = StudentSearchForm()
         if request.method == 'POST':
-            #form = StudentRegistrationForm(request.POST, request.FILES)
-            #if form.is_valid():
                 birth_date= request.POST['birth_date']
                 admitted_session = request.POST['admitted_session']
                 firstname1 = request.POST['firstname']
@@ -504,7 +514,7 @@ def editreg(request):
                 seldata.dayboarding = dayboarding
                 seldata.subclass = subclass
                 seldata.userid = varuser
-                #seldata.studentpicture = photo_file *******why pic doesnt update
+                seldata.studentpicture = photo_file #*******why pic doesnt update
                 seldata.save()
                 #*************************************
                 spadm = admitted_session
@@ -538,7 +548,7 @@ def editreg(request):
                     tbltransaction.objects.filter(acccode = 'L'+str(admissionnoold)).update(acccode = 'L'+str(admissionno),accname = fullname.upper())
                 else:
                     used = tblaccount(groupname = "CURRENT LIABILITIES",groupcode = "40000",subgroupname = "STUDENT ACC",subgroupcode="41200",datecreated = datetime.datetime.today(),userid =varuser,accname = fullname.upper(),acccode = 'L' + admissionno,accbal= 0,accstatus ="ACTIVE",recreport ="POCKET" )
-                    used.save()
+                    #used.save()
                 #treating other liabilities
                 if tblaccount.objects.filter(acccode = 'C'+str(admissionno)):
                     getacc = tblaccount.objects.get(acccode = 'C'+str(admissionno))
@@ -549,12 +559,12 @@ def editreg(request):
                     tbltransaction.objects.filter(acccode = 'C'+str(admissionnoold)).update(acccode = 'C'+str(admissionno),accname = fullname.upper())
                 else:
                     used = tblaccount(groupname = "CURRENT LIABILITIES",groupcode = "40000",subgroupname = "STUDENT ACC",subgroupcode="41200",datecreated = datetime.datetime.today(),userid =varuser,accname = fullname.upper(),acccode = 'C' + admissionno,accbal= 0,accstatus ="ACTIVE",recreport ="POCKET" )
-                    used.save()
+                   # used.save()
                 return HttpResponseRedirect('/student/success/')
         else:
             form = StudentRegistrationForm
             searchform = StudentSearchForm()
-            return render_to_response('student/edit_reg.html', {'form': form,'searchform': searchform}, RequestContext(request))
+            return render_to_response('student/edit_reg.html', {'varuser':varuser,'form': form,'searchform': searchform}, RequestContext(request))
     else:
         return HttpResponseRedirect('/login/')
 
@@ -590,13 +600,19 @@ def studentreport(request):
                 else:
                     student = Student.objects.filter(admitted_class = klass,admitted_arm = arm,admitted_session = session,dayboarding = dayboarding,gone = False).order_by('-sex','fullname')
                     disclass = klass
+                # for k in student:
+                #   p1,p2=k.fathernumber.split(',')
+
+
+
+
                 if form.cleaned_data['excelfile']:
                     response = HttpResponse(mimetype="application/ms-excel")
                     response['Content-Disposition'] = 'attachment; filename=studentlist.xls'
                     wb = xlwt.Workbook()
                     ws = wb.add_sheet('studentlist')
-                    ws.write(0, 1, school.name)
-                    ws.write(1, 1, school.address)
+                    ws.write(0, 4, school.name)
+                    ws.write(1, 4, school.address)
                     ws.write(2, 2, '%s %s :: Student List for %s Session' %(disclass,disarm, session) )
                     ws.write(3, 0, 'Name')
                     ws.write(3, 1, 'Sex')
@@ -622,14 +638,15 @@ def studentreport(request):
                     wb.save(response)
                     return response
                 else:
-                    return render_to_response('student/student_list.html', {'form': form,'school':school,'students_list':student,'session':session,'disclass':disclass,'disarm':disarm}, RequestContext(request))
+                    return render_to_response('student/student_list.html', {
+                      # 'p1':p1,'p2':p2,
+                      'form': form,'school':school,'varuser':varuser,'students_list':student,'session':session,'disclass':disclass,'disarm':disarm}, RequestContext(request))
             else:
                  varerr = 'All Fields Are Required !'
                  return render_to_response('student/student_list.html', {'form': form,'school':school,'varerr':varerr}, RequestContext(request))
         else:
             form = studentreportform()
-
-            return render_to_response('student/student_list.html', {'form': form,'school':school}, RequestContext(request))
+            return render_to_response('student/student_list.html', {'varuser':varuser,'form': form,'school':school}, RequestContext(request))
     else:
         return HttpResponseRedirect('/login/')
 
@@ -726,7 +743,7 @@ def withdrawstudent(request):
         else:
             form = StudentRegistrationForm
             searchform = StudentSearchForm()
-            return render_to_response('student/withdraw.html', {'form': form,'searchform': searchform}, RequestContext(request))
+            return render_to_response('student/withdraw.html', {'varuser':varuser,'form': form,'searchform': searchform}, RequestContext(request))
     else:
         return HttpResponseRedirect('/login/')
 
@@ -761,7 +778,7 @@ def returngonestudent(request):
 
             form = StudentRegistrationForm
             searchform = StudentSearchForm()
-            return render_to_response('student/returngoneform.html', {'form': form,'searchform': searchform}, RequestContext(request))
+            return render_to_response('student/returngoneform.html', {'varuser':varuser,'form': form,'searchform': searchform}, RequestContext(request))
     else:
         return HttpResponseRedirect('/login/')
 
@@ -882,16 +899,26 @@ def withdrawnreport(request):
         else:
             form = withdrawnreportform()
 
-            return render_to_response('student/withdrawn_report.html', {'form': form,'school':school}, RequestContext(request))
+            return render_to_response('student/withdrawn_report.html', {'varuser':varuser,'form': form,'school':school}, RequestContext(request))
     else:
         return HttpResponseRedirect('/login/')
 
 def searchstudent(request,vid):
     if  "userid" in request.session:
-        stuinfo = Student.objects.get(id = vid)
-        return render_to_response('student/search.html',{'data':stuinfo})
+      stuinfo = Student.objects.get(id = vid)
+      return render_to_response('student/search.html',{'data':stuinfo})
     else:
         return HttpResponseRedirect('/login/')
+
+
+def searchprofile(request):
+    if  "userid" in request.session:
+      user = request.session['userid']
+      stuinfo = Student.objects.get(fullname = user,admitted_session=currse)
+      return render_to_response('student/profile.html',{'data':stuinfo,'varuser':user})
+    else:
+        return HttpResponseRedirect('/login/')
+
 
 def studentsuccessful(request):
     return render_to_response('student/success.html', {}, RequestContext(request))
@@ -973,8 +1000,11 @@ def studentsearchajax(request):
             if request.method == 'POST':
                 post = request.POST.copy()
                 acccode = post['userid']
-                data = Student.objects.filter(admitted_session = currse,fullname__contains = acccode,gone = False)
-                return render_to_response('student/sear.htm',{'data':data,'session':currse})
+                if acccode=='':
+                  return render_to_response("namesearch.html")
+                else:
+                  data = Student.objects.filter(admitted_session = currse,fullname__contains = acccode,gone = False)
+                  return render_to_response('student/sear.htm',{'data':data,'session':currse})
             else:
                 gdata = ""
                 return render_to_response('index.html',{'gdata':gdata})

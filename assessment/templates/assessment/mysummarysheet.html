@@ -1,0 +1,192 @@
+{% extends 'assessment/base.htm' %}
+{% block sectionTitle %}{% endblock %}
+{% load humanize %}
+{% block content %}
+    <table style="width:100%; text-align: left; vertical-align: middle;background-color:#ffffff;">
+        <tr>
+            <td colspan="20" style="text-align:center;color:black;font-size:14px;background-color:#ccccc0">
+                 SUMMARY SHEET
+            </td>
+        </tr>
+        <tr>
+            <td colspan="20"  style="background-color:#fffff0;font-size:13px;color:red;width:100%;font-weight:bold;text-decoration:blink;text-align:center" > {{ varerr }} 
+            </td>
+        </tr>
+        <tr style="color:whie;width:100%;">
+            <td colspan="20">
+                
+                <table left='20%' style="width:100%;">
+                	<form action="" method="POST">
+                    <tr>
+                        <td>
+                            {{ form.session.label_tag }}&nbsp;{{ form.session }}
+                        </td>
+                        <td>
+                            {{ form.klass.label_tag }}&nbsp;{{ form.klass }}
+                        </td>
+                        <td>
+                            {{ form.arm.label_tag }}&nbsp;{{ form.arm }}
+                        </td>
+
+                        <td>
+                            {{ form.term.label_tag }}&nbsp;{{ form.term }}
+                        </td>
+      
+                        <td><input name="submit" type= "submit" value="Summary Sheet" ></td>
+                    </tr>
+                    </form>
+                </table>
+                
+            </td>
+        </tr>
+         </table>
+
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+    font-family: arial, sans-serif;
+    width: 100%;
+    font-size: 70%;
+    border-collapse: collapse;
+    margin: 0.5px;
+    top: 10%;
+}
+
+td, th {
+    border: 2px solid black;#dddddd;
+    text-align: laeft;
+    padding: 8px;
+    font-size: 100%;
+}
+
+tr:nth-child(even) {
+    background-color: #ddddd;
+}
+</style>
+</head>
+<body>
+ <input name="submitprint" type= "submit" value="Print Report" onclick = "openrecprint();">
+        <div class="printable">
+     {% for k in replist %}
+<table  style='width=80%'>
+	<table>
+    <table style="width:100%;margin-top:3%">
+      <tr>
+       <td rowspan="1">
+          <img style="width:120px;height:100px;" src="/static/{{school.logo }}" alt="{{ k.studentinfo.fullname}}">
+      </td>
+		<td align='center' colspan='5'> <a style='font-size:20px;font-weight:bold'>DOWEN COLLEGE LAGOS</a><br/>SUMMER TERM SUMMARY RESULT SHEET {{ k.studentinfo.admitted_session }}
+		</td>
+    </tr>
+    </table>
+	<table style="width:100%;margin-bottom:2px">
+	<tr>
+    <td style='font-weight:bold'>NAME OF STUDENT:</td>
+    <td colspan= '5'>{{k.studentinfo.fullname }}</td>  
+	</tr>
+
+	<tr >
+   
+    <td style='font-weight:bold'>ADMISSION NO:</td>
+    <td>{{ k.studentinfo.admissionno }}</td>
+    <td style='font-weight:bold' > CLASS:</td>
+    <td>{{k.studentinfo.admitted_class }}{{ k.studentinfo.admitted_arm }}</td>  
+  
+
+				
+	</tr>
+
+
+	<tr >
+
+
+    <td style='font-weight:bold'> STUDENT AVERAGE:</td>
+    <td>{{ k.percentage }}</td>
+    <td style='font-weight:bold'>CLASS AVERAGE:</td>
+    <td colspan='4'>{{ k.academic.classAve }}</td>
+
+	</tr>
+
+  <tr>
+  <td style='font-weight:bold'>NO. OF TIMES LATE TO SCHOOL:</td>
+    <td colspan='3'>{{ppo}}</td>
+</tr>
+</table>
+
+
+<table style='text-align:center;margin-top:0px;margin-bottom:5px'>
+	<tr style='font-weight:bold;font-size:12px'>
+        <td  >S/N</td>
+		     <td>SUBJECT</td>
+         <td>GRADE</td>
+         <td>PERCENTAGE</td>
+         <td colspan='3'>SUBJECT AVERAGE</td>
+      </tr>
+
+  {% for p in k.subject %}
+  <tr>
+    <td style='text-align:center'> {{forloop.counter}}</td>
+		<td style='text-align:left'>{{ p.subject }}</td>
+		<td>{{ p.grade}}</td>    
+		<td>{{ p.term_score }}</td>
+		<td colspan='3'>{{ p.subject_avg }}</td>
+	</tr>
+	<tr>
+	</tr>
+	{% endfor %}
+  </table>
+</table>
+
+
+
+	<table style="width:100%;margin-top:10px;margin-bottom:25%">
+  <caption><b>PERSONAL AND SOCIAL DEVELOPMENT</b></caption>
+  <tr style="font-weight:bold">
+  	<td></td>
+    <td>ATTENDANCE AND PUNCTUALITY</td>
+    <td>SOCIAL BEHAVIOUR</td>
+    <td>MOTIVATION AND PERSONAL COMMITMENT TO LEARNING</td>
+    <td>STUDENT'S CONTRIBUTION TO THE LIFE OF THE SCHOOL</td>
+  </tr>
+  <tr style="text-align:center;font-weight:bold">
+    <td>LEVEL</td>
+    <td>{{k.psyco.attendance}}</td>
+    <td>{{k.psyco.social_behaviour}}</td>
+    <td>{{k.psyco.motivation}}</td>
+    <td>{{k.psyco.contribution}}</td>
+  </tr>
+  <tr>
+    <td style="font-weight:bold">HOME ROOM TEACHER'S COMMENT:</td>
+    <td colspan='4'>{{k.academic.class_teacher_comment}}</td>
+  </tr>
+  <tr>
+  	<td style="font-weight:bold">CO-ORDINATOR'S NAME:</td>
+  	<td colspan ='2'>{{k.codi.co_ordinator}}</td>
+  <td style='font-weight:bold;text-align:right'> SIGN:</td>
+    <td colspan =''>{{h}}</td>
+  </tr>
+  <tr>
+  	<td style="font-weight:bold">PRINCIPAL'S SIGN:</td>
+  	<td colspan='2'>{{kg}}</td>
+  	<td colspan='1' style='font-weight:bold;text-align:right'>DATE:</td>
+  	<td colspan=''>{{date}}</td>
+  </tr>
+</table>
+</table>
+</table>
+      {% endfor %}
+      </div>
+
+</body>
+
+    <script language="javascript" type="text/javascript">
+        function openrecprint()
+        {
+            //alert("welcome");
+            $( ".printable" ).print();
+        }
+    </script>
+
+{% endblock %}

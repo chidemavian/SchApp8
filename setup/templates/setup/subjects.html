@@ -1,4 +1,4 @@
-{% extends 'setup/base.htm' %}
+{%extends 'setup/typography.html' %}
 {% block content %}
     <div align ="center" style="border-radius:10px;height:20px;background-color:#ccccc0; font-size:12px;color:black;text-align:center"> Subject Set Up </div>
     <div align="center" style="color:red;font-family:verdana;font-size:15px;text-decoration:blink;background-color:#ccccc0; " > {{varerr}}</div>
@@ -19,7 +19,7 @@
 
                         </td>
                         <td align ="left" style="width:auto;">
-                            {{form.category.errors}}
+                          
                         </td>
                     </tr>
                     <tr>
@@ -31,7 +31,7 @@
 
                         </td>
                         <td align ="left" style="width:auto;">
-                            {{form.subject.errors}}
+                     
                         </td>
                     </tr>
                     <tr>
@@ -43,7 +43,7 @@
 
                         </td>
                         <td align ="left" style="width:auto;">
-                            {{form.category2.errors}}
+         
                         </td>
                     </tr>
                     <tr>
@@ -55,7 +55,7 @@
 
                         </td>
                         <td align ="left" style="width:auto;">
-                            {{form.ca.errors}}
+               
                         </td>
                     </tr>
                     <tr>
@@ -67,7 +67,7 @@
 
                         </td>
                         <td align ="left" style="width:auto;">
-                            {{form.exam.errors}}
+                  
                         </td>
                     </tr>
                     <tr>
@@ -87,6 +87,8 @@
             </form>
 
         </td>
+    </tr>
+</table>
              <table align ="left" style="background-color:white;border-collapse:collapse;">               
                         <tr>
                             <td>
@@ -201,7 +203,5 @@
             return true;
         }
     </script>
-
-
 
 {% endblock %}

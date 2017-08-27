@@ -61,6 +61,12 @@ def fetch_resources(uri,rel):
      #   return HttpResponse(result.getvalue(), mimetype='application/pdf')
     #return HttpResponse('Gremlins ate your pdf! %s' % cgi.escape(html))
 
+def count(Pin):
+    count = tblexpress.objects.get(pin = Pin)
+    vcount = count.count
+    return vcount
+
+
 def render_to_pdf(template_src, context_dict):
     """Function to render html template into a pdf file"""
     template = get_template(template_src)
@@ -130,6 +136,58 @@ def render_to_xls(context_dict):
 
     return response
 
+def studentaverage(admno,term):
+     stu = Student.objects.filter(admitted_session=session,gone=False,admitted_class=klass,admitted_arm=arm)                
+     for j in stu:
+        acaderec=StudentAcademicRecord.objects.get(student=j,term=term)
+        totsub = SubjectScore.objects.filter(academic_rec = acaderec,term = term).count()
+        subcount = SubjectScore.objects.filter(academic_rec = acaderec,term = term).aggregate(Sum('first_ca'))
+        casum = subcount['first_ca__sum']
+        staver=casum/int(totsub)
+        StudentAcademicRecord.objects.filter(student=j,term=term).update(stu_ave1=staver)
+
+        totalmark = SubjectScore.objects.filter(academic_rec = acaderec,term = term).aggregate(Sum('second_ca'))
+        totalmark2 = totalmark['second_ca__sum']
+        stave2=totalmark2 / int(totsub)
+        StudentAcademicRecord.objects.filter(student=j,term=term).update(stu_ave2=stave2)   
+
+def classaverage(klass,session,term):
+    if term == 'Third':
+        academicins = StudentAcademicRecord.objects.get(term = term,
+            session = session,
+            klass = klass,
+            arm = arm,
+            student = Student.objects.get(admitted_session = session,admitted_arm = arm,admitted_class = klass,admissionno = admno))
+        totalsub = SubjectScore.objects.filter(klass = klass,arm = arm,academic_rec = academicins,session = session,term = term).count()
+        totalmark = SubjectScore.objects.filter(klass = klass,arm = arm,academic_rec = academicins,session = session,term = term).aggregate(Sum('annual_avg'))
+        totalmark2 = totalmark['annual_avg__sum']
+        totalpecen = totalmark2/totalsub
+        academicins.percentage = totalpecen
+        academicins.save()
+    else:
+        totalmark = SubjectScore.objects.filter(academic_rec = acaderec,
+            session = session,
+            term = term).aggregate(Sum('first_ca'))
+        totalmark2 = totalmark['first_ca__sum']
+
+        totalmark = SubjectScore.objects.filter(academic_rec = acaderec,
+            session = session,
+            term = term).aggregate(Sum('second_ca'))
+        totalmark2 = totalmark['second_ca__sum']
+
+        academicins = StudentAcademicRecord.objects.get(term = term,session = session,klass = klass,arm = arm,student = Student.objects.get(admitted_session = session,admitted_arm = arm,admitted_class = klass,admissionno = admno))
+        totalsub = SubjectScore.objects.filter(klass = klass,arm = arm,academic_rec = academicins,session = session,term = term).count()
+        totalmark = SubjectScore.objects.filter(klass = klass,arm = arm,academic_rec = academicins,session = session,term = term).aggregate(Sum('term_score'))
+        totalmark2 = totalmark['term_score__sum']
+        totalpecen = totalmark2/totalsub
+        academicins.percentage = totalpecen
+        academicins.save()
+    return 'ok'    
+
+
+
+
+
 def annualaverage(admno,session,arm,klass,subject):
     stuinfo = Student.objects.get(admitted_session = session,admitted_class = klass,admissionno = admno,admitted_arm = arm)
     acaderec = StudentAcademicRecord.objects.filter(student = stuinfo,session = session)
@@ -158,6 +216,7 @@ def annualaverage(admno,session,arm,klass,subject):
     else:
         pass
     return 'ok'
+
 
 def percent(session,klass,arm,admno,term):
     if term == 'Third':
@@ -355,6 +414,59 @@ def mid_term_position(session,term,klass,arm):
 
 
 
+def mid_term_position1(session,term,klass,arm):
+    stuperc = []
+    stuinfo = Student.objects.filter(admitted_session = session,admitted_class = klass,admitted_arm = arm,gone = False).order_by('-sex','fullname')
+    submid = 0
+    for uuu in Subject.objects.all():
+        submid = uuu.ca
+    submiddiv = int(submid)/2 #divide total CA by 2 e.g if ca = 30 we need 15
+    if klass [0] == 'N' or klass [0] == 'P':
+        submiddiv = 40
+    else:
+        submiddiv= 20
+    for j in stuinfo:
+        stuper = 0
+        if StudentAcademicRecord.objects.filter(student = j,term = term):
+           acaderec = StudentAcademicRecord.objects.get(student = j,term = term)
+           totsub = SubjectScore.objects.filter(academic_rec = acaderec,term = term).count()
+           totalmarkcount = SubjectScore.objects.filter(academic_rec = acaderec,session = session,term = term).count()
+           subsco = SubjectScore.objects.filter(academic_rec = acaderec,term = term).order_by('num')
+           tscore = 0
+  
+           for jj in subsco:
+               mca = jj.mid_term
+               fca = jj.first_ca
+               sca = jj.second_ca
+               tca = jj.third_ca
+               totalca = mca
+               #totalca = fca #+ sca+tca
+               totalperc1 = fca/submiddiv
+               totalperc = totalperc1 * 100 # getting the percentage
+               tscore += totalperc
+               if totalmarkcount == 0:
+                  stuper = 0
+               else:
+                  stuper = tscore / totalmarkcount
+        else:
+           pass
+        stuperc.append(stuper)
+    stuperc.sort(reverse=True)
+    dicper ={}
+    for g in stuperc:
+        dic = {g:g}
+        dicper.update(dic)
+    flist = dicper.values()
+    flist.sort(reverse=True)
+    n = 1
+    fdic = {}
+    for d in flist:
+        pos = ordinal(n)
+        fdic.update({d:pos})
+        j = stuperc.count(d)
+        n  += j
+    return fdic
+
 #getting mid term subject position *********************************************
 def mid_term_subjectposition(session,subject,term,klass,arm,stuper):
         subpli = SubjectScore.objects.filter(klass = klass,arm = arm,subject = subject,session = session,term = term)
@@ -379,3 +491,5 @@ def mid_term_subjectposition(session,subject,term,klass,arm,stuper):
         #print 'Dic',fdic,'student score :',stuper
         stuposi = fdic[stuper]
         return stuposi
+
+

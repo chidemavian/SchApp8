@@ -1,32 +1,39 @@
 {% extends 'assessment/base.htm' %}
 {% block sectionTitle %}{% endblock %}
 {% block content %}
-    <table style="width:auto; text-align: left; vertical-align: middle;background-color:#ffffff">
+
+            <div class="row">
+                <div class="col-lg-12">
+              <h1 class="page-header"><i class="fa fa-book fa-1x"></i> Personal and social development</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+    <table style="width:auto; text-align: left; vertical-align: middle;background-color:#ccccc0">
         <tr>
             <td colspan="20" style="text-align:center;color:black;background-color:#ccccc0;font-size:14px;">
-                  AFFECTIVE, PSYCHOMOTOR AND COMMENT
+                  Skills Assessment
             </td>
         </tr>
         <tr>
-            <td colspan="20"  style="background-color:#ffffff;font-size:13px;color:red;width:100%;font-weight:bold;text-decoration:blink;text-align:center" > {{ varerr }}
+            <td colspan="25"  style="background-color:#ffffff;font-size:13px;color:red;width:100%;font-weight:bold;text-decoration:blink;text-align:center" > {{ varerr }}
             </td>
         </tr>
-        <tr style="color:white;width:auto;">
-            <td colspan="20">
+        <tr style="color:whi;width:auto">
+            <td colspan="30">
                 <table style="width:auto;">
-                    <tr>
+                    <tr >
                         <td>
-                            {{ form.session.label_tag }}&nbsp;{{ form.session }}
+                            Session.&nbsp;{{ form.session }}
                         </td>
                         <td>
-                            {{ form.klass.label_tag }}&nbsp;{{ form.klass }}
+                            Class&nbsp;{{ form.klass }}
                         </td>
                         <td>
-                            {{ form.arm.label_tag }}&nbsp;{{ form.arm }}
+                            Arm&nbsp;{{ form.arm }}
                         </td>
 
                         <td>
-                            {{ form.term.label_tag }}&nbsp;{{ form.term }}
+                            Term&nbsp;{{ form.term }}
                         </td>
 
                     </tr>
@@ -37,8 +44,8 @@
 
         <tr>
 
-            <td colspan="20">
-                <div class="box">
+            <td colspan="25">
+                <div class="box2">
                 </div>
             </td>
 
@@ -112,7 +119,7 @@
                             options += '<option value="' + data[i] +'">' + data[i] + '</option>'
                         }
                         $("#id_arm").append(options);
-                        autopost();
+                        autopost2();
                     }
                 })
             }
@@ -124,18 +131,19 @@
         $(document).ready(function() {
 
             $("#id_arm").change(function () {
-                autopost();
+                autopost2();
             });
             $("#id_klass").change(function () {
-                autopost();
+                autopost2();
             });
             $("#id_term").change(function () {
-                autopost();
+                autopost2();
             });
         });
     </script>
+    
     <script type="text/javascript" language="javascript">
-        function autopost(){
+        function autopost2(){
             var state = $("#id_session").val() + ':'+ $("#id_klass").val()+':'+ $("#id_arm").val() +':'+ $("#id_term").val();
             //alert(state);
             var url = "/assessment/getstudentaff/";
@@ -146,8 +154,8 @@
                 url:url,
                 data:data,
                 success:function(html) {
-                    $(".box").show();
-                    $(".box").html(html);
+                    $(".box2").show();
+                    $(".box2").html(html);
 
                 }
             });

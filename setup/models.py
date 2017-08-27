@@ -2,7 +2,7 @@ from django.db import models
 #from myproject.utils import PhoneNumberValidator
 from PIL import Image
 
-subject_category = (('KG', 'KG'),('Nursery', 'Nursery'), ('Primary','Primary'),('JS', 'JS'),('Science', 'Science'), ('Commercial', 'Commercial'),('Art','Art'))
+subject_category = (('JS', 'JS'),('Science', 'Science'), ('Commercial', 'Commercial'),('Art','Art'))
 
 subject_category2 = (('Compulsory', 'Compulsory'), ('Optional', 'Optional'))
 

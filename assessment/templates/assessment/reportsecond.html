@@ -41,13 +41,13 @@
     </tr>
     <tr>
     <td colspan="20">
-    <table style="width:8.0px;height:842px;vertical-align:top;background-color:white;" >
+    <table style="width:710px;height:842px;vertical-align:top;background-color:white;" >
     <tr style="vertical-align:top;">
     <td colspan="50">
     <!-- <input name="submitprint" type= "submit" value="Print Report" onclick = "openrecprint();">-->
     <div class="printable">
     {% for k in replist %}
-        <table style="width:8.0px;height:842px;vertical-align:top;">
+        <table style="width:710px;height:842px;vertical-align:top;">
         <tr style="vertical-align:top">
         <td colspan="10">
         <table style="width:100%;vertical-align:top;">
@@ -89,7 +89,7 @@
                             <strong> <span style="color:blue;"> Student Name:</span> &nbsp;{{ k.studentinfo.fullname }}</strong>
                         </td>
                     </tr>
-                    <tr>
+                    <tr style="font-size:12px">
                         <td>
                             <strong> <span style="color:blue;"> Class:</span> &nbsp;{{k.studentinfo.admitted_class }}</strong>
 
@@ -105,7 +105,7 @@
                         </td>                        
 
                     </tr>
-                    <tr>
+                    <tr style="font-size:12px">
                         <td style="text-align:left;">
                             <strong> <span style="color:blue;"> Arm:</span>&nbsp;{{ k.studentinfo.admitted_arm }}</strong>
 
@@ -121,7 +121,7 @@
                         </td>
 
                     </tr>
-                    <tr>
+                    <tr style="font-size:12px">
                         <td style="text-align:left;">
                             <strong> <span style="color:blue;"> Admission No:</span> &nbsp;{{ k.studentinfo.admissionno }}</strong>
 
@@ -133,7 +133,7 @@
                             <strong> <span style="color:blue;"> No. Of Times Present:</span>&nbsp;{{ k.academic.days_present }}</strong>
                         </td>
                     </tr>
-                    <tr>
+                    <tr style="font-size:12px">
                         <td style="text-align:left;">
                             <strong> <span style="color:blue;"> House:</span> &nbsp;{{ k.studentinfo.house }}</strong>
 
@@ -156,10 +156,10 @@
                                     <td style="border:1px solid black">CA <br>20</td>
                                     <td style="border:1px solid black">Exam<br>60</td>
                                     <td style="border:1px solid black">Term<br> Score</td>
-                                   <!-- <td style="border:1px solid black">First Term<br> Score</td>-->
+                                    <td style="border:1px solid black">First Term<br> Score</td>
                                     <td style="border:1px solid black">Subject<br> Average</td>
                                     <td style="border:1px solid black">Subject<br>Position</td>
-                                   <!-- <td style="border:1px solid black">Grade</td> -->
+                                    <td style="border:1px solid black">Grade</td>
                                     <td style="border:1px solid black">Remark</td>
                                     <td style="border:1px solid black">Teacher's Name</td>
                                 </tr>
@@ -171,10 +171,10 @@
                                         <td style="font-weight:normal;text-align:center;color:#000000;border:1px solid black">{{ p.secondterm.second_ca }}</td>
                                         <td style="font-weight:normal;text-align:center;color:#000000;border:1px solid black">{{ p.secondterm.exam_score }}</td>
                                         <td style="font-weight:normal;text-align:center;color:#000000;border:1px solid black">{{ p.secondterm.term_score }}</td>
-                                       <!-- <td style="font-weight:normal;text-align:center;color:#000000;border:1px solid black">{{ p.firstterm }}</td>-->
+                                        <td style="font-weight:normal;text-align:center;color:#000000;border:1px solid black">{{ p.firstterm }}</td>
                                         <td style="font-weight:normal;text-align:center;color:#000000;border:1px solid black">{{ p.secondterm.subject_avg }}</td>
                                         <td style="font-weight:normal;text-align:center;color:#000000;border:1px solid black">{{ p.secondterm.subposition }}</td>
-                                       <!-- <td style="font-weight:normal;text-align:center;color:#000000;border:1px solid black">{{ p.secondterm.grade }}</td> -->
+                                        <td style="font-weight:normal;text-align:center;color:#000000;border:1px solid black">{{ p.secondterm.grade }}</td>
                                         <td style="font-weight:normal;text-align:left;color:#000000;font-size:9px;border:1px solid black">{{ p.secondterm.remark }}</td>
                                         <td style="font-weight:normal;text-align:left;color:#000000;font-size:9px;border:1px solid black">{{ p.secondterm.subject_teacher }}</td>
                                     </tr>

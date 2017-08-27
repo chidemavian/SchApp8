@@ -1,6 +1,7 @@
 from myproject.sysadmin.forms import *
-from myproject.academics.models import *
 #from myproject.sysadmin.models import *
+from myproject.academics.models import *
+from myproject.sysadmin.models import *
 from myproject.student.models import Student
 from myproject.student.forms import *
 from django.core.serializers.json import simplejson as json
@@ -8,9 +9,10 @@ import datetime
 from datetime import date,time,datetime
 from myproject.utilities.views import *
 from myproject.bill.models import *
+from myproject.bill.utils import getrandom
 from myproject.setup.models import *
 from myproject.setup.models import *
-# from myproject.student.views import
+from bisect import bisect_left
 from myproject.ruffwal.rwreport.opbal import *
 import os
 from myproject.assessment.getordinal import *
@@ -19,6 +21,57 @@ from myproject.settings import MEDIA_ROOT as m_root
 currse = currentsession.objects.get(id = 1)
 import shutil
 from shutil import copy2
+import settings
+import random
+
+
+
+
+
+def welcomecode(request):
+    if  "userid" in request.session:
+        varuser = request.session['userid']
+        varerr =""
+        #verifying payments*************************
+        tday = date.today()
+        if tday.year < 2212:
+            if tblpin.objects.filter(ydate__year = tday.year):
+                gdate = tblpin.objects.get(ydate__year = tday.year)
+                if tday < gdate.ydate:
+                    pass
+                else:
+                    gpin = gdate.pin
+                    gused = gdate.used
+                    k = decrypt1(str(gused))
+                    uu = encrypt(k)
+                    if str(gpin) == str(uu):
+                        pass
+                    else:
+                        return HttpResponseRedirect('/sysadmin/page-expire/%s/'%int(tday.year))
+            else:
+                return HttpResponseRedirect('/sysadmin/page-expire/%s/'%int(tday.year))
+        else:
+            pass
+             #*******************************************
+        if request.method == 'POST':
+           form = SearchForm(request.POST) # A form bound to the POST data
+           if form.is_valid():
+               username1 = form.cleaned_data['username']
+               password1 = form.cleaned_data['password']
+               username = username1.lower()
+               password = password1.lower()
+        else:
+           # varuser=[]
+           form = SearchForm()
+           menu = userprofile.objects.filter(username = varuser,status = "ACTIVE")
+           if menu.count()==0:
+              menu=Student.objects.filter(fullname=varuser,gone=False,admitted_session=currse)
+              return render_to_response('dashboards.html',{'varerr':varerr,'form':form,'varuser':varuser, 'menu':menu})
+           else:
+              return render_to_response('dashboard.html',{'varerr':varerr,'form':form,'varuser':varuser, 'menu':menu})            
+
+    else:
+        return HttpResponseRedirect('/login/')
 
 def index(request):
     varerr = ""
@@ -48,7 +101,7 @@ def index(request):
         myear = ''
     vtoday = date.today()
     vvtoday = vtoday.year
-    schinfo=  gdate.ydate - tday
+    schinfo1=  tday - gdate.ydate
     schinfo = School.objects.get(id = 1)
     form2 = userloginform()
     if request.method == 'POST':
@@ -65,14 +118,22 @@ def index(request):
                    request.session['userid'] = user.username
                    return HttpResponseRedirect('/welcome/')
             except:
-                varerr = "Invalid User - Please Contact The System Administrator"
+                pass
+            try:
+                user=Student.objects.get(admissionno=username.upper(),gone=False,admitted_session=currse)
+                if user.admissionno==username.upper():
+                   request.session['userid'] = user.fullname
+                   return HttpResponseRedirect('/welcome/')
+            except:
+                 # pass
+                varerr = "Invalid Login Credentials, Contact Administrator xyz"
                 return render_to_response('login.html',{'form':form,'form2':form2,'varerr':varerr,'schinfo':schinfo,'vvtoday':vvtoday})
         else:
-            varerr = "Invalid User !"
+            varerr = "Fill All Boxes"
             return render_to_response('login.html',{'form':form,'form2':form2,'varerr':varerr,'schinfo':schinfo,'vvtoday':vvtoday})
     else:
         form = loginform()
-        return render_to_response('login.html',{'form':form,'form2':form2,'varerr':varerr,'schinfo':schinfo,'vvtoday':vvtoday})
+        return render_to_response('login.html',{'form':form,'day':schinfo1})
 
 def header(request):
     if  "userid" in request.session:
@@ -88,12 +149,323 @@ def backup(request):
     if  "userid" in request.session:
         varuser = request.session['userid']
         if request.method == 'POST':
-            source = "C:/windows/www/schapp/myproject/schApp2.db"
+            source = "C:/windows/www/schapp/myproject/sofis.db" #os.path.normpath(os.path.dirname(sofis.db))
             dest = "C:/Users/o'mato/Desktop/backup.db"
             shutil.copy2(source, dest)
             return render_to_response('sysadmin/success1.html')
         else:
             return render_to_response('sysadmin/backupdb.htm')
+    else:
+        return HttpResponseRedirect('/login/')
+
+def setdl(request):
+    if 'userid' in request.session:
+        varuser=request.session['userid']
+        user=userprofile.objects.get(username=varuser)
+        uenter=user.createuser
+        if uenter is False:
+            return HttpResponseRedirect('/welcome/')
+        return render_to_response('sysadmin/deadlines.html',{'varuser':varuser})
+
+    else:
+        return HttpResponseRedirect('/login/')
+
+def setr(request):
+    if 'userid' in request.session:
+        varuser=request.session['userid']
+        user=userprofile.objects.get(username=varuser)
+        uenter=user.createuser
+        if uenter is False:
+            return HttpResponseRedirect('/welcome/')
+        return render_to_response('sysadmin/deadlines.html',{'varuser':varuser})
+
+    else:
+        return HttpResponseRedirect('/login/')
+
+
+def cfsetdl(request):
+    if 'userid' in request.session:
+        varuser=request.session['userid']
+        user=userprofile.objects.get(username=varuser)
+        uenter=user.createuser
+        varerr=''
+        transdate=''
+        getdetails= tblcf.objects.all().order_by('deadline').reverse()
+        access= 'Course Form'
+        commence= 'deadline'
+        if uenter is False:
+            return HttpResponseRedirect('/welcome/')
+        if request.method=='POST':
+            form = cfform(request.POST)
+            if form.is_valid():
+                session=form.cleaned_data['session']
+                term=form.cleaned_data['term']
+                dl=form.cleaned_data['date']
+                caldate2 = dl.split('/')
+                transdate = date(int(caldate2[2]),int(caldate2[0]),int(caldate2[1]))
+                if tblcf.objects.filter(session=session,term=term).count()<1:
+                    tblcf(session=session,term=term,deadline=transdate).save()
+                else:
+                    details= tblcf.objects.filter(session=session,term=term).update(deadline=transdate)
+            else:
+                varerr='Input date'
+
+        else:
+            form = cfform()
+        return render_to_response('sysadmin/setdeadline.html',{'form':form,'commence':commence,'varerr':varerr, 'varuser':varuser,'getdetails':getdetails,'access':access})
+
+    else:
+        return HttpResponseRedirect('/login/')
+
+def rsetr(request):
+    if 'userid' in request.session:
+        varuser=request.session['userid']
+        user=userprofile.objects.get(username=varuser)
+        uenter=user.createuser
+        varerr=''
+        transdate=''
+        access='Results'
+        commence= 'Commencement'
+        getdetails= tblresult.objects.all().order_by('deadline').reverse()
+        if uenter is False:
+            return HttpResponseRedirect('/welcome/')
+        if request.method=='POST':
+            form = cfform(request.POST)
+            if form.is_valid():
+                session=form.cleaned_data['session']
+                term=form.cleaned_data['term']
+                dl=form.cleaned_data['date']
+                caldate2 = dl.split('/')
+                transdate = date(int(caldate2[2]),int(caldate2[0]),int(caldate2[1]))
+                if tblresult.objects.filter(session=session,term=term).count()<1:
+                    tblresult(session=session,term=term,deadline=transdate).save()
+                else:
+                    details= tblresult.objects.filter(session=session,term=term).update(deadline=transdate)
+            else:
+                varerr='Input date'
+
+        else:
+            form = cfform()
+        return render_to_response('sysadmin/setdeadline.html',{'form':form,'commence':commence,'varerr':varerr, 'varuser':varuser,'getdetails':getdetails,'access':access})
+
+
+def autorun(request):
+    if 'userid' in request.session:
+        varuser=request.session['userid']
+        user=userprofile.objects.get(username=varuser)
+        uenter=user.createuser
+        if uenter is False:
+            return HttpResponseRedirect('/welcome/')
+        varerr=''
+        if request.method=='POST':
+            form=autorunform(request.POST)
+            ca=request.POST['ca']
+            session=request.POST['session']
+            term=request.POST['term']
+            varclass=[]
+            myclasses= Class.objects.all()
+            for c in myclasses:
+                c=str(c.klass)
+                varclass.append(c)   #classes list
+            for kl in varclass:
+                category=kl[:2]
+                coms=tblcom.objects.filter(category=category)
+                stu=Student.objects.filter(admitted_class=kl, admitted_session=session,gone=False)
+                if ca=='1st CA':
+                    for j in stu:
+                        if StudentAcademicRecord.objects.filter(student=j,term=term).count()>0:
+                            acade=StudentAcademicRecord.objects.get(student=j,term=term)                        
+                            avr=acade.stu_ave1 * 5  #compare this value with mean range
+                            mid=[]
+                            for cat in coms:
+                                fb= cat.krang.split('-')[0]
+                                fb=int(fb)                           
+                                mid.append(fb)
+                            mida=sorted(mid)
+                            pos=0
+                            pos=min(mida, key=lambda x:abs(x-float(avr)))
+                            varerr='DONE WITH ZERO ERRORS'
+                            coma=tblcom.objects.filter(krang__startswith=pos,category=category)
+                            idvar=[]
+                            for h in coma:
+                                idvar.append(h.id)
+                            idvar=idvar
+                            uid=0
+                            uid = random.choice(idvar)
+                            esther=tblcom.objects.get(id=uid)
+                            StudentAcademicRecord.objects.filter(student=j,term=term).update(com1=esther.comment)
+                elif ca=='2nd CA':
+                    for j in stu:
+                        if StudentAcademicRecord.objects.filter(student=j,term=term).count()>0:
+                            acade=StudentAcademicRecord.objects.get(student=j,term=term)                        
+                            avr=acade.stu_ave2 * 5  #compare this value with mean range
+                            mid=[]
+                            for cat in coms:
+                                fb= cat.krang.split('-')[0]
+                                fb=int(fb)                           
+                                mid.append(fb)
+                            mida=sorted(mid)
+                            pos=0
+                            pos=min(mida, key=lambda x:abs(x-float(avr)))
+                            varerr='DONE WITH ZERO ERRORS'
+                            coma=tblcom.objects.filter(krang__startswith=pos,category=category)
+                            idvar=[]
+                            for h in coma:
+                                idvar.append(h.id)
+                            idvar=idvar
+                            uid=0
+                            uid = random.choice(idvar)
+                            esther=tblcom.objects.get(id=uid)
+                            StudentAcademicRecord.objects.filter(student=j,term=term).update(com2=esther.comment)
+
+                elif ca == 'SCORE SHEET':
+                    for j in stu:
+                        if StudentAcademicRecord.objects.filter(student=j,term=term).count()>0:
+                            acade=StudentAcademicRecord.objects.get(student=j,term=term)
+                            subrec= SubjectScore.objects.filter(academic_rec=acade)
+                            for sub in subrec:
+                                avr=0
+                                avr=sub.term_score  #compare this value with mean range
+                                mid=[]
+                                for cat in coms:
+                                    fb= cat.krang.split('-')[0]
+                                    fb=int(fb)                           
+                                    mid.append(fb)
+                                mida=sorted(mid)
+                                pos=0
+                                pos=min(mida, key=lambda x:abs(x-float(avr)))
+                                varerr='DONE WITH ZERO ERRORS'
+                                coma=tblcom.objects.filter(krang__startswith=pos,category=category)
+                                idvar=[]
+                                for h in coma:
+                                    idvar.append(h.id)
+                                idvar=idvar
+                                uid=0
+                                uid = random.choice(idvar)
+                                esther=tblcom.objects.get(id=uid)
+                                SubjectScore.objects.filter(subject=sub.subject,academic_rec=acade).update(remarks=esther.comment)
+                elif ca=='SUMMARY SHEET':
+                    for j in stu:
+                        if StudentAcademicRecord.objects.filter(student=j,term=term).count()>0:
+                            acade=StudentAcademicRecord.objects.get(student=j,term=term)                        
+                            avr=acade.percentage  #compare this value with mean range
+                            mid=[]
+                            for cat in coms:
+                                fb= cat.krang.split('-')[0]
+                                fb=int(fb)                           
+                                mid.append(fb)
+                            mida=sorted(mid)
+                            pos=0
+                            pos=min(mida, key=lambda x:abs(x-float(avr)))
+                            varerr='DONE WITH ZERO ERRORS'
+                            coma=tblcom.objects.filter(krang__startswith=pos,category=category)
+                            idvar=[]
+                            for h in coma:
+                                idvar.append(h.id)
+                            idvar=idvar
+                            uid=0
+                            uid = random.choice(idvar)
+                            esther=tblcom.objects.get(id=uid)
+                            StudentAcademicRecord.objects.filter(student=j,term=term).update(class_teacher_comment=esther.comment)
+                else:
+                    varerr="i ain't ready " 
+                    avr =0            
+            return render_to_response('sysadmin/autorun.html',{'form':form,'catu':varerr, 'varerr':varerr,'session':session,'assessment':ca,})           
+        else:
+            form=autorunform()
+        return render_to_response('sysadmin/autorun.html',{'form':form,'session':currse})
+    else:
+        return HttpResponseRedirect('/login/')
+
+def userviews(request):
+    if 'userid' in request.session:
+        if request.is_ajax():
+            if request.method=='POST':                        
+                varuser=request.session['userid']
+                post = request.POST.copy()
+                acccode = post['userid']
+                myviews=userprofile.objects.filter(status='ACTIVE',username=varuser)
+                return render_to_response('welcome.html',{'myviews':myviews})
+    else:
+        return HttpResponseRedirect('/login/')
+
+def comauto(request):
+    if 'userid' in request.session:
+        varuser=request.session['userid']
+        user=userprofile.objects.get(username=varuser)
+        uenter=user.createuser
+        varerr=''
+        if uenter is False:
+            return HttpResponseRedirect('/welcome/')
+        autocom = tblcom.objects.all().order_by('category','krang')
+        if request.method=='POST':
+            form = autocomform(request.POST)
+            if form.is_valid():
+                category=form.cleaned_data['category']
+                rang=form.cleaned_data['krang']
+                comment=form.cleaned_data['comment']
+                comment = str(comment).lower()
+                com=tblcom.objects.filter(category=category)#allfilter(category=category)
+                if tblcom.objects.filter(category=category).count()==0:
+                    com=tblcom(comment=comment,category=category,krang=rang).save()
+                else:
+                    r=0
+                    for j in com:
+                        if j.comment==comment:
+                            varerr='COMMENT ALREADY EXIST'
+                            return render_to_response('sysadmin/auto.html',{'form':form,'varerr':varerr, 'autocom':autocom})
+                        else:
+                            r=1
+                    if r==1:
+                        com=tblcom(comment=comment,category=category,krang=rang).save()
+            else:
+                varerr='you forgot to enter comment'
+                form=autocomform(request.POST)
+        else:
+            varerr=''
+            form=autocomform()
+        form=autocomform()
+        return render_to_response('sysadmin/auto.html',{'form':form,'varerr':varerr, 'autocom':autocom})
+    else:
+        return render_to_response('/login/')
+
+def codi(request):
+    varerr =""
+    if  "userid" in request.session:
+        varuser = request.session['userid']
+        user = userprofile.objects.get(username = varuser)
+        uenter = user.createuser
+        if uenter is False :
+            return HttpResponseRedirect('/welcome/')
+        varerr = ""
+        getdetails =""
+        if request.method == 'POST':
+            form = cocoform(request.POST) # A form bound to the POST data
+            if form.is_valid():
+                teachername1 = form.cleaned_data['teachername']
+                klass = form.cleaned_data['klass']
+                teachername = str(teachername1).lower()
+                if teachername == "":
+                    varerr ="Empty Field Error"
+                    getdetails = ClassTeacher.objects.filter(session = currse,teachername = 'N/A').order_by('klass')
+                    return render_to_response('sysadmin/codi.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
+                if ClassTeacher.objects.filter(klass = klass,session = currse,teachername = 'N/A'):
+                    varerr ="Class Already Taken By Teacher !"
+                    getdetails = ClassTeacher.objects.filter(session = currse,teachername = 'N/A').order_by('klass')
+                    return render_to_response('sysadmin/codi.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
+                getsave = ClassTeacher(teachername = 'N/A',
+                    klass = klass,
+                    co_ordinator=teachername,
+                    arm = 'N/A',
+                    userid = varuser,
+                    session = currse)
+                getsave.save()
+                return HttpResponseRedirect('/sysadmin/coco/')
+        else:
+            form = cocoform()
+            getdetails = ClassTeacher.objects.filter(session = currse, teachername = 'N/A').order_by('klass')
+        return render_to_response('sysadmin/codi.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
+
     else:
         return HttpResponseRedirect('/login/')
 
@@ -243,45 +615,6 @@ def subrepajax(request):
 
 
 
-def welcomecode(request):
-
-    if  "userid" in request.session:
-        varuser = request.session['userid']
-        varerr =""
-        #verifying payments*************************
-        tday = date.today()
-        if tday.year < 2212:
-            if tblpin.objects.filter(ydate__year = tday.year):
-                gdate = tblpin.objects.get(ydate__year = tday.year)
-                if tday < gdate.ydate:
-                    pass
-                else:
-                    gpin = gdate.pin
-                    gused = gdate.used
-                    k = decrypt1(str(gused))
-                    uu = encrypt(k)
-                    if str(gpin) == str(uu):
-                        pass
-                    else:
-                        return HttpResponseRedirect('/sysadmin/page-expire/%s/'%int(tday.year))
-            else:
-                return HttpResponseRedirect('/sysadmin/page-expire/%s/'%int(tday.year))
-        else:
-            pass
-             #*******************************************
-        if request.method == 'POST':
-           form = SearchForm(request.POST) # A form bound to the POST data
-           if form.is_valid():
-               username1 = form.cleaned_data['username']
-               password1 = form.cleaned_data['password']
-               username = username1.lower()
-               password = password1.lower()
-
-        else:
-           form = SearchForm()
-           return render_to_response('welcome.html',{'varerr':varerr,'form':form})
-    else:
-        return HttpResponseRedirect('/login/')
 
 
 def logoutuser(request):
@@ -335,7 +668,6 @@ def unatho(request):
 
 def getchangepassword(request):
     if  "userid" in request.session:
-
         if request.is_ajax():
             if request.method == 'POST':
                 varuser = request.session['userid']
@@ -345,7 +677,7 @@ def getchangepassword(request):
                 acccode = post['userid']
                 #getdetails =  tbltemp.objects.get(id = acccode)
                 form = changepassform()
-                return render_to_response('changepass.htm',{'varuser':varuser,'varerr':varerr,'form':form,'pass':useracc.password})
+                return render_to_response('changepass.htm',{'varuser':varuser,'varerr':varerr,'form':form,'user':useracc.username,'pass':useracc.password})
             else:
                 gdata = ""
                 return render_to_response('index.html',{'gdata':gdata})
@@ -354,6 +686,64 @@ def getchangepassword(request):
             return render_to_response('getlg.htm',{'gdata':gdata})
     else:
         return HttpResponseRedirect('/login/')
+
+
+def change_password(request):
+    if  "userid" in request.session:
+            # form = changepassform()    
+            varuser = request.session['userid']
+            useracc = userprofile.objects.get(username = varuser)
+            if request.method == 'POST':
+                post = request.POST.copy()
+                acccode = post['userid']
+                #getdetails =  tbltemp.objects.get(id = acccode)
+                form = changepassform()
+                return render_to_response('changepass.htm',{'varuser':varuser,'form':form,'user':useracc.username})
+            else:
+                return render_to_response('changepass.htm',{'varuser':varuser,'user':useracc.username,'pass':useracc.password})
+    else:
+        return HttpResponseRedirect('/login/')
+
+# def newuser(request):
+#     if  "userid" in request.session:
+#         varuser = request.session['userid']
+#         user = userprofile.objects.get(username = varuser)
+#         uenter = user.createuser
+#         if uenter is False :
+#             return HttpResponseRedirect('/welcome/')
+#         varerr = ""
+#         getdetails =''
+#         # if request.method == 'POST':
+#         #     form = creatuserform(request.POST) # A form bound to the POST data
+#         #     if form.is_valid():
+#         username = request.post['username']
+#         staffname = request.POST['staffname']
+#                 tday = date.today()
+#                 if userprofile.objects.filter(username = username):
+#                     varerr = "User In Existence !"
+#                     getdetails = userprofile.objects.all().order_by('staffname')
+#                     return render_to_response('sysadmin/createuser.htm',{'varerr':varerr,'form':form,'getdetails':getdetails})
+#                 user = userprofile(username = username.lower(),password='myschool',staffname =  staffname.lower(),expires = tday,status ='ACTIVE',userid = varuser,created = date.today())
+#                 user.save()
+#                 try:
+#                        #********************************************
+#                         from myproject.ruffwal.rwadmin.models import tbluseracc
+#                         user = tbluseracc(username = username.lower(),password='myschool',staffname =  staffname.lower(),expiredate = tday,status ='ACTIVE',userid = varuser)
+#                         user.save()
+#                         from myproject.hrm.rcwadmin.models import tbluseracc as rcad
+#                         user2 = rcad(username = username.lower(),password='myschool',staffname =  staffname.lower(),expiredate = tday,status ='ACTIVE',userid = varuser)
+#                         user2.save()
+#                         return HttpResponseRedirect('/sysadmin/createuser')
+#                 except:
+#                         varerr = "This User Can Not be Created"
+#                         return HttpResponseRedirect('/sysadmin/createuser')
+#         else:
+#             form = creatuserform()
+#             getdetails = userprofile.objects.filter(status='ACTIVE').order_by('staffname')
+#         return render_to_response('sysadmin/createuser.htm',{'varerr':varerr,'form':form,'getdetails':getdetails})
+#     else:
+#         return HttpResponseRedirect('/login/')
+
 
 def creatuser(request):
     if  "userid" in request.session:
@@ -390,11 +780,56 @@ def creatuser(request):
                         return HttpResponseRedirect('/sysadmin/createuser')
         else:
             form = creatuserform()
-            getdetails = userprofile.objects.all().order_by('staffname')
+            getdetails = userprofile.objects.filter(status='ACTIVE').order_by('staffname')
         return render_to_response('sysadmin/createuser.htm',{'varerr':varerr,'form':form,'getdetails':getdetails})
     else:
         return HttpResponseRedirect('/login/')
 
+def usersearchajax(request):
+    if  "userid" in request.session:
+        if request.is_ajax():
+            if request.method == 'POST':
+                post = request.POST.copy()
+                acccode = post['userid']
+                if acccode=='':
+                  return render_to_response("namesearch.html")
+                else:
+                  data = userprofile.objects.filter(status = 'ACTIVE', staffname__contains = acccode)
+                  return render_to_response('sysadmin/user_ajax.html',{'getdetails':data,'session':acccode})
+            else:
+                gdata = ""
+                return render_to_response('index.html',{'gdata':gdata})
+        else:
+            gdata = ""
+            return render_to_response('student/sear.htm',{'gdata':gdata})
+    else:
+        return HttpResponseRedirect('/login/')
+
+def usersearchajax1(request):
+    if  "userid" in request.session:
+        if request.is_ajax():
+            if request.method == 'POST':
+                post = request.POST.copy()
+                acccode = post['userid']
+                if acccode=='':
+                  return render_to_response("namesearch.html")
+                else:
+                  data = userprofile.objects.filter(status = acccode)
+                  return render_to_response('sysadmin/user_ajax.html',{'getdetails':data,'session':currse})
+            else:
+                gdata = ""
+                return render_to_response('index.html',{'gdata':gdata})
+        else:
+            gdata = ""
+            return render_to_response('student/sear.htm',{'gdata':gdata})
+    else:
+        return HttpResponseRedirect('/login/')
+
+def dashboard(request):
+    if "userid" in request.session:
+        return render_to_response('dashboard.html')
+    else:
+        HttpResponseRedirect('/login/')
 def getuseraccountmain(request):
     if  "userid" in request.session:
         if request.is_ajax():
@@ -555,6 +990,7 @@ def getstudentacademic(request):
         return HttpResponseRedirect('/login/')
 
 
+
 def edituseraca(request,ind):
     setup = False
     studentregistration = False
@@ -664,6 +1100,139 @@ def getadmin(request):
             return render_to_response('rsetup/getlg.htm',{'gdata':gdata})
     else:
         return HttpResponseRedirect('/login/')
+
+
+def homeview(request):
+    if  "userid" in request.session:
+        if request.is_ajax():
+            if request.method == 'POST':
+                varuser = request.session['userid']
+                varerr =""
+                post = request.POST.copy()
+                acccode = post['userid']
+                getdetails =userprofile.objects.get(id = acccode, status='ACTIVE')
+                if getdetails.configuration is True:
+                    configuration = 'checked'
+                else:
+                    configuration = 'unchecked'
+
+                if getdetails.enrollment is True:
+                    enrollment='checked'
+                else:
+                    enrollment = 'unchecked'
+
+                if getdetails.reportsheet is True:
+                    reportsheet = 'checked'
+                else:
+                    reportsheet = 'unchecked'
+
+                if getdetails.curriculum is True:
+                    curriculum = 'checked'
+                else:
+                    curriculum = 'unchecked'
+
+                if getdetails.billing is True:
+                    billing = 'checked'
+                else:
+                    billing = 'unchecked'
+
+                if getdetails.accounts is True:
+                    accounts = 'checked'
+                else:
+                    accounts = 'unchecked'
+
+                if getdetails.staffaffairs is True:
+                    staffaffairs = 'checked'
+                else:
+                    staffaffairs = 'unchecked'
+
+                if getdetails.controllers is True:
+                    controllers = 'checked'
+                else:
+                    controllers = 'unchecked'
+                return render_to_response('sysadmin/edithome.html',{'configuration':configuration,
+                    'varuser':varuser,
+                    'varerr':varerr,
+                    'enrollment':enrollment,
+                    'reportsheet':reportsheet,
+                    'curriculum':curriculum,
+                    'billing':billing,
+                    'accounts':accounts,
+                    'staffaffairs':staffaffairs,
+                    'controllers':controllers,
+                    'getdetails':getdetails},context_instance = RequestContext(request))
+            else:
+                gdata = ""
+                return render_to_response('rsetup/index.html',{'gdata':gdata})
+        else:
+            gdata = ""
+            return render_to_response('rsetup/getlg.htm',{'gdata':gdata})
+    else:
+        return HttpResponseRedirect('/login/')
+
+
+def editmyhome(request,ind):
+    configuration = 0
+    enrollment=  0
+    reportsheet = 0
+    curriculum = 0
+    billing = 0
+    staffaffairs = 0
+    accounts = 0
+    controllers = 0
+    if  "userid" in request.session:
+        varuser = request.session['userid']
+        user = userprofile.objects.get(username = varuser)
+        uenter = user.createuser
+        if uenter is False :
+          return HttpResponseRedirect('/welcome/')
+        varerr =""
+        getdetails =""
+        if request.method == 'POST':
+            #********************************************
+            #****************************************************
+            if "configuration" in request.POST:
+                configuration = True
+            if "enrollment" in request.POST:
+                enrollment = True
+            if "reportsheet" in request.POST:
+                reportsheet = True
+            #***************************************************
+            if "curriculum" in request.POST:
+                curriculum = True
+            if "billing" in request.POST:
+                billing = True
+            if "accounts" in request.POST:
+                accounts = True
+            if "staffaffairs" in request.POST:
+                staffaffairs = True
+
+            if "controllers" in request.POST:
+                controllers = True
+                #************************
+         #   try:
+            getdetails = userprofile.objects.get(id = ind)
+            getdetails.configuration=configuration
+            getdetails.enrollment=enrollment
+            getdetails.reportsheet=reportsheet
+            getdetails.curriculum=curriculum
+            getdetails.billing=billing
+            getdetails.accounts=accounts
+            getdetails.staffaffairs=staffaffairs
+            getdetails.controllers=controllers
+            getdetails.save()
+            return HttpResponseRedirect('/sysadmin/createuser/')
+
+         #   except:
+          #  return HttpResponseRedirect('/sysadmin/createuser/')
+
+                #*****************************
+        else:
+
+            return HttpResponseRedirect('/sysadmin/createuser/')
+    else:
+        return HttpResponseRedirect('/login/')
+
 
 def edituseradmin(request,ind):
     createuser = False
@@ -780,21 +1349,26 @@ def classteachermain(request):
                     varerr ="Invalid User Name"
                     getdetails = ClassTeacher.objects.filter(session = currse).order_by('klass','arm')
                     return render_to_response('sysadmin/teacher.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
-                if ClassTeacher.objects.filter(klass = klass,arm = arm,session = currse):
+                if ClassTeacher.objects.filter(klass = klass,arm = arm,session = currse, co_ordinator='N/A'):
                     varerr ="Class Already Taken By Teacher !"
-                    getdetails = ClassTeacher.objects.filter(session = currse).order_by('klass','arm')
+                    getdetails = ClassTeacher.objects.filter(session = currse,co_ordinator='N/A').order_by('klass','arm')
                     return render_to_response('sysadmin/teacher.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
-                getsave = ClassTeacher(teachername = teachername,klass = klass,arm = arm,userid = varuser,session = currse)
+                getsave = ClassTeacher(teachername = teachername,
+                    klass = klass,
+                    arm = arm,
+                    co_ordinator='N/A',
+                    userid = varuser,
+                    session = currse)
                 getsave.save()
                 return HttpResponseRedirect('/sysadmin/classteacher/')
 
         else:
             form = classteacher()
-            getdetails = ClassTeacher.objects.filter(session = currse).order_by('klass','arm')
+            getdetails = ClassTeacher.objects.filter(session = currse, co_ordinator='N/A').order_by('klass','arm')
         return render_to_response('sysadmin/teacher.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
 
     else:
-        return HttpResponseRedirect('/login/')
+        return HttpResponseRedirect('/login/')        
 
 def getclassteacher(request):
     if  "userid" in request.session:
@@ -815,6 +1389,97 @@ def getclassteacher(request):
             return render_to_response('getlg.htm',{'gdata':gdata})
     else:
         return HttpResponseRedirect('/login/')
+
+def getautocom(request):
+    if  "userid" in request.session:
+        if request.is_ajax():
+            if request.method == 'POST':
+                varuser = request.session['userid']
+                varerr =""
+                post = request.POST.copy()
+                acccode = post['userid']
+                getdetails = tblcom.objects.get(id = acccode)
+                return render_to_response('sysadmin/esitcomment.htm',{'getdetails':getdetails})
+            else:
+                gdata = ""
+                return render_to_response('index.html',{'gdata':gdata})
+        else:
+
+            gdata = ""
+            return render_to_response('getlg.htm',{'gdata':gdata})
+    else:
+        return HttpResponseRedirect('/login/')
+
+def editautocomment(request,vid):
+    if 'userid' in request.session:
+        if request.method=='POST':
+            comment=request.POST['comment']
+            tb=tblcom.objects.get(id=vid)
+            cate=tb.category
+            rang=tb.krang
+            tb=tblcom.objects.filter(category=cate).order_by('category')
+            r=0
+            for j in tb:
+                if j.comment==comment:
+                    r=1
+                    varerr='A similar Comment already exist for this category'        
+                else:
+                    r=0
+            if r==0:
+                co=tblcom.objects.filter(id=vid).update(comment=comment)
+        return HttpResponseRedirect('/sysadmin/comauto/')
+
+    else:
+        return HttpResponseRedirect('/login/')
+
+def ajaxrange(request):
+    if  "userid" in request.session:
+        if request.is_ajax():
+            if request.method == 'POST':
+                varuser = request.session['userid']
+                varerr =""
+                post = request.POST.copy()
+                acccode = post['userid']
+                state = acccode
+                data = []
+                kk = []
+                if gradingsys.objects.filter(classsub = state):
+                  data1 = gradingsys.objects.filter(classsub = state).reverse()
+                  for j in data1:
+                      data.append(j.grade)
+                return HttpResponse(json.dumps(data), mimetype='application/json')
+            else:
+                gdata = ""
+                return render_to_response('index.html',{'gdata':gdata})
+        else:
+            gdata = ""
+            return render_to_response('getlg.htm',{'gdata':gdata})
+    else:
+        return HttpResponseRedirect('/login/')
+
+
+def getcodi(request):
+    if  "userid" in request.session:
+        if request.is_ajax():
+            if request.method == 'POST':
+                varuser = request.session['userid']
+                varerr =""
+                post = request.POST.copy()
+                acccode = post['userid']
+                getdetails = ClassTeacher.objects.get(id = acccode)
+                return render_to_response('sysadmin/editcodi.htm',{'getdetails':getdetails})
+            else:
+                gdata = ""
+                return render_to_response('index.html',{'gdata':gdata})
+        else:
+
+            gdata = ""
+            return render_to_response('getlg.htm',{'gdata':gdata})
+    else:
+        return HttpResponseRedirect('/login/')
+        
+
+
 def deleteclassteacher(request,invid):
     varerr =""
     if  "userid" in request.session:
@@ -823,6 +1488,18 @@ def deleteclassteacher(request,invid):
         seldata = ClassTeacher.objects.get(id = invid)
         seldata.delete()
         return HttpResponseRedirect('/sysadmin/classteacher/')
+
+    else:
+        return HttpResponseRedirect('/login/')
+
+def deletecoco(request,invid):
+    varerr =""
+    if  "userid" in request.session:
+        varuser = request.session['userid']
+        varerr =""
+        seldata = ClassTeacher.objects.get(id = invid)
+        seldata.delete()
+        return HttpResponseRedirect('/sysadmin/coco/')
 
     else:
         return HttpResponseRedirect('/login/')
@@ -882,6 +1559,14 @@ def json_view(func):
 
 @json_view
 def autocomplete(request):
+    term = request.GET.get('term')
+    gset = userprofile.objects.filter(username__contains = term)[:10]
+    suggestions = []
+    for i in gset:
+        suggestions.append({'label': '%s :: %s' % (i.username,i.staffname), 'username': i.username})
+    return suggestions
+
+def autocompletes(request):
     term = request.GET.get('term')
     gset = userprofile.objects.filter(username__contains = term)[:10]
     suggestions = []

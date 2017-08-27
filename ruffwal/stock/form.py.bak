@@ -1,0 +1,124 @@
+from django import forms
+from myproject.ruffwal.rsetup.models import *
+from myproject.controllers.models import *
+from myproject.bill.models import *
+
+def sessi():
+    if billsession.objects.all().count() == 0:
+       currse = currentsession.objects.get(id = 1)
+    else:
+       currse = billsession.objects.get(id = 1)
+    return currse
+
+
+class stockoutform(forms.Form):
+    session = forms.CharField(label='Session',max_length= 190,required=True,widget= forms.TextInput(attrs ={'size':10}),initial=sessi)
+    admissionno = forms.CharField(label='Admission Number',max_length= 190,required=True,widget= forms.TextInput(attrs ={'size':35,'readonly':'readonly'}))
+    name = forms.CharField(label='Student Name',max_length= 190,required=True,widget= forms.TextInput(attrs ={'size':35}))
+    klass = forms.CharField(label='Class',max_length= 20,required=True,widget= forms.TextInput(attrs ={'size':35,'readonly':'readonly'}))
+    arm = forms.CharField(label='Arm',max_length= 20,required=True,widget= forms.TextInput(attrs ={'size':10,'readonly':'readonly'}))
+    transdate = forms.CharField(label = "Date",max_length = 280,required = True,widget = forms.TextInput(attrs={'size':10,'readonly':'readonly'}))
+    qty = forms.DecimalField(max_digits=20,decimal_places=2, widget= forms.TextInput(attrs ={'size':10}))
+    stockname = forms.CharField(label = "Stock Name",max_length = 280,widget = forms.TextInput(attrs={'size':'35'}))
+    acccode = forms.CharField(label='Stock Code',max_length= 190,required=True,widget= forms.TextInput(attrs ={'readonly':'readonly','size':10}))
+    particulars = forms.CharField(label = "Particulars",max_length = 380,widget = forms.TextInput(attrs={'size':'35'}))
+    Balance = forms.CharField(label = "Available Balance",max_length = 380,widget = forms.TextInput(attrs={'readonly':'readonly','size':'35'}))
+
+    def __init__(self, *args):
+        super(stockoutform, self).__init__(*args)
+        self.fields['session'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['admissionno'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['name'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['stockname'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['transdate'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['acccode'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['qty'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['particulars'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['Balance'].widget.attrs['class'] = 'loginTxtbox'
+
+
+class stockhistoryForm(forms.Form):
+    session = forms.CharField(label='Session',max_length= 190,required=True,widget= forms.TextInput(attrs ={'size':10}),initial=sessi)
+    admissionno = forms.CharField(label='Admission Number',max_length= 190,required=True,widget= forms.TextInput(attrs ={'size':35,'readonly':'readonly'}))
+    name = forms.CharField(label='Student Name',max_length= 190,required=True,widget= forms.TextInput(attrs ={'size':35}))
+    klass = forms.CharField(label='Class',max_length= 20,required=True,widget= forms.TextInput(attrs ={'size':35,'readonly':'readonly'}))
+    arm = forms.CharField(label='Arm',max_length= 20,required=True,widget= forms.TextInput(attrs ={'size':10,'readonly':'readonly'}))
+
+    def __init__(self, *args):
+        super(stockhistoryForm, self).__init__(*args)
+        self.fields['session'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['admissionno'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['name'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['klass'].widget.attrs['class'] = 'loginTxtbox'
+
+
+
+
+class stockform(forms.Form):
+    vendorcode  = forms.CharField(label = "Vendor Code",max_length = 10,widget = forms.TextInput(attrs={'readonly':'readonly'}))
+    vendorname = forms.CharField(label = "Vendor Name",max_length = 280,widget = forms.TextInput(attrs={'size':'35'}))
+    vendorbal = forms.CharField(label = "Balance",max_length = 280,widget = forms.TextInput(attrs={'readonly':'readonly'}))
+    stockcode = forms.CharField(label = "Stock Code",max_length = 10,widget = forms.TextInput(attrs={'readonly':'readonly'}))
+    stockname = forms.CharField(label = "Stock Name",max_length = 280,widget = forms.TextInput(attrs={'size':'35'}))
+    particulars = forms.CharField(label = "Particulars",max_length = 380,widget = forms.TextInput(attrs={'size':'35'}))
+    invoiceno = forms.CharField(label = "Job No",max_length = 11)
+    qty = forms.DecimalField(max_digits=20,decimal_places=2)
+    price = forms.DecimalField(max_digits=20,decimal_places=2)
+    transdate = forms.CharField(label = "TransDate",max_length = 280,required = True,widget = forms.TextInput(attrs={'readonly':'readonly'}))
+    def __init__(self, *args, **kwargs):
+        super(stockform, self).__init__(*args, **kwargs)
+        self.fields['vendorcode'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['vendorname'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['vendorbal'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['stockcode'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['stockname'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['particulars'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['invoiceno'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['qty'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['price'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['transdate'].widget.attrs['class'] = 'loginTxtbox'
+
+
+class additionalbillform(forms.Form):
+    session = forms.CharField(label='Session',max_length= 190,required=True,widget= forms.TextInput(attrs ={'size':10}),initial=sessi)
+    admissionno = forms.CharField(label='Admission Number',max_length= 190,required=True,widget= forms.TextInput(attrs ={'size':15,'readonly':'readonly'}))
+    name = forms.CharField(label='Student Name',max_length= 190,required=True,widget= forms.TextInput(attrs ={'size':35}))
+    klass = forms.CharField(label='Class',max_length= 20,required=True,widget= forms.TextInput(attrs ={'size':10,'readonly':'readonly'}))
+    arm = forms.CharField(label='Arm',max_length= 20,required=True,widget= forms.TextInput(attrs ={'size':10,'readonly':'readonly'}))
+    term = forms.ChoiceField(label='Term',choices=[(a.term, a.term) for a in tblterm.objects.filter(status = 'ACTIVE')])
+    #term = forms.ChoiceField(label='Term',choices=(('First', 'First'), ('Second', 'Second'), ('Third', 'Third')))
+    billamount = forms.DecimalField( label='Bill Amount',decimal_places= 2,required=True,max_digits= 15)
+    #desc = forms.ChoiceField(label= 'Bill Description',choices = [(c.name, c.name) for c in tblexpenses.objects.all()])
+    acccode = forms.CharField(label='G/L Account Code',max_length= 190,required=True,widget= forms.TextInput(attrs ={'size':35}))
+
+    def __init__(self, *args):
+        super(additionalbillform, self).__init__(*args)
+      #  self.fields['desc'].choices = [(c.name, c.name) for c in tblexpenses.objects.all()]
+      #  self.fields['desc'].initial = tblexpenses.objects.all()
+        self.fields['session'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['admissionno'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['name'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['billamount'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['acccode'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['term'].choices = [(a.term, a.term) for a in tblterm.objects.filter(status = 'ACTIVE')]
+
+
+
+class statementform(forms.Form):
+    TYPE_CHOICES =  [(t.subname, t.subname) for t in tblstock.objects.all().distinct()] #.order_by('acccode'),subgroupname = "MINI STORE" subgroupname = "STOCKS"
+    TYPE_CHOICES.insert(0, ('', '-- choose a Stock Type  --'))
+    stockcode = forms.CharField(label = "Stock code",max_length = 20,required = False,widget = forms.TextInput(attrs={'readonly':'readonly','size':'10'}))
+    stockname = forms.CharField(label= "Stock Name",max_length = 240,required = False,widget=forms.TextInput(attrs={'size':'20'}))
+    startdate = forms.CharField(label = "Start Date",max_length = 280,required = True,widget = forms.TextInput(attrs={'readonly':'readonly','size':'10'}))
+    enddate = forms.CharField(label = "End Date",max_length = 280,required = True,widget = forms.TextInput(attrs={'readonly':'readonly','size':'10'}))
+    excelfile = forms.BooleanField(label='Download in Excel',required=False)
+    def __init__(self, *args, **kwargs):
+        super(statementform, self).__init__(*args, **kwargs)
+        self.fields['stockcode'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['stockname'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['startdate'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['enddate'].widget.attrs['class'] = 'loginTxtbox'
+
+
+
+

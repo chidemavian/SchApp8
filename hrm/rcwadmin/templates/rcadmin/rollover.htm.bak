@@ -1,4 +1,4 @@
-{% extends "sysadmin/base.htm" %}
+{% extends "controllers/base.htm" %}
 {%block head %}
 {%block title %}{%endblock%}
 {% load humanize %}
@@ -9,6 +9,6 @@
 <div align ="left" style="border:1px solid black;width:100%;heigth:10%;font-family: verdana;color:black">
 <div align ="center" style="background-color:black;border:0px solid black;width:100%;heigth:10%; font-size:12px;color:white"> <strong>ROLLOVER ACCOUNT  </strong> </div>
 <div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:black;" > {{varerr}}</div>
-Click This To  :: <a href="/humanresources/sysadmin/confirmaccrollover/" > <strong>  Rollover Accounting Year Ended :: {{endate|date:"d-m-Y"}}</strong></a>
+Click This To  :: <a href="/hrmes/controllers/confirmaccrollover/" > <strong>  Rollover Accounting Year Ended :: {{endate|date:"d-m-Y"}}</strong></a>
 </div>
  {%endblock%}

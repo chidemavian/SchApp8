@@ -2,24 +2,25 @@
     <tr>
         <td>
             <table style="border:0px solid black">
-                <div> {{subject}} curriculum for {{term }} term, {{klass}}, {{session}}
+                
+                <div> Curriculum for  {{subject}} {{term }} term, {{klass}}
                 </div>
-                       <tr>
-                        <td align="center" valign="top" style = "border-radius:10px;width:40px; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"> S/N</td>
-                        <td align="center" valign="top" style = "border-radius:10px;width:120px; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"> Subject </td>
-                        <td align="center" valign="top" style = "border-radius:10px;width:250px; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"> Topic </td>
-                        <td align="center" valign="top" style = "border-radius:10px;width:50px; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"> Class </td>
+                       <tr class = "ajaxhead">
+                        <td> S/N</td>
+                        <td > Subject </td>
+                        <td > Topic </td>
+                        <td > Class </td>
             
-                    <td align="center" valign="top" style = "border-radius:10px;width:50px; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"> Term </td>
+                    <td> Term </td>
                     </tr>
                      {% if sett %}
             {% for pincode in sett %}
-                        <tr>
-                            <td align="center" valign="top" style = "border-radius:10px;background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ forloop.counter}}</td>
-                            <td align="center" valign="top" style = "border-radius:10px;border-radius:10px;border:1px solid black;background-color:white;font-size:12px;width:auto;color:black"> {{ pincode.subject}}</td>
-                            <td align="center" valign="top" style = "border-radius:10px;border:1px solid black;background-color:white;font-size:12px;width:auto;color:black"> <a href="/lesson/set_up/delete/{{ pincode.id }}/"  title="Delete '{{ pincode.topic}}' from {{ pincode.subject}}"> {{ pincode.topic}}</a></td>
-                            <td align="center" valign="top" style = "border-radius:10px;border:1px solid black;background-color:white;font-size:12px;width:auto;color:black"> {{ pincode.klass}}</td>
-                            <td align="center" valign="top" style = "border-radius:10px;border:1px solid black;background-color:white;font-size:12px;width:auto;color:black"> {{ pincode.term}}</td>
+                        <tr class = "ajaxbody">
+                            <td >{{ forloop.counter}}</td>
+                            <td > {{ pincode.subject}}</td>
+                            <td> <a  href="/lesson/set_up/delete/{{ pincode.id }}/"  title="Delete '{{ pincode.topic}}' from {{ pincode.subject}}"> {{ pincode.topic}}</a></td>
+                            <td> {{ pincode.klass}}</td>
+                            <td> {{ pincode.term}}</td>
                             {% endfor %}
                      {% else %}
         <td colspan="7" align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  .......No Record Found</td>

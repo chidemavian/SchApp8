@@ -59,13 +59,7 @@
             </td>
         </tr>
         <tr>
-
-            <td colspan="10">
-                <div class="box">
-
-
-                </div>
-            </td>
+            <td colspan="10"><div class="box"></div></td>
         </tr>
     </table>
 
@@ -90,13 +84,13 @@
                 //showButtonPanel: true
                 // showOn: "button"
             };
-          //  autopost();
+            // autopost();
             $("#id_session").keyup(function () {
-                autopost();
+                autopostbill();
             });
 
             $("#id_term").change(function () {
-                autopost();
+                autopostbill();
             });
             $("#id_name").keyup(function() {
                 $("#id_admissionno").val("");
@@ -110,7 +104,7 @@
         });
     </script>
     <script type="text/javascript" language="javascript">
-        function autopost(){
+        function autopostbill(){
             var state = $("#id_admissionno").val() + ':'+ $("#id_session").val() + ':'+ $("#id_term").val();
             //alert(state);
             var url = "/bill/addajax/";
@@ -121,41 +115,27 @@
                 url:url,
                 data:data,
                 success:function(html) {
-                    $(".box").show();
-                    $(".box").html(html);
+                    $(".billbox").show();
+                    $(".billbox").html(html);
                 }
             });
             //alert("error");
             return false;
+
+
         }
     </script>
 
     <script type="text/javascript" language="javascript">
         function autocomplete(){
-           // var sess =  $( "#id_session" ).val();
-            //alert(sess);
             $("#id_name").autocomplete({
-                //minLength: 0
-               // var sess =  $( "#id_name" ).val();
                 source: "/bill/findstudent/",
-
-                //source: "/bill/findstudent/"+ $( "#id_session" ).val() + "/",
-                //focus: function(event, ui){
-                  //  $("#id_name").val(ui.item.name);
-                    //$( "#id_staffname" ).val( ui.item.label.name );
-                    // populateForm(ui.item.value);
-                   // return false;
-                //},
                 select: function( event, ui ) {
                     $( "#id_name" ).val( ui.item.name );
                     $( "#id_admissionno" ).val( ui.item.admno );
                     $( "#id_klass" ).val( ui.item.klass );
                     $( "#id_arm" ).val( ui.item.arm );
-                    // $( "#project-description" ).html( ui.item.desc );
-                    //$( "#project-icon" ).attr( "src", "images/" + ui.item.icon );
-                    //openrec();
-                    autopost();
-
+                    autopostbill();
                     return false;
                 }
             })

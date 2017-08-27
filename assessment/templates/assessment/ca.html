@@ -10,35 +10,34 @@
             <tr>
                 <td colspan="10">
 
-                        <table style="width:100%;background-color:white;border-collapse:collapse;">
+                        <table style="width:100%;border-collapse:collapse">
                             <thead >
-                            <tr>
-                                <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">S/N</td>
-                                <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Admission No</td>
-                                <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Name</td>
-                                <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Gender</td>
-                                <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Subject</td>
-                                <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Term</td>
-                                <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">C/A 1</td>
-                                <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">C/A 2</td>
-                                <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">C/A 3</td>
-                                <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Exam Score</td>
+                            <tr class='ajaxhead2'>
+                                <td >S/N</td>
+                                <td >Admission No</td>
+                                <td >Name</td>
+                                <td >Gender</td>
+                                <td >Subject</td>
+                                <td >Term</td>
+                                <td >CA 1</td>
+                                <td >CA 2</td>
+                                <td >CA 3</td>
+                                <td >Exam Score</td>
                             </tr>
                             </thead>
                             <tbody>
                             {% for student in data %}
-                                <tr>
-                                    <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ forloop.counter }}</td>
-                                    <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ student.admissionno }}</td>
-                                    <td title = "enter {{ student.subject }} score for {{student.fullname}}"style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black"><a href="#" style="color:blue" onClick= "getdialogtry({{ student.id  }});">{{ student.fullname }}</td>
-                                   <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ student.sex }}</td>
-                                    <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ student.subject }}</td>
-                                    <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ student.term }}</td>
-
-                                    <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ student.first_ca }}</td>
-                                    <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ student.second_ca }}</td>
-                                    <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ student.third_ca }}</td>
-                                    <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ student.exam_score }}</td>
+                                <tr class ='ajaxbody2'>
+                                    <td >{{ forloop.counter }}.</td>
+                                    <td>{{ student.admissionno }}</td>
+                                    <td title = "enter {{ student.subject }} score for {{student.fullname}}"><a href="#" onClick= "getdialogtrys({{ student.id  }})">{{ student.fullname }}</td>
+                                   <td >{{ student.sex }}</td>
+                                    <td >{{ student.subject }}</td>
+                                    <td >{{ student.term }}</td>
+                                    <td >{{ student.first_ca }}</td>
+                                    <td >{{ student.second_ca }}</td>
+                                    <td >{{ student.third_ca }}</td>
+                                    <td >{{ student.exam_score }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
@@ -53,8 +52,8 @@
                 $("#myDialog").hide();
             });
 </script>
-<script type="text/javascript" language="javascript">
-    function getdialogtry(vid){
+<script >
+    function getdialogtrys(vid){
         //alert(vid);
         var state = vid;
         var url = "/assessment/getsubjectscore/";
@@ -80,8 +79,8 @@
                     autoOpen:true,
                     modal:true,
                     position: ["center", "middle"],
-                    height:500,
-                    width:450,
+                    height:450,
+                    width:550,
                     title:'<a>SchApp 8.0 Student Score</a>' ,
                     closeOnEscape:true,
                     show: true,

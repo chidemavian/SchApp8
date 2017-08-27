@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Eduflox v2.1 - Unlock Software</title>
+    <title>SchApp v2.1 - Unlock Software</title>
     <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
     <link rel="shortcut icon" href="/static/favicon.png" />
     <script type="text/javascript" src='/static/JS/jquery-1.5.js'></script>
@@ -86,7 +86,7 @@
             <td style="width:40%;vertical-align:top;float:left;" valign="top">
                 Your validity period has elapsed, to continue using our product, request a PIN. Call Your Vendor on
              <span style="color:red;font-weight:bold;">07031009036, 08035076979</span><br> OR <br> mail us at:  <span style="color:blue;font-weight:bold;">adysys@yahoo.com</span>  for your PIN and other details. <br>
-               <!-- <a href="/account/sysadmin/bill/{{ year }}/" style="color:blue;font-weight:bold;">For Your Bill Click Here(PDF is required)</a>-->
+               <!-- <a href="/account/controllers/bill/{{ year }}/" style="color:blue;font-weight:bold;">For Your Bill Click Here(PDF is required)</a>-->
             </td>
         </tr>
 

@@ -1,6 +1,6 @@
-from myproject.sysadmin.forms import *
+from myproject.controllers.forms import *
 from myproject.academics.models import *
-#from myproject.sysadmin.models import *
+#from myproject.controllers.models import *
 from myproject.student.models import Student
 from myproject.student.forms import *
 from django.core.serializers.json import simplejson as json
@@ -36,9 +36,9 @@ def index(request):
                 if str(gpin) == str(uu):
                     pass
                 else:
-                    return HttpResponseRedirect('/sysadmin/page-expire/%s/'%int(tday.year))      
+                    return HttpResponseRedirect('/controllers/page-expire/%s/'%int(tday.year))
         else:
-            return HttpResponseRedirect('/sysadmin/page-expire/%s/'%int(tday.year))
+            return HttpResponseRedirect('/controllers/page-expire/%s/'%int(tday.year))
     else:
         pass
     kdate = date(tday.year,3,15)
@@ -48,7 +48,7 @@ def index(request):
         myear = ''
     vtoday = date.today()
     vvtoday = vtoday.year
-    schinfo=  gdate.ydate - tday    
+    schinfo=  gdate.ydate - tday
     schinfo = School.objects.get(id = 1)
     form2 = userloginform()
     if request.method == 'POST':
@@ -65,14 +65,14 @@ def index(request):
                    request.session['userid'] = user.username
                    return HttpResponseRedirect('/welcome/')
             except:
-                varerr = "Invalid User - Please Contact The System Administrator"
+                varerr = "Invalid Login Credentials"
                 return render_to_response('login.html',{'form':form,'form2':form2,'varerr':varerr,'schinfo':schinfo,'vvtoday':vvtoday})
         else:
             varerr = "Invalid User !"
             return render_to_response('login.html',{'form':form,'form2':form2,'varerr':varerr,'schinfo':schinfo,'vvtoday':vvtoday})
     else:
-        form = loginform()        
-        return render_to_response('login.html',{'form':form,'form2':form2,'varerr':varerr,'schinfo':schinfo,'vvtoday':vvtoday})
+        form = loginform()
+        return render_to_response('login.html',{'form':form})
 
 def header(request):
     if  "userid" in request.session:
@@ -91,12 +91,12 @@ def backup(request):
             source = "C:/windows/www/schapp/myproject/schApp2.db"
             dest = "C:/Users/o'mato/Desktop/backup.db"
             shutil.copy2(source, dest)
-            return render_to_response('sysadmin/success1.html')
+            return render_to_response('controllers/success1.html')
         else:
-            return render_to_response('sysadmin/backupdb.htm')
+            return render_to_response('controllers/backupdb.htm')
     else:
         return HttpResponseRedirect('/login/')
-            
+
 
 def getsubclass(request):
     if  "userid" in request.session:
@@ -135,20 +135,56 @@ def subject_report(request):
     if "userid" in request.session:
         varuser = request.session['userid']
         user = userprofile.objects.get(username = varuser)
-        uenter = user.createuser       
+        uenter = user.createuser
         if uenter is False:
-            return HttpResponseRedirect ('/sysadmin/access-denied/')
+            return HttpResponseRedirect ('/controllers/access-denied/')
+        varerr= ''
+        getdetails = ''
+        if request.method == 'POST':
+            form = subject_report_form(request.POST)
+            if form.is_valid():
+                term = request.POST['term']
+                subject = request.POST['subject']
+                session = request.POST['session']
+                klass = request.POST['klass']
+                subclass = request.POST['subclass']
+                stlist = SubjectScore.objects.filter(term = term, subject = subject, session = session, klass=klass).order_by('term_score').reverse()
+                return render_to_response('controllers/subject-report.htm',{'subject':subject, 'klass':klass,'session':session,'varerr':varerr,'form':form,'getdetails':stlist},context_instance = RequestContext(request))
+            else:
+                stlist=[]
+                varerr = 'FORM NOT VALID'
+                form = subject_report_form()
+                return render_to_response('controllers/subject-report.htm', {'form': form,'getdetails':stlist,'varerr':varerr},context_instance = RequestContext(request))
+        else:
+            stlist=[]
+            form = subject_report_form()
+            varerr = ''
+            getdetails = '' #SubjectScore.objects.filter(session = session, term = term, klass = nclass, subject = subject).order_by('term_score')
+        return render_to_response('controllers/subject-report.htm', {'form': form,'getdetails':stlist,'varerr':varerr},context_instance = RequestContext(request))
+    else:
+        form = form = subject_report_form(request.POST)
+        varerr =""
+        return render_to_response('login.html')
+
+
+def subject_reports(request):
+    if "userid" in request.session:
+        varuser = request.session['userid']
+        user = userprofile.objects.get(username = varuser)
+        uenter = user.createuser
+        if uenter is False:
+            return HttpResponseRedirect ('/controllers/access-denied/')
         varerr= ''
         getdetails = ''
         if request.method == 'POST':
             form = subject_report_form(request.POST)
             if form.is_valid():
                 #session = request.POST['session']
-                 
                 term = request.POST['term']
                 subject = request.POST['subject']
                 session = request.POST['session']
                 klass = request.POST['klass']
+                subclass = request.POST['subclass']
                 stlist=[]
                 for j in Student.objects.filter(admitted_session=session, admitted_class = klass, gone = False):
                     if StudentAcademicRecord.objects.filter(student=j, session=session, term=term):
@@ -160,22 +196,23 @@ def subject_report(request):
                             stlist.sort()
                            # stlist.reverse()
                            # getdetails = SubjectScore.objects.filter(session = session, term = term, klass = klass, subject = subject).order_by('term_score').reverse
-                return render_to_response('sysadmin/subject-report.htm',{'varerr':varerr,'form':form,'getdetails':stlist})
+                return render_to_response('controllers/subject-report.htm',{'varerr':varerr,'form':form,'getdetails':stlist})
             else:
                 stlist=[]
                 varerr = 'PLEASE ENTER SESSION'
                 form = subject_report_form()
-                return render_to_response('sysadmin/subject-report.htm', {'form': form,'getdetails':stlist,'varerr':varerr},context_instance = RequestContext(request))
+                return render_to_response('controllers/subject-report.htm', {'form': form,'getdetails':stlist,'varerr':varerr},context_instance = RequestContext(request))
         else:
             stlist=[]
             form = subject_report_form()
             varerr = ''
             getdetails = '' #SubjectScore.objects.filter(session = session, term = term, klass = nclass, subject = subject).order_by('term_score')
-        return render_to_response('sysadmin/subject-report.htm', {'form': form,'getdetails':stlist,'varerr':varerr},context_instance = RequestContext(request))
+        return render_to_response('controllers/subject-report.htm', {'form': form,'getdetails':stlist,'varerr':varerr},context_instance = RequestContext(request))
     else:
         form = form = subject_report_form(request.POST)
         varerr =""
         return render_to_response('login.html')
+
 
 def subrepajax(request):
     if  "userid" in request.session:
@@ -184,15 +221,16 @@ def subrepajax(request):
                 varuser = request.session['userid']
                 varerr =""
                 post = request.POST.copy()
-                acccode = post['userid']
-                # print acccode
-                session,klass = acccode.split(':')
+                accode = post['userid']
+                state = accode
                 kk = []
-                data = Student.objects.filter(admitted_class = klass,admitted_session = session,gone = False).order_by('fullname')
-                for p in data:
-                    jn = p.fullname
-                    kk.append(jn)
-                return HttpResponse(json.dumps(kk), mimetype='application/json')
+                if Subject.objects.filter(category = state):
+                    data= Subject.objects.filter(category = state).order_by('num')
+                    for j in data:
+                        kk.append(j.subject)
+                else:
+                    kk.append('NIL')
+                return HttpResponse(json.dumps(kk), mimetype ='application/json')
             else:
                 gdata = ""
                 return render_to_response('index.html',{'gdata':gdata})
@@ -206,14 +244,14 @@ def subrepajax(request):
 
 
 def welcomecode(request):
-    
+
     if  "userid" in request.session:
         varuser = request.session['userid']
         varerr =""
         #verifying payments*************************
         tday = date.today()
         if tday.year < 2212:
-            if tblpin.objects.filter(ydate__year = tday.year):  
+            if tblpin.objects.filter(ydate__year = tday.year):
                 gdate = tblpin.objects.get(ydate__year = tday.year)
                 if tday < gdate.ydate:
                     pass
@@ -225,9 +263,9 @@ def welcomecode(request):
                     if str(gpin) == str(uu):
                         pass
                     else:
-                        return HttpResponseRedirect('/sysadmin/page-expire/%s/'%int(tday.year))
+                        return HttpResponseRedirect('/controllers/page-expire/%s/'%int(tday.year))
             else:
-                return HttpResponseRedirect('/sysadmin/page-expire/%s/'%int(tday.year))
+                return HttpResponseRedirect('/controllers/page-expire/%s/'%int(tday.year))
         else:
             pass
              #*******************************************
@@ -335,7 +373,7 @@ def creatuser(request):
                 if userprofile.objects.filter(username = username):
                     varerr = "User In Existence !"
                     getdetails = userprofile.objects.all().order_by('staffname')
-                    return render_to_response('sysadmin/createuser.htm',{'varerr':varerr,'form':form,'getdetails':getdetails})
+                    return render_to_response('controllers/createuser.htm',{'varerr':varerr,'form':form,'getdetails':getdetails})
                 user = userprofile(username = username.lower(),password='myschool',staffname =  staffname.lower(),expires = tday,status ='ACTIVE',userid = varuser,created = date.today())
                 user.save()
                 try:
@@ -346,14 +384,14 @@ def creatuser(request):
                         from myproject.hrm.rcwadmin.models import tbluseracc as rcad
                         user2 = rcad(username = username.lower(),password='myschool',staffname =  staffname.lower(),expiredate = tday,status ='ACTIVE',userid = varuser)
                         user2.save()
-                        return HttpResponseRedirect('/sysadmin/createuser')
+                        return HttpResponseRedirect('/controllers/createuser')
                 except:
                         varerr = "This User Can Not be Created"
-                        return HttpResponseRedirect('/sysadmin/createuser')
+                        return HttpResponseRedirect('/controllers/createuser')
         else:
             form = creatuserform()
             getdetails = userprofile.objects.all().order_by('staffname')
-        return render_to_response('sysadmin/createuser.htm',{'varerr':varerr,'form':form,'getdetails':getdetails})
+        return render_to_response('controllers/createuser.htm',{'varerr':varerr,'form':form,'getdetails':getdetails})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -366,7 +404,7 @@ def getuseraccountmain(request):
                 post = request.POST.copy()
                 acccode = post['userid']
                 getdetails = userprofile.objects.get(id = acccode)
-                return render_to_response('sysadmin/edituser.htm',{'varuser':varuser,'varerr':varerr,'getdetails':getdetails},context_instance = RequestContext(request))
+                return render_to_response('controllers/edituser.htm',{'varuser':varuser,'varerr':varerr,'getdetails':getdetails},context_instance = RequestContext(request))
             else:
                 gdata = ""
                 return render_to_response('rsetup/index.html',{'gdata':gdata})
@@ -415,14 +453,14 @@ def editusermain(request,ind):
                 getdetails.userid = varuser
                 getdetails.save()
 
-                return HttpResponseRedirect('/sysadmin/createuser/')
+                return HttpResponseRedirect('/controllers/createuser/')
 
             except:
-                return HttpResponseRedirect('/sysadmin/createuser/')
+                return HttpResponseRedirect('/controllers/createuser/')
         else:
-            return HttpResponseRedirect('/sysadmin/createuser/')
+            return HttpResponseRedirect('/controllers/createuser/')
 
-        #return render_to_response('sysadmin/edituser.htm',{'varuser':varuser,'varerr':varerr,'getdetails':getdetails},context_instance = RequestContext(request))
+        #return render_to_response('controllers/edituser.htm',{'varuser':varuser,'varerr':varerr,'getdetails':getdetails},context_instance = RequestContext(request))
 
     else:
         return HttpResponseRedirect('/login/')
@@ -506,7 +544,7 @@ def getstudentacademic(request):
                     broadsheet = 'checked'
                 else:
                     broadsheet = 'unchecked'
-                return render_to_response('sysadmin/edituseraca.htm',{'varuser':varuser,'varerr':varerr,'getdetails':getdetails,'setup':setup,'studentregistration':studentregistration,'editregistration':editregistration,'studentreport':studentreport,'withdraw':withdraw,'returngonestudent':returngonestudent,'withdrawnreport':withdrawnreport,'expensedecription':expensedecription,'billsetup':billsetup,'additionalexpenses':additionalexpenses,'printbill':printbill,'billschedule':billschedule,'reportsheet':reportsheet,'broadsheet':broadsheet},context_instance = RequestContext(request))
+                return render_to_response('controllers/edituseraca.htm',{'varuser':varuser,'varerr':varerr,'getdetails':getdetails,'setup':setup,'studentregistration':studentregistration,'editregistration':editregistration,'studentreport':studentreport,'withdraw':withdraw,'returngonestudent':returngonestudent,'withdrawnreport':withdrawnreport,'expensedecription':expensedecription,'billsetup':billsetup,'additionalexpenses':additionalexpenses,'printbill':printbill,'billschedule':billschedule,'reportsheet':reportsheet,'broadsheet':broadsheet},context_instance = RequestContext(request))
             else:
                 gdata = ""
                 return render_to_response('rsetup/index.html',{'gdata':gdata})
@@ -591,15 +629,15 @@ def edituseraca(request,ind):
                 getdetails.broadsheet = broadsheet
                 getdetails.userid = varuser
                 getdetails.save()
-                return HttpResponseRedirect('/sysadmin/createuser/')
+                return HttpResponseRedirect('/controllers/createuser/')
 
             except:
-                return HttpResponseRedirect('/sysadmin/createuser/')
+                return HttpResponseRedirect('/controllers/createuser/')
 
                 #*****************************
         else:
 
-            return HttpResponseRedirect('/sysadmin/createuser/')
+            return HttpResponseRedirect('/controllers/createuser/')
     else:
         return HttpResponseRedirect('/login/')
 
@@ -617,7 +655,7 @@ def getadmin(request):
                     createuser = 'checked'
                 else:
                     createuser = 'unchecked'
-                return render_to_response('sysadmin/edituseradmin.htm',{'varuser':varuser,'varerr':varerr,'getdetails':getdetails,'createuser':createuser},context_instance = RequestContext(request))
+                return render_to_response('controllers/edituseradmin.htm',{'varuser':varuser,'varerr':varerr,'getdetails':getdetails,'createuser':createuser},context_instance = RequestContext(request))
             else:
                 gdata = ""
                 return render_to_response('rsetup/index.html',{'gdata':gdata})
@@ -647,15 +685,15 @@ def edituseradmin(request,ind):
                 getdetails.createuser = createuser
                 getdetails.userid = varuser
                 getdetails.save()
-                return HttpResponseRedirect('/sysadmin/createuser/')
+                return HttpResponseRedirect('/controllers/createuser/')
 
             except:
-                return HttpResponseRedirect('/sysadmin/createuser/')
+                return HttpResponseRedirect('/controllers/createuser/')
 
                 #*****************************
         else:
 
-            return HttpResponseRedirect('/sysadmin/createuser/')
+            return HttpResponseRedirect('/controllers/createuser/')
     else:
         return HttpResponseRedirect('/login/')
 
@@ -664,7 +702,7 @@ def adminunautomain(request):
     if  "userid" in request.session:
         varuser = request.session['userid']
         varerr =""
-        return render_to_response('sysadmin/unautorise.htm',{'varuser':varuser,'varerr':varerr})
+        return render_to_response('controllers/unautorise.htm',{'varuser':varuser,'varerr':varerr})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -686,7 +724,7 @@ def resetusermain(request):
                 username = str(username1).lower()
                 if username == "":
                     varerr ="Invalid User Name"
-                    return render_to_response('sysadmin/resetuser.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
+                    return render_to_response('controllers/resetuser.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
                     #pull into the sub table
                 varvali = userprofile.objects.get(username__iexact = username)
                 varvali.password = "myschool"
@@ -703,18 +741,18 @@ def resetusermain(request):
                     varvali.save()
 
                     varerr ="Password Reset Successfull"
-                    return render_to_response('sysadmin/resetuser.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
+                    return render_to_response('controllers/resetuser.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
                 except:
                     varerr ="Password Reset Successfull"
-                    return render_to_response('sysadmin/resetuser.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
+                    return render_to_response('controllers/resetuser.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
                     #pull into the sub table
                     #*****************************
                # varerr ="Invalid User Name"
-                #return render_to_response('sysadmin/resetuser.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
+                #return render_to_response('controllers/resetuser.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
         else:
             form = resetuserform()
             getdetails = userprofile.objects.all().order_by('username')
-        return render_to_response('sysadmin/resetuser.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
+        return render_to_response('controllers/resetuser.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
 
     else:
         return HttpResponseRedirect('/login/')
@@ -741,19 +779,19 @@ def classteachermain(request):
                 if teachername == "":
                     varerr ="Invalid User Name"
                     getdetails = ClassTeacher.objects.filter(session = currse).order_by('klass','arm')
-                    return render_to_response('sysadmin/teacher.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
+                    return render_to_response('controllers/teacher.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
                 if ClassTeacher.objects.filter(klass = klass,arm = arm,session = currse):
                     varerr ="Class Already Taken By Teacher !"
                     getdetails = ClassTeacher.objects.filter(session = currse).order_by('klass','arm')
-                    return render_to_response('sysadmin/teacher.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
+                    return render_to_response('controllers/teacher.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
                 getsave = ClassTeacher(teachername = teachername,klass = klass,arm = arm,userid = varuser,session = currse)
                 getsave.save()
-                return HttpResponseRedirect('/sysadmin/classteacher/')
+                return HttpResponseRedirect('/controllers/classteacher/')
 
         else:
             form = classteacher()
             getdetails = ClassTeacher.objects.filter(session = currse).order_by('klass','arm')
-        return render_to_response('sysadmin/teacher.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
+        return render_to_response('controllers/teacher.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
 
     else:
         return HttpResponseRedirect('/login/')
@@ -767,7 +805,7 @@ def getclassteacher(request):
                 post = request.POST.copy()
                 acccode = post['userid']
                 getdetails = ClassTeacher.objects.get(id = acccode)
-                return render_to_response('sysadmin/editclassteacher.htm',{'getdetails':getdetails})
+                return render_to_response('controllers/editclassteacher.htm',{'getdetails':getdetails})
             else:
                 gdata = ""
                 return render_to_response('index.html',{'gdata':gdata})
@@ -784,7 +822,7 @@ def deleteclassteacher(request,invid):
         varerr =""
         seldata = ClassTeacher.objects.get(id = invid)
         seldata.delete()
-        return HttpResponseRedirect('/sysadmin/classteacher/')
+        return HttpResponseRedirect('/controllers/classteacher/')
 
     else:
         return HttpResponseRedirect('/login/')
@@ -811,23 +849,23 @@ def subjectteachermain(request):
                 if teachername == "":
                     varerr ="Invalid User Name"
                     getdetails = subjectteacher.objects.filter(session = currse).order_by('klass','arm')
-                    return render_to_response('sysadmin/subjectteacher.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
+                    return render_to_response('controllers/subjectteacher.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
                 if subjectteacher.objects.filter(klass = klass,arm = arm,session = currse,subject = subject,teachername = teachername):
                     varerr ="Subject Already Taken By Teacher !"
                     getdetails = subjectteacher.objects.filter(session = currse).order_by('klass','arm')
-                    return render_to_response('sysadmin/subjectteacher.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
+                    return render_to_response('controllers/subjectteacher.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
                 getsave = subjectteacher(teachername = teachername,klass = klass,arm = arm,subject = subject,term = 'First',creator = varuser,session = currse,status = "ACTIVE")
                 getsave.save()
                 getsave2 = subjectteacher(teachername = teachername,klass = klass,arm = arm,subject = subject,term = 'Second',creator = varuser,session = currse,status = "ACTIVE")
                 getsave2.save()
                 getsave2 = subjectteacher(teachername = teachername,klass = klass,arm = arm,subject = subject,term = 'Third',creator = varuser,session = currse,status = "ACTIVE")
                 getsave2.save()
-                return HttpResponseRedirect('/sysadmin/subjectteacher/')
+                return HttpResponseRedirect('/controllers/subjectteacher/')
         else:
 
             form = suteacher()
             getdetails = subjectteacher.objects.filter(session = currse).order_by('klass','arm')
-        return render_to_response('sysadmin/subjectteacher.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
+        return render_to_response('controllers/subjectteacher.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
 
     else:
         return HttpResponseRedirect('/login/')
@@ -861,7 +899,7 @@ def getsubjectteacher(request):
                 post = request.POST.copy()
                 acccode = post['userid']
                 getdetails = subjectteacher.objects.get(id = acccode)
-                return render_to_response('sysadmin/editsubjectteacher.htm',{'getdetails':getdetails})
+                return render_to_response('controllers/editsubjectteacher.htm',{'getdetails':getdetails})
             else:
                 gdata = ""
                 return render_to_response('index.html',{'gdata':gdata})
@@ -879,7 +917,7 @@ def deletesubjectteacher(request,invid):
         varerr =""
         seldata = subjectteacher.objects.get(id = invid)
         seldata.delete()
-        return HttpResponseRedirect('/sysadmin/subjectteacher/')
+        return HttpResponseRedirect('/controllers/subjectteacher/')
 
     else:
         return HttpResponseRedirect('/login/')
@@ -903,18 +941,18 @@ def principalmain(request):
                 if teachername == "":
                     varerr ="Invalid User Name"
                     getdetails = Principal.objects.filter(session = currse).order_by('teachername')
-                    return render_to_response('sysadmin/principal.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
+                    return render_to_response('controllers/principal.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
                 if Principal.objects.filter(session = currse,teachername = teachername):
                     varerr ="Teacher in Existence !"
                     getdetails = Principal.objects.filter(session = currse).order_by('teachername')
-                    return render_to_response('sysadmin/principal.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
+                    return render_to_response('controllers/principal.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
                 getsave = Principal(teachername = teachername,userid = varuser,session = currse)
                 getsave.save()
-                return HttpResponseRedirect('/sysadmin/principal/')
+                return HttpResponseRedirect('/controllers/principal/')
         else:
             form = principalform()
             getdetails = Principal.objects.filter(session = currse).order_by('teachername')
-        return render_to_response('sysadmin/principal.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
+        return render_to_response('controllers/principal.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
 
     else:
         return HttpResponseRedirect('/login/')
@@ -928,7 +966,7 @@ def getprin(request):
                 post = request.POST.copy()
                 acccode = post['userid']
                 getdetails = Principal.objects.get(id = acccode)
-                return render_to_response('sysadmin/editprincipal.htm',{'getdetails':getdetails})
+                return render_to_response('controllers/editprincipal.htm',{'getdetails':getdetails})
             else:
                 gdata = ""
                 return render_to_response('index.html',{'gdata':gdata})
@@ -946,7 +984,7 @@ def deleteprincipal(request,invid):
         varerr =""
         seldata = Principal.objects.get(id = invid)
         seldata.delete()
-        return HttpResponseRedirect('/sysadmin/principal/')
+        return HttpResponseRedirect('/controllers/principal/')
 
     else:
         return HttpResponseRedirect('/login/')
@@ -970,17 +1008,17 @@ def expire(request,year):
                     return HttpResponseRedirect('/login/')
                 else:
                     varerr = "Invalid PIN"
-                    return render_to_response('sysadmin/expire.htm',{'form':form,'varerr':varerr,'vardate1':vardate1,'year':year})
+                    return render_to_response('controllers/expire.htm',{'form':form,'varerr':varerr,'vardate1':vardate1,'year':year})
             else:
                 varerr = "Invalid YEAR/PIN"
-                return render_to_response('sysadmin/expire.htm',{'form':form,'varerr':varerr,'vardate1':vardate1,'year':year})
+                return render_to_response('controllers/expire.htm',{'form':form,'varerr':varerr,'vardate1':vardate1,'year':year})
 
         else:
             varerr = "Invalid PIN"
-            return render_to_response('sysadmin/expire.htm',{'form':form,'varerr':varerr,'vardate1':vardate1,'year':year})
+            return render_to_response('controllers/expire.htm',{'form':form,'varerr':varerr,'vardate1':vardate1,'year':year})
     else:
         form = unlockform()
-        return render_to_response('sysadmin/expire.htm',{'varuser':'','varerr':varerr,'vardate1':vardate1,'form':form,'year':year})
+        return render_to_response('controllers/expire.htm',{'varuser':'','varerr':varerr,'vardate1':vardate1,'form':form,'year':year})
 
 def paybill(request):
     if  "userid" in request.session:
@@ -1004,25 +1042,25 @@ def paybill(request):
                     uu = encrypt(k)
                     if str(gpin) == str(uu):
                         varerr = "Year Already Paid For,Thank You"
-                        return render_to_response('sysadmin/paybill.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
+                        return render_to_response('controllers/paybill.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
                     else:
                         try:
                             del request.session['userid']
                         except KeyError:
                             pass
-                        return HttpResponseRedirect('/sysadmin/page-expire/%s/'%int(tday.year))
+                        return HttpResponseRedirect('/controllers/page-expire/%s/'%int(tday.year))
                 else:
                     try:
                         del request.session['userid']
                     except KeyError:
                         pass
-                    return HttpResponseRedirect('/sysadmin/page-expire/%s/'%int(tday.year))
+                    return HttpResponseRedirect('/controllers/page-expire/%s/'%int(tday.year))
             else:
                 varerr = "Invalid Year"
-                return render_to_response('sysadmin/paybill.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
+                return render_to_response('controllers/paybill.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
         else:
             form = paybillform()
-            return render_to_response('sysadmin/paybill.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
+            return render_to_response('controllers/paybill.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
     else:
         return HttpResponseRedirect('/login/')
 
@@ -1049,11 +1087,11 @@ def subjectteacherenable(request):
                         ins = tblterm(term = term,status = 'ACTIVE',creator = varuser)
                         ins.save()
                 tblterm.objects.filter(term = term).update(status = status)
-                return HttpResponseRedirect('/sysadmin/term-status/')
+                return HttpResponseRedirect('/controllers/term-status/')
         else:
             form = teacherenableform()
             getdetails = tblterm.objects.all()
-        return render_to_response('sysadmin/enableterm.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
+        return render_to_response('controllers/enableterm.htm',{'varuser':varuser,'varerr':varerr,'form':form,'getdetails':getdetails},context_instance = RequestContext(request))
     else:
         return HttpResponseRedirect('/login/')
 
@@ -1085,16 +1123,16 @@ def student_promotion(request):
                 subclass = request.POST['subclass']
                 if oldclass > newclass:
                     succ ="Demotion not possible!!"
-                    return render_to_response('sysadmin/promotion.htm',{'form': form,'succ':succ})
+                    return render_to_response('controllers/promotion.htm',{'form': form,'succ':succ})
                 if subclass == '---':
                     succ ="PLEASE SELECT APPRPRIATE SUBJECT CATEGORY"
-                    return render_to_response('sysadmin/promotion.htm',{'form': form,'succ':succ})
+                    return render_to_response('controllers/promotion.htm',{'form': form,'succ':succ})
                 if oldclass == newclass:
                     succ ="Current class Same as new class!!"
-                    return render_to_response('sysadmin/promotion.htm',{'form': form,'succ':succ})
+                    return render_to_response('controllers/promotion.htm',{'form': form,'succ':succ})
                 if Student.objects.filter(admitted_session = session, admitted_class = oldclass,gone = False).count()==0:
                     succ ="NO STUDENTS TO PROMOTE!!"
-                    return render_to_response('sysadmin/promotion.htm',{'form': form,'succ':succ})
+                    return render_to_response('controllers/promotion.htm',{'form': form,'succ':succ})
                 x,y = str(session).split('/')
                 k = int(x) + 1
                 n = int(y) + 1
@@ -1116,17 +1154,17 @@ def student_promotion(request):
                         submit.save()
                     else:
                         submit = Student(third_term = True,second_term=True, first_term = True, birth_date= p.birth_date,admitted_session = newsession,firstname = p.firstname,surname = p.surname,othername = p.othername,address = p.address,sex = p.sex,birth_place = p.birth_place,state_of_origin =p.state_of_origin,lga = p.lga,fathername =p.fathername,fatheraddress = p.fatheraddress,fathernumber = p.fathernumber,fatheroccupation =p.fatheroccupation,fatheremail = p.fatheremail,prev_school =p.prev_school,prev_class = p.prev_class,admitted_class = newclass,admitted_arm = p.admitted_arm,admissionno = p.admissionno,house = p.house,dayboarding = p.dayboarding,subclass = p.subclass,userid = p.userid,studentpicture = pics)
-                        submit.save() 
+                        submit.save()
 #                yeah = currentsession(id = 1)
 #                yeah.delete()
 #                yeah = currentsession(session = newsession)
 #                yeah.save()
-             
+
     ############# treating affective, psychomotive and subjectscore####################
                 terrm = ['First', 'Second', 'Third']
                 for q in Student.objects.filter(admitted_session = newsession,admitted_class = newclass,gone = False).order_by('admissionno'):
-                    akrec = Student.objects.get(admitted_class = newclass,admitted_session = newsession, admissionno = q.admissionno, admitted_arm = q.admitted_arm)               
-                    for term in terrm:                   
+                    akrec = Student.objects.get(admitted_class = newclass,admitted_session = newsession, admissionno = q.admissionno, admitted_arm = q.admitted_arm)
+                    for term in terrm:
                            akademics = StudentAcademicRecord(student=akrec, klass= newclass,arm= akrec.admitted_arm, term=term, session=newsession)
                            akademics.save()
                            AffectiveSkill(academic_rec=akademics).save()
@@ -1140,10 +1178,10 @@ def student_promotion(request):
                                            tr.save()
 #**********************88 treating accounts****************************
                 succ = "Successful !!!"
-                return render_to_response('sysadmin/promotion.htm',{'form': form,'succ':succ})
+                return render_to_response('controllers/promotion.htm',{'form': form,'succ':succ})
         else:
             form = promotion_form()
-        return render_to_response('sysadmin/promotion.htm', {'form': form,'succ':succ})
+        return render_to_response('controllers/promotion.htm', {'form': form,'succ':succ})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -1170,10 +1208,10 @@ def calendar_update(request):
                 currentsession.objects.all().update(session = newsession)
              #   billsession.objects.all().update(session = newsession)
                 succ = "Successful !!!"
-                return render_to_response('sysadmin/updatecalendar.htm',{'form': form,'succ':succ})
+                return render_to_response('controllers/updatecalendar.htm',{'form': form,'succ':succ})
         else:
             form = calendar_form()
-        return render_to_response('sysadmin/updatecalendar.htm', {'form': form,'succ':succ})
+        return render_to_response('controllers/updatecalendar.htm', {'form': form,'succ':succ})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -1191,8 +1229,8 @@ def passwordrequest(request):
         if form2.is_valid():
             emailm = str(form2.cleaned_data['email']).lower()
             try:
-                body ='Thank you for your interest in our school management software (Eduflox) \n\n username : testuser \n\n password : 12345 \n\n\n Ruffwal Support Team \n +2348033204305,+2348062916005'
-                body2 ="%s requested for user account for eduflox."%emailm
+                body ='Thank you for your interest in our school management software (SchApp) \n\n username : testuser \n\n password : 12345 \n\n\n Ruffwal Support Team \n +2348033204305,+2348062916005'
+                body2 ="%s requested for user account for SchApp."%emailm
                 send_mail('Demo Password For School Management Software',body, 'support@ruffwal.com',[emailm],fail_silently=False)
                 send_mail('Demo Password For School Management Software',body2, 'support@ruffwal.com',['info@ruffwal.com'],fail_silently=False)
                 varerr2 = "Check your email for your login details"
@@ -1256,7 +1294,7 @@ def online_result(request):
                                subavg = totsubject.term_score
                            u = {js:{'ca1':totsubject.first_ca,'ca2':totsubject.second_ca,'exam':totsubject.exam_score,'termscore':totsubject.term_score,'subavg':subavg,'grade':totsubject.grade,'remark':totsubject.remark,'teacher':totsubject.subject_teacher}}
                         getdic.update(u)
-                   
+
                     #*********************************************************
                     subject = SubjectScore.objects.filter(academic_rec = acaderec,term = term)
                     di = {'student':p,'academic':acaderec,'affective':affskill,'psyco':psycho,'subject':getdic}
@@ -1334,7 +1372,7 @@ def online_result(request):
                 v += 1
                 ws.write(0, v, 'Principal Remark')
                 v += 1
-               
+
                 k = 1
                 for jd in stulist:
                     c = 11
@@ -1401,20 +1439,20 @@ def online_result(request):
                     #c += 1
                     ws.write(k, c, jd['psyco'].music)
                     c += 1
-                    
+
                     ws.write(k, c, jd['academic'].class_teacher_comment)
                     c += 1
                     ws.write(k, c, jd['academic'].principal_comment)
                     c += 1
-                    
+
                     k += 1
                 wb.save(response)
                 return response
                 succ = "Successful !!!"
-                return render_to_response('sysadmin/onlineresult.htm',{'form': form,'succ':succ})
+                return render_to_response('controllers/onlineresult.htm',{'form': form,'succ':succ})
         else:
             form = online_result_form()
-        return render_to_response('sysadmin/onlineresult.htm', {'form': form,'succ':succ})
+        return render_to_response('controllers/onlineresult.htm', {'form': form,'succ':succ})
     else:
         return HttpResponseRedirect('/login/')
 #****************************Online Statement of account *************************
@@ -1435,7 +1473,7 @@ def online_statement(request):
                 year = str(session).split('/')[1]
                 varstart = date(int(year),1,1)
                 varend = date(int(year),12,31)
-                sublist = [] 
+                sublist = []
                 for p in Student.objects.filter(admitted_session = session):
                     admno = p.admissionno
                     if tblaccount.objects.filter(acccode = admno):
@@ -1492,10 +1530,10 @@ def online_statement(request):
                 wb.save(response)
                 return response
                 succ = "Successful !!!"
-                return render_to_response('sysadmin/onlinestatement.htm',{'form': form,'succ':succ})
+                return render_to_response('controllers/onlinestatement.htm',{'form': form,'succ':succ})
         else:
             form = statement_form()
-        return render_to_response('sysadmin/onlinestatement.htm', {'form': form,'succ':succ})
+        return render_to_response('controllers/onlinestatement.htm', {'form': form,'succ':succ})
     else:
         return HttpResponseRedirect('/login/')
 

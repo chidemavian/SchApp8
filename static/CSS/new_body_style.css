@@ -1,50 +1,127 @@
-
-
 /** ======== GENERAL DEFINITIONS ========= **/
-
-*{
-	margin: 0;
-	color: #000000;
-}
-
-a:link{
-text-decoration: NONE;
-color: #990000;
-}
 
 ul,ul li{
 	list-style: none;
 	text-indent: 0;
 }
-
-
-a:visited{
-text-decoration: NONE;
-color: #990000;
-}
-
-a:active{
-text-decoration: NONE;
-color: #cccccc;
-}
 .body{
 	width:100%;
 }
 
+
+
+#headerssss div{
+	float:left;
+	display: inline-block;
+}
+
+#header #app_name{
+	font-family:Arial;
+	font-size: 120%;
+	color:blue;
+	width: 100%;
+	margin: 1% 0% 0% 0%;
+}
+
+#header{
+	height: 5%;
+	width:auto;
+	font-weight: bold;
+	margin: 0% 0% 1% 0%
+}
+
 #wrapper{
 	width:100%;
+	height: 100%;
+	border: 1px solid black;
+	margin-bottom: -6%;
 }
 
 #content{
-	width:75.8%;
-	margin-left:10%;
-	border: thin solid #cccccc;
-	padding:1%;
-	margin-top:2px;
+	width:auto;
+	/*padding:1%;*/
 	min-height: 25em;
 	content: normal;
-	
 }
+
+
+#content #content_left_other{
+	width: 100%;
+	text-decoration: none;
+}
+
+
+#wrapper_subject{
+	width:auto;
+	height: 100%;
+	border: 1px solid black;
+	margin-bottom: -6%;
+}
+#contents{
+	width:60%;
+	min-height: 25em;
+	content: normal;
+}
+
+#contents #content_left_subject{
+	width: auto;
+	margin-left: 0%;
+	position: absolute;
+}
+
+#contents #content_right_subject{
+	width:auto;
+	/*right: 25%;*/
+/*	position: absolute;*/
+	float: right;
+	position: relative;
+}
+#content #content_right_other{
+	width: 20%;
+	margin-left:80%;
+	left: 67%;
+}
+#content #content_right_other_student{
+	width:auto;
+	left:67%;
+	position: absolute;
+	top:100px;
+
+}
+
+#content #content_right_other_student1{
+	width:auto;
+	left:64%;
+	position: absolute;
+/*	position: relative;
+	margin-top: -5%;
+*/
+}
+
+#content #content_left_other_reg{
+	width: 72%;
+	border: 2px solid black;
+	/*margin: -1.3% 0% -3% -1%;*/
+	position: relative;
+	font-size: 14px;
+}
+.editreg{
+	width:100%;
+	text-align: center; 
+	vertical-align: middle;
+	background-color:#ccccc0;
+}
+
+#content #content_right_student2{
+	width:auto;
+	right:15%;
+	position: absolute;
+	top:100px;
+	border: 1px solid black;
+	margin-top: 0%;
+
+}
+
 .heads{
 	
 	border-radius:20px;
@@ -53,21 +130,19 @@ color: #cccccc;
 	height:25px;
 	font-size:14px;
 	color:black;
-	padding-top:5px;"
-
-
+	padding-top:5px;
 }
 
 .submenu{
 	position: relative;
-	width: 100%;
+	width: auto;
 	min-height:1em;
 	padding:1%;
 
 }
 .submenu td{
 	color:#cccc00;
-	font-size: 14px;
+	font-size: 12px;
 	min-width:100px;
 	padding:1%;
 	text-align:center;
@@ -77,132 +152,474 @@ color: #cccccc;
 
 .submenu td a{
 	color:#00000f;
-	font-weight: bol;
+	font-weight: bold;
+	font-size: 10px;
+	width: auto;
 } 
 
 .submenu td:hover{
-	background-color: #ffffff;
-	wid:100px;
-	fot-size:14px;
-	border-bottom:thin solid #000000 ;
+	background-color: #ffff00;
+	width:100px;
+	font-size:14px;
+	border-bottom:thin solid #00f000 ;
 }
 
 .submenu td:hover a{
 	color: #000000;
 }
 
-
-#content #content_left_other{
-	width: 78%;	
-	position: relative;
-}
-
-#content #content_right_other{
-	width: 20%;
-	margin-left:76%;
-}
-
-
-#content #content_right_other_student{
-	width: 15%;
-	left:69%;
-	position: absolute;
-	top:100px;
-	
-}
-
-#header{
-	width:100%;
-	min-height: 4em;
-	padding:1%;
+.billhead{
 
 }
-
-#header > div{
-	float:left;
-	display: inline-block;
+.billhead td{
+	text-align:left;
+	vertical-align: center;
+	width:auto; 
+	height:20px;
+	background-color:#E6E6E6;
+	font-size:14px;
+	border:1px solid black;
+	color:#000000;
 }
 
-#header #app_name{
-	font-family:Arial;
-	font-size: 24pt;
-	color:#990000;
+.billbody td{
+	text-align:left;
+	vertical-align:top; 
+	background-color:green;
+	font-size:11px;
+	width:auto;
+	color:white;
+	border:1px solid black;
 }
-.header_nav_bar{
+
+.billbody a{
+	color: pink;
+	font-weight: bold;
+
 }
-.header_nav_bar td div{
-width:auto;
-padding:0.5em;
+
+
+.billbody:hover{
+	background-color: white;
+}
+
+.curr{
+
+}
+.curr td a{
+	color:#ffffff;
+	border-top-left-radius:15px;
+	background-color:black; 
+	font-size:14;
+}
+.curr td a:hover{
+	color: pink;
+	font-size: 18px;
+}
+
+.null{
+
+}
+.null {
+	text-align:left;
+	vertical-align:top;
+	background-color:white;
+	font-size:11px;
+	width:auto;
+	font-weight:bold;
+	color:pink;
+	border:1px solid black;
+}
+.ajaxhead{
+}
+
+.ajaxhead td{
+	text-align:center;
+	border-radius:0px;
+	width:auto; 
+	background-color:#E6E6E6;
+	font-size:15px;
+	border:1px solid black;
+	color:#000000;
+	vertical-align:middle;
+}
+.ajaxbody{
+}
+
+.ajaxbody td{
+	text-align:center;
+	vertical-align: center;
+	width:auto;
+	font-size:14px;
+	border:1px solid black;
+	color:blue;
+}
+
+.ajaxbody td:hover{
+	font-size:12px;
+	background-color:gray;
+	color: white;
+
+}
+
+.ajaxbody td a{
+	font-size:14px;
+	color: blue;
+
+}
+
+.ajaxbody td a:hover{
+	font-size:14px;
+	color: white;
+
+}
+
+.ajaxhead2{
+
+}
+
+.ajaxhead2 td{
+	background-color:#006633;
+	border:1px solid white;
+	color:white;
+	font-size: 10px;
+	text-align: center;
+	width: auto;
+
+}
+
+.ajaxbody2{
+
+}
+
+.ajaxbody2 td{
+	text-align:center;
+	font-size:12px;
+	width:auto;
+	color:#fffff0;
+	border:1px solid pink;
+	width: auto;
+}
+
+.ajaxbody2 td a{
+	font-size:12px;
+	color:#fff001;
+}
+
+.ajaxbody2:hover{
+	background-color:#000ccf;
+}
+.ajaxhead21{
+
+}
+
+.ajaxhead21 td{
+	background-color:#006633;
+	border:1px solid white;
+	color:black;
+	font-size: 10px;
+	text-align: center;
+	width: auto;
+
+}
+
+.ajaxbody21{
+
+}
+
+.ajaxbody21 td{
+	text-align:center;
+	font-size:12px;
+	width:auto;
+	color:black;
+	border:1px solid pink;
+	width: auto;
+}
+
+.ajaxbody21 td a{
+	font-size:12px;
+	color:#fff001;
+}
+
+.ajaxbody21:hover{
+	background-color:#000ccf;
+}
+
+.ajaxhead3{
+
+}
+
+.ajaxhead3 td{
+	width:auto; 
+	height:20px;
+	background-color:#ccccc0;
+	font-size:11px;
+	border:1px solid black;
+	color:#000000;
+	text-align: center;
+
+}
+
+.ajaxbody3{
+}
+
+.ajaxbody3 td{
+	background-color:#ccccc0;
+	font-size:11px;
+	width:auto;
+	color:#000000;
+	border:1px solid black;
+
+}
+
+.ajaxbody3:hover{
+	background-color:#000ccf;
+}
+
+.ajaxhead4 td{
+	width:auto;
+	font-size:14px;
+	border:1px solid black;
+	color:#000000;
+	vertical-align:middle;
+	text-align: center;
+}
+
+.ajaxbody4 td{
+	background-color:white;
+	font-size:11px;
+	width:auto;
+	color:#000000;
+	border:1px solid black;
+}
+
+.ajaxbody4:hover{
+	background-color:#000ccf;
+}
+
+#upload{
+	display: none;
+}
+
+.ajaxbody3 td a{
+	font-size:12px;
+	color:blue;
+	width: auto;
+}
+
+.ajaxbody3 td:visited{
+	background-color:#000ccf;
+}
+
+/* Bordered form */
+/*form {
+    border: 3px solid #f1f1f1;
+}*/
+
+/* Full-width inputs */
+/* input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+/*button {
+    background-color: pink; #4CAF50
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Add a hover effect for buttons */
+button:hover {
+    opacity: 0.8;
+}
+
+/* Extra style for the cancel button (red) */
+/*.cancelbtn {
+    width: auto;
+    padding: 10px 18px;
+    background-color: #f44336;
+}
+
+/* Center the avatar image inside this container */
+.imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+}
+
+/* Avatar image */
+img.avatar {
+    width: 40%;
+    border-radius: 50%;
+}
+
+/* Add padding to containers */
+.container {
+    padding: 16px;
+}
+
+/* The "Forgot password" text */
+span.psw {
+    float: right;
+    padding-top: 16px;
+}
+
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+    span.psw {
+        display: block;
+        float: none;
+    }
+    .cancelbtn {
+        width: 100%;
+    }
+}
+
+.login{
+	width: 50%;
+    margin:10% 20% 20% 25%;
+}
+
+#menu th{display: inline;
+
+}
+.mybg{
+	background: url("http://schapp.com/static/school-logo/dow.jpg") center no-repeat;
+    
+}
+
+.myhead {
+
+}
+.myhead td{
+	width: auto;
+	background-color:#006633;
+	color:black;
+	font-size: 10px;
+}
+
+
+.header_nav_bar td {
+width: 5%;
+padding-left:5%;
 font-weight: bold;
-background-color: #cccccc;
-cursor: pointer;
+background-color: grey;
+border: 1px solid black;
 }
 
-.header_nav_bar td div:hover{
-background-color: #fffff0;
+.header_nav_bar td a {
+color: white;
+text-decoration: none;
+}
+
+.header_nav_bar td :hover{
+color: blue;
+background-color: grey;
 }
 
 .boxnn{
-	width: 100%;
-	margin-left: 8.8%;
+	width:auto;
+	margin: 0% 0% 0% 0%;
+	position: relative;
 }
 .app_menu{
 width:auto;
-padding:0.3em;
-padding-left:1.2em;
-border-top-right-radius: 30px;
-border-bottom-left-radius: 30px;
+padding:0%;
+}
+
+.app_menu td{
+text-decoration: none;
 }
 
 .app_menu:hover{
-	background-color: #ffccff;
-	width:25%;
-
-	
+	background-color: grey;
+	width:auto;
+	color: white;
 }
 
 .side_menu_header{
 	font-weight: bold;
-	color:#000000;
 	font-size: 12pt;
 	margin-left: 20%;
+/*	border: 1px solid black;*/
 }
 
 .side_menu{
+
 
 }
 
 .side_menu li a{
 	font-weight: bold;
-	color:#990000;
-	font-size: 12pt;
+	color:#ffffff;
 	display: block;
 	padding:0.5em;
-	border: thin solid #990000;
+	border: thin solid #ffffff;
 	margin-bottom: 0.1em;
+	background-color:#006633;
+	text-decoration: none;
 }
 
 
 .side_menu li a:hover{
-	color:#990000;
-	background-color: #ffccff;	
+	color:#000000;
+	background-color:pink;	
 }
-.side_menu li a:
-}
-
 
 /** ===========  FONT DEFINITION SECTION ===== **/
 
 .header_font{
 	font-family:Arial;
 	font-size: 24pt;
-	color:#990000;
+	color:white;
 }
 
 
 #footer{
-	margin-left:30%;
+	text-align: center;
 	font-weight: bold;
-	margin-top: 10px;
-	color: #999999;
+/*	margin-top: 8%;*/
+    margin-bottom: 3px;
+	color: white;
+	background-color: grey;
+	/*height:12%;*/
+	border:1px solid blue;
 }
+
+#footers{
+	text-align: center;
+	font-weight: bold;
+	margin-top: 8%;
+    margin-bottom: 3px;
+	color: white;
+	background-color: grey;
+	height:12%;
+	border:1px solid blue;
+}
+
+/**============jscripts report===========***/
+
+.jscript_report{
+
+}
+.jscript_report td{
+	text-align:center;
+	font-size:12px;
+	width:auto;
+	color:#000000;
+	border:1px solid white
+
+
+}
+.jscript_report td:hover{
+	background-color: green;
+};

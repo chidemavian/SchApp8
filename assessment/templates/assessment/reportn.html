@@ -47,7 +47,7 @@
                            <!-- <input name="submitprint" type= "submit" value="Print Report" onclick = "openrecprint();">-->
                             <div class="printable">
                                 {% for k in replist %}
-                                    <table style="width:8.0px;height:842px;vertical-align:top;">
+                                    <table style="width:700px;height:842px;vertical-align:top;">
                                         <tr style="vertical-align:top">
                                             <td colspan="10">
                                                 <table style="width:100%;vertical-align:top;">
@@ -86,37 +86,47 @@
                                                             <table style="width:100%">
                                                                <tr>
                                                                    <td colspan="10">
-                                                                         <strong> <span style="color:blue;"> Pupil Name:</span> &nbsp;{{ k.studentinfo.fullname }}</strong>
+                                                                         <strong> <span style="color:blue;"> Pupil's Name:</span> &nbsp;{{ k.studentinfo.fullname }}</strong>
                                                                     </td>
                                                                 </tr>
-                                                                <tr>
+                                                                <tr style="font-size:12px">
                                                                     <td style="text-align:left;">
-                                                                        <strong> <span style="color:blue;"> Admission No:</span> &nbsp;{{ k.studentinfo.admissionno }}</strong>
+                                                                        <strong> <span style="color:blue;"> Class:</span> &nbsp;{{k.studentinfo.admitted_class }}</strong>
+                                                                    </td>
+                                                                    <td style="text-align:left;">
+                                                                        <strong> <span style="color:blue;"> Sex:</span> &nbsp;{{ k.studentinfo.sex }}</strong>
+                                                                    </td>
+                                                                    <td style="text-align:left;">
+                                                                        <strong> <span style="color:blue;"> Position:</span> &nbsp;{{ k.academic.position }}</strong>
+                                                                    </td>
+                                                                    <td style="text-align:left;">
+                                                                        <strong> <span style="color:blue;"> Position in Class:</span> &nbsp;{{ k.academic.position }}</strong>
+                                                                    </td> 
+
+                                                                 
+                                                                </tr>
+                                                                <tr style="font-size:12px">
+                                                                    <td style="text-align:left;">
+                                                                        <strong> <span style="color:blue;"> Arm:</span>&nbsp;{{ k.studentinfo.admitted_arm }}</strong>
 
                                                                     </td>
                                                                     <td style="text-align:left;">
                                                                         <strong> <span style="color:blue;"> Session:</span> &nbsp;{{ k.studentinfo.admitted_session }}</strong>
                                                                     </td>
                                                                     <td style="text-align:left;">
-                                                                        <strong> <span style="color:blue;"> Class:</span> &nbsp;{{k.studentinfo.admitted_class }}</strong>
-                                                                    </>
-                                                                    <td style="text-align:left;">
-                                                                        <strong> <span style="color:blue;"> Sex:</span> &nbsp;{{ k.studentinfo.sex }}</strong>
-                                                                    </td>                                                                  
-                                                                </tr>
-                                                                <tr>
-
-                                                                    <td style="text-align:left;">
                                                                         <strong> <span style="color:blue;"> No. Of Student in Class:</span> &nbsp;{{ stuno }}</strong>
                                                                     </td>
-                                                                    <td style="text-align:left;">
-                                                                        <strong> <span style="color:blue;"> Percentage(%):</span>  &nbsp;{{ k.percentage }}</strong>
+                                                              <td style="text-align:left;">
+                                                                        <strong> <span style="color:blue;"> No. Of Students in</span>&nbsp;<span style="color:blue;">{{k.studentinfo.admitted_class}}:</span> &nbsp;{{ stuno1 }}</strong>
                                                                     </td>
-                                                                    <td style="text-align:left;">
-                                                                        <strong> <span style="color:blue;"> Position:</span> &nbsp;{{ k.academic.position }}</strong>
-                                                                    </td> 
+
+ 
                                                                 </tr>
-                                                                <tr>
+                                                                <tr style="font-size:12px">
+                                                                    <td style="text-align:left;">
+                                                                        <strong> <span style="color:blue;"> Admission No:</span> &nbsp;{{ k.studentinfo.admissionno }}</strong>
+
+                                                                    </td>
 
                                                                     <td style="text-align:left;">
                                                                         <strong> <span style="color:blue;"> No. of Times School Opened:</span>&nbsp;{{ k.academic.days_open }}</strong>
@@ -124,8 +134,17 @@
                                                                     <td style="text-align:left;">
                                                                         <strong> <span style="color:blue;"> No. Of Times Present:</span>&nbsp;{{ k.academic.days_present }}</strong>
                                                                     </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="text-align:left;">
+                                                                        <strong> <span style="color:blue;"> House:</span> &nbsp;{{ k.studentinfo.house }}</strong>
+
+                                                                    </td>
                                                                     <td style="text-align:left;">
                                                                         <strong> <span style="color:blue;"> Next Term Begins:</span> &nbsp;{{ k.academic.next_term_start|date:"d-m-Y" }}</strong>
+                                                                    </td>
+                                                                    <td style="text-align:left;">
+                                                                        <strong> <span style="color:blue;"> Percentage(%):</span>  &nbsp;{{ k.percentage }}</strong>
                                                                     </td>
                                                                 </tr>
                                                           <!--      <tr>

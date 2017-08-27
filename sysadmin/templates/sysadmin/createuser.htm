@@ -3,13 +3,16 @@
 {%block title %}{%endblock%}
 {%endblock %}
 {%block content%}
-<div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%;height:4%; font-size:15px;color:black">  Create User </div>
+<div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%;height:4%; font-size:15px;color:black">  New User Sign Up </div>
+
 <div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;background-color:white;" > {{varerr}}</div>
+
 <table style="width:100%">
     <tr>
-        <td colspan="10">
-            <form action="" method="post" name ="main" onsubmit="disable(this)">
+        <td colspan="5">            
+            
             <table align ="center" style="border:0px solid black;width:100%">
+                <form action="" method="post" name ="main" onsubmit="disable(this)">
                     <tr>
                         <td>
                             User Name :
@@ -29,60 +32,67 @@
                         </td>
 
                     </tr>
-                    <tr>
-
-                        <td colspan="3" style="text-align:center;">
-
-                            <input name="submit" type= "submit" value="Create Account">
-                        </td>
-
-                    </tr>
-
-                </table>
-                </form>
+                    </form>
+          </table>
         </td>
     </tr>
- <tr>
-     <td colspan="10">
-         <table style="width:100%;color:black;border-collapse:collapse;">
-             <tr>
-                 <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong>UserName </strong></td>
-                 <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong>Staff Name</strong></td>
+<table>
+                    <tr>
+                        <td></td>
 
-                 <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black">Student/Bill</td>
-                 <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black">Accounts</td>
-                 <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black">H-R</td>
-                 <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black">Administrator</td>
-             </tr>
+                        <td colspan="1" style="text-align:left;"><input name="submit" type= "submit" value="Create User"> </td>
 
-             {% for pincode in getdetails %}
-
-                 <tr>
-                 <!-- <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="/sysadmin/edituser/{{ pincode.id }}/" style ="color:red" onclick="admno({{ pincode.id }});" title="Edit This User"> {{ pincode.username|upper }} </a></strong></td>-->
-                 <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="#" style ="color:#1c94c4;" onclick="admno({{ pincode.id }});" title="Edit This User"> {{ pincode.username|upper }} </a></td>
-                 <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ pincode.staffname|title }}</td>
-                 <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  <a href="#" style ="color:#1c94c4;" onclick="academic({{ pincode.id }});" title="Manage Student/Academic/Bill">Student/Academic/Bill  </a></td>
-                 <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="#" style ="color:#1c94c4;" onclick="acc({{ pincode.id }});" title="Manage Account">Accounts  </a></td>
-                 <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="#" style ="color:#1c94c4;" onclick="hrm({{ pincode.id }});" title="Manage Human Resources">Human Resources </a></td>
-                 <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="#" style ="color:#1c94c4;" onclick="admin({{ pincode.id }});" title="Manage Administrator"> Administrator </a></td>
-             {% endfor %}
-
-
-             </tr>
-         </table>
-
-
-     </td>
- </tr>
+                    </tr>
 </table>
+<table>
+                    <tr>
+                        <td>
+                            Sort By :
+                        </td>
+                        <td>{{ form.Filters}}
+                        </td>
+                    </tr>
+  </table>
+    </table>
+   
+ <td colspan="10"><div class="box2"></div></td> 
 
-    <div id="myDialog" >
-    </div>
+
+
+    <div id="myDialog" ></div>
+
+
     <script type="text/javascript" >
         $(document).ready(function() {
-            $("#myDialog").hide();
+
+            $("#id_Filters").change(function () {
+                userprofiles();
+            });
         });
     </script>
+
+        <script type="text/javascript" language="javascript">
+        function userprofiles(){
+            var state = $("#id_Filters").val() ;
+            //alert(state);
+            var url = "/sysadmin/users_ajax/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    $(".box2").show();
+                    $(".box2").html(html);
+                }
+            });
+            return false;
+        }
+    </script>
+
+
+
     <script language="javascript" type="text/javascript">
         function disable(f)
         {
@@ -200,6 +210,29 @@ document.getElementById('id_username').focus()
         }
 
     </script>
+
+    <script type="text/javascript" language="javascript">
+        function homeview(vid){
+            //alert(vid);
+            var state = vid;
+            var url = "/sysadmin/homeview/";
+            var i = 0;
+            var data='userid='+state;
+            $.ajax({
+                type:"POST",
+                url:url,
+                data:data,
+                success:function(html) {
+                    //$("#myDialog").show();
+                    $("#myDialog").html(html);
+                    getdialogadmin();
+                }
+            });
+            return false;
+        }
+
+    </script>
+
     <script type="text/javascript" language="javascript">
         function getdialogadmin(){
             var dialogOpts = {

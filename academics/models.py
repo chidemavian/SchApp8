@@ -27,9 +27,18 @@ class StudentAcademicRecord(models.Model):
     principal_comment = models.CharField("Principal's Comment", max_length=100, default='')
     next_term_start = models.DateField('Next Term Begins', null=True, default=models.NOT_PROVIDED)
     position1 = models.CharField('Position', max_length = 10, default = 'N/A')
+    stu_ave1 = models.DecimalField('Student Average First CA', decimal_places=2, max_digits=5, default=0)
+    stu_ave2 = models.DecimalField('Student Average Second CA', decimal_places=2, max_digits=5, default=0)
+    class_ave1  = models.DecimalField('Class Average First CA', decimal_places=2, max_digits=5, default=0)
+    class_ave2 = models.DecimalField('Class Average Second CA', decimal_places=2, max_digits=5, default=0)
+    classAve = models.DecimalField('Class Average', decimal_places=2, max_digits=5, default=0)
+    com1  = models.CharField('First CA Comment',max_length=20, default=0)
+    com2 = models.CharField('Second CA Comment',  max_length =5, default=0)
+
+
 
     def __unicode__(self):
-        return  u'Name: %s, Admission No: %s , Class: %s, Arm: %s,Session: %s' %(self.student.fullname,self.student.admissionno,self.klass,self.arm,self.session)
+        return  u'classave: %s,Name: %s, Admission No: %s , Class: %s, Arm: %s,Session: %s' %(self.classAve, self.student.fullname,self.student.admissionno,self.klass,self.arm,self.session)
     class Meta:
         ordering = ['student']
         verbose_name_plural = 'Student Academic'
@@ -99,11 +108,10 @@ class AffectiveSkill(models.Model):
 
 class PsychomotorSkill(models.Model):
     academic_rec = models.OneToOneField(StudentAcademicRecord, related_name='psychomotor_domain')
-    handwriting = models.CharField('Handwriting', max_length=3, choices=score, default='A')
-    games = models.CharField('Games & Sports', max_length=3, choices=score, default='A')
-    art = models.CharField('Drawing/Arts', max_length=3, choices=score, default='A')
-    painting = models.CharField('Painting', max_length=3, choices=score, default='A')
-    music = models.CharField('Musical Skills', max_length=3, choices=score, default='A')
+    attendance = models.CharField('Attendance and Punctuality', max_length=3, choices=score, default=0)
+    social_behaviour = models.CharField('Social Behaviour', max_length=3, choices=score, default=0)
+    motivation= models.CharField('Motivation', max_length=3, choices=score, default=0)
+    contribution = models.CharField('Contribution', max_length=3, choices=score, default=0)
 
     def __unicode__(self):
         return u'Name :%s,Admission No : %s,Class : %s,Arm %s: ,Session %s' %(self.academic_rec.student.fullname,self.academic_rec.student.admissionno,self.academic_rec.klass,self.academic_rec.arm,self.academic_rec.session)
@@ -124,8 +132,6 @@ class SubjectScore(models.Model):
     second_ca = models.DecimalField('Second CA', decimal_places=2, max_digits=5, default=0)
     third_ca = models.DecimalField('Third CA', decimal_places=2, max_digits=5, default=0)
     fourth_ca = models.DecimalField('Fourth CA', decimal_places=2, max_digits=5, default=0)
-    fifth_ca = models.DecimalField('Fifth CA', decimal_places=2, max_digits=5, default=0)
-    sixth_ca = models.DecimalField('Sixth CA', decimal_places=2, max_digits=5, default=0)
     mid_term = models.DecimalField('Midterm', decimal_places=2, max_digits=5, default=0)
     exam_score = models.DecimalField('Exam', decimal_places=2, max_digits=5, default=0)
     term_score = models.DecimalField('Term Score', decimal_places=2, max_digits=5, default=0)
@@ -135,10 +141,11 @@ class SubjectScore(models.Model):
     remark = models.CharField('Remark', max_length=60)
     subject_teacher = models.CharField('Subject Teacher', max_length=200,null=True, default=models.NOT_PROVIDED)
     annual_avg = models.DecimalField(decimal_places=2, max_digits=6, default=0, editable=False)
+    remarks = models.CharField('Remarks per subject', max_length=5000, default=0)
 
 
     def __unicode__(self):
-        return u'%s %s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s' %(self.academic_rec.student.subclass, self.term,self.academic_rec.student.fullname,self.academic_rec.student.admissionno,self.academic_rec.klass,self.academic_rec.arm,self.academic_rec.session,self.subject,self.first_ca,self.second_ca,self.exam_score,self.term_score,self.remark,self.annual_avg)
+        return u'%s %s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s-%s' %(self.remarks, self.academic_rec.student.subclass, self.term,self.academic_rec.student.fullname,self.academic_rec.student.admissionno,self.academic_rec.klass,self.academic_rec.arm,self.academic_rec.session,self.subject,self.first_ca,self.second_ca,self.exam_score,self.term_score,self.remark,self.annual_avg)
     class Meta:
         ordering = ['academic_rec']
         verbose_name_plural = 'Student Academic Scores Table'
@@ -246,95 +253,59 @@ class SubjectScore(models.Model):
 
         else:
            if self.klass.startswith('J'):
-              if (self.term_score >=80) and (self.term_score <= 100):
+              if (self.term_score >=90) and (self.term_score <= 100):
+                   self.grade = 'A*'
+                   self.remark = 5
+              elif (self.term_score >=80) and (self.term_score <=89.99 ):
                    self.grade = 'A'
-                   self.remark = 'Excellent'
-              elif (self.term_score >=65) and (self.term_score <= 79.99):
-                    self.grade = 'B'
-                    self.remark = 'Very Good'
-              elif (self.term_score >=55) and (self.term_score <= 64.99):
-                   self.grade = 'C'
-                   self.remark = 'Good'
-              elif (self.term_score >=45) and (self.term_score <= 54.99):
+                   self.remark = 5
+              elif (self.term_score >=70) and (self.term_score <= 79.99):
+                   self.grade = 'B'
+                   self.remark = 4
+              elif (self.term_score >=60) and (self.term_score <= 69.99):
+                    self.grade = 'C'
+                    self.remark = 3
+              elif (self.term_score >=50) and (self.term_score <= 59.99):
                    self.grade = 'P'
-                   self.remark = 'Fair'
-              elif (self.term_score >=0) and (self.term_score <= 44.99):
+                   self.remark = 2
+              elif (self.term_score >=40) and (self.term_score <= 49.99):
                    self.grade = 'F'
-                   self.remark = 'Needs Academic Assistance'
+                   self.remark = 1
+              elif (self.term_score >=0) and (self.term_score <= 39.99):
+                   self.grade = 'F'
+                   self.remark = 1
               else:
                   raise FieldError('Term score cannot exceed 100 or be less than 0!')
               super(SubjectScore, self).save(**kwargs)
-           elif self.klass.startswith('S'):
-              if (self.term_score >=80) and (self.term_score <= 100):
+              
+           else:
+              if (self.term_score >=90) and (self.term_score <= 100):
                   self.grade = 'A1'
-                  self.remark = 'Excellent'
-              elif (self.term_score >=75) and (self.term_score <= 79.99):
+                  self.remark = 5
+              elif (self.term_score >=80) and (self.term_score <= 89.99):
                    self.grade = 'B2'
-                   self.remark = 'Commendable'
-              elif (self.term_score >=70) and (self.term_score <= 74.99):
+                   self.remark = 5
+              elif (self.term_score >=70) and (self.term_score <= 79.99):
                    self.grade = 'B3'
-                   self.remark = 'Commendable'
+                   self.remark = 4
               elif (self.term_score >=65) and (self.term_score <= 69.99):
                    self.grade = 'C4'
-                   self.remark = 'Very Good'
+                   self.remark = 4
               elif (self.term_score >=60) and (self.term_score <= 64.9):
                    self.grade = 'C5'
-                   self.remark = 'Very Good'
+                   self.remark = 3
               elif (self.term_score >=55) and (self.term_score <= 59.99):
                   self.grade = 'C6'
-                  self.remark = 'Good'
+                  self.remark = 3
               elif (self.term_score >=50) and (self.term_score <= 54.99):
                    self.grade = 'D7'
-                   self.remark = 'Average'
+                   self.remark = 2
               elif (self.term_score >=45) and (self.term_score <= 49.99):
                   self.grade = 'E8'
-                  self.remark = 'Below Average'
+                  self.remark = 2
               elif (self.term_score >=0) and (self.term_score <= 44.99):
                    self.grade = 'F9'
-                   self.remark = 'Need Academic Support'
+                   self.remark = 1
               else:
                   raise FieldError('Term score cannot exceed 100 or be less than 0!')
               super(SubjectScore, self).save(**kwargs)
-           else:
-               if (self.term_score >=95) and (self.term_score <= 100):
-                   self.grade = 'A+'
-                   self.remark = 'Excellent'
-               elif (self.term_score >=90) and (self.term_score <= 94.99):
-                   self.grade = 'A'
-                   self.remark = 'Excellent'
-               elif (self.term_score >=85) and (self.term_score <= 89.99):
-                   self.grade = 'A-'
-                   self.remark = 'Very Good'
-               elif (self.term_score >=80) and (self.term_score <= 84.99):
-                   self.grade = 'B+'
-                   self.remark = 'Very Good'
-               elif (self.term_score >=75) and (self.term_score <= 79.99):
-                    self.grade = 'B'
-                    self.remark = 'Good'
-               elif (self.term_score >=70) and (self.term_score <= 74.99):
-                    self.grade = 'B-'
-                    self.remark = 'Good'
-               elif (self.term_score >=65) and (self.term_score <= 69.99):
-                     self.grade = 'C+'
-                     self.remark = 'Average'
-               elif (self.term_score >=60) and (self.term_score <= 64.9):
-                     self.grade = 'C'
-                     self.remark = 'Below Average'
-               elif (self.term_score >=55) and (self.term_score <= 59.99):
-                    self.grade = 'C-'
-                    self.remark = 'Below Average'
-               elif (self.term_score >=50) and (self.term_score <= 54.9):
-                     self.grade = 'D'
-                     self.remark = 'Fair'
-               elif (self.term_score >=45) and (self.term_score <= 49.99):
-                    self.grade = 'D-'
-                    self.remark = 'Poor'
-               elif (self.term_score >=40) and (self.term_score <= 44.99):
-                   self.grade = 'E'
-                   self.remark = 'Very Poor'
-               elif (self.term_score >=0) and (self.term_score <= 39.99):
-                     self.grade = 'F'
-                     self.remark = 'Fail'
-               else:
-                     raise FieldError('Term score cannot exceed 100 or be less than 0!')
-               super(SubjectScore, self).save(**kwargs)

@@ -1515,7 +1515,7 @@ def controldate(request):
         form = controlform(request.POST)
         if form.is_valid():
             recdate = request.POST['recdate']
-            savecon = tblcontrol (datecreated = recdate,userid = 'wale')
+            savecon = tblcontrol (datecreated = recdate,userid = 'Admin')
             savecon.save()
             succ = "Record Saved !!!"
             return render_to_response('upload/controldate.htm',{'form': form,'succ':succ})
@@ -2864,12 +2864,12 @@ def uploadbiodatawap(request):
                     j7_as_date = datetime.date(*xlrd.xldate_as_tuple(j7, 0)[:3])
                     #j17_as_date = datetime.date(*xlrd.xldate_as_tuple(j17, 0)[:3])
                     #insert into changepin
-                    savecon = staffrec(staffid = j1,name = j2,address = 'Nill',phoneno = 'Nill',dateofbirth = '1992-02-15' ,nationality = 'NIGERIAN',stateoforigin = 'Abia',localgovt = 'Aba North',email = 'Nill',nextofkin = 'Nill',nextofkinaddress = 'Nill',nextofkinphone = 'Nill',maritalstatus = 'MARRIED',designation = j4,department = j3,dateofresum = j7_as_date,picture = 'staff/rece.png',userid = 'wale',status = 'ACTIVE',firstguarantor = 'NILL',firstguarantoraddress = 'NILL',secondguarantor = 'NILL',secondguarantoraddress = 'NILL',qualification = 'SSCE',branch = j6,profession = 'Lagos',workedday = 30,level = j8,step = j9,sex = j5)
+                    savecon = staffrec(staffid = j1,name = j2,address = 'Nill',phoneno = 'Nill',dateofbirth = '1992-02-15' ,nationality = 'NIGERIAN',stateoforigin = 'Abia',localgovt = 'Aba North',email = 'Nill',nextofkin = 'Nill',nextofkinaddress = 'Nill',nextofkinphone = 'Nill',maritalstatus = 'MARRIED',designation = j4,department = j3,dateofresum = j7_as_date,picture = 'staff/rece.png',userid = 'admin',status = 'ACTIVE',firstguarantor = 'NILL',firstguarantoraddress = 'NILL',secondguarantor = 'NILL',secondguarantoraddress = 'NILL',qualification = 'SSCE',branch = j6,profession = 'Lagos',workedday = 30,level = j8,step = j9,sex = j5)
                     savecon.save()
                     if j11 == 'NIL':
                         pass
                     else:
-                        savecon1 = tblstaffpfa(staffid = j1,staffname = j2,hmoname = j11, userid = 'wale',accno = j12 )
+                        savecon1 = tblstaffpfa(staffid = j1,staffname = j2,hmoname = j11, userid = 'admin',accno = j12 )
                         savecon1.save()
                     #*********************treating
                     effdate = datetime.date.today()
@@ -2889,7 +2889,7 @@ def uploadbiodatawap(request):
                     ck = monthrange(transdate11.year,transdate11.month)[1]
                     lday = int(ck)
                     transdate1 = date(transdate11.year,transdate11.month,lday)
-                    savecon = tblspded(staffid = j1,staffname = j2,amount = float(j10),paydes = 'tax',userid = 'wale',duration = 720,effectivedate = effdate,expiredate = transdate1)
+                    savecon = tblspded(staffid = j1,staffname = j2,amount = float(j10),paydes = 'tax',userid = 'admin',duration = 720,effectivedate = effdate,expiredate = transdate1)
                     savecon.save()
             succ = "Record Uploaded !!!"
             return render_to_response('upload/upload.htm',{'form': form,'succ':succ})
@@ -2931,7 +2931,7 @@ def uploadsavingswap(request):
                 j3 = k[2]
                 j4 = k[3]
                 j5 = k[4]
-                savecon = tblsavings(staffid = j1,staffname = j2,amountbf = j4,paydes = j5,userid = 'wale',contribution = j3)
+                savecon = tblsavings(staffid = j1,staffname = j2,amountbf = j4,paydes = j5,userid = 'admin',contribution = j3)
                 savecon.save()
             succ = "Record Uploaded !!!"
             return render_to_response('upload/upload.htm',{'form': form,'succ':succ})
@@ -2974,11 +2974,11 @@ def uploadallowancewap(request):
                 j4 = k[3]#step
                 j7 = int(j3)
                 j8 = int(j4)
-                savecon = tblallowance(desc = str(j7)+','+ str(j8),userid = 'adetowale',amount = float(j2),paydes = j1 )
+                savecon = tblallowance(desc = str(j7)+','+ str(j8),userid = 'admin',amount = float(j2),paydes = j1 )
                 savecon.save()
 
                 #deduction
-                #savecon2 = tbldeduction(desc = str(j7)+','+ str(j8),userid = 'wale',amount = j6,paydes = 'meal' )
+                #savecon2 = tbldeduction(desc = str(j7)+','+ str(j8),userid = 'admin',amount = j6,paydes = 'meal' )
                 #savecon2.save()
 
             succ = "Record Uploaded !!!"
@@ -3023,7 +3023,7 @@ def uploaddeduction(request):
 
                 j7 = int(j3)
                 j8 = int(j4)
-                savecon = tbldeduction(desc = str(j7)+','+ str(j8),userid = 'adetowale',amount = float(j2),paydes = j1 )
+                savecon = tbldeduction(desc = str(j7)+','+ str(j8),userid = 'admin',amount = float(j2),paydes = j1 )
                 savecon.save()
 
 
@@ -3067,7 +3067,7 @@ def uploadbankwap(request):
                 j2 = k[1]
                 j3 = k[2]#bank name
                 j4 = k[3]#account no
-                savecon = tblbankdetails(staffid = j1,staffname = j2,bankname = j3,accountno = str(j4),userid = 'wale')
+                savecon = tblbankdetails(staffid = j1,staffname = j2,bankname = j3,accountno = str(j4),userid = 'admin')
                 savecon.save()
 
             succ = "Record Uploaded !!!"
@@ -3136,7 +3136,7 @@ def uploadloanwap(request):
                 kduration = int(j3)
                 getint = ((kint * kamt )/100) + kamt
                 mrepay = getint / kduration
-                savecon = tblloan(staffid = j1,staffname = j2,amount = kamt,paydes = j8,userid = 'wale',duration = j3,intrate = kint,effectivedate = effdate,expiredate = transdate1,monthlyepayment = mrepay)
+                savecon = tblloan(staffid = j1,staffname = j2,amount = kamt,paydes = j8,userid = 'admin',duration = j3,intrate = kint,effectivedate = effdate,expiredate = transdate1,monthlyepayment = mrepay)
                 savecon.save()
 
             succ = "Record Uploaded !!!"

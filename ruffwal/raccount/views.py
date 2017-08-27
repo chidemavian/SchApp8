@@ -17,7 +17,7 @@ def index(request):
                         request.session['userid'] = user.username
                         return HttpResponseRedirect('/SchApp/account/welcome/')
            except:
-               varerr = "Invalid User - Contact Administrator"
+               varerr = "Invalid Login Credentials"
                return render_to_response('setup/login.htm',{'form':form,'varerr':varerr})
     else:
          form = useraccform()

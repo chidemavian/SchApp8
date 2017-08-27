@@ -1,0 +1,98 @@
+{% extends "sysadmin/base.htm" %}
+{% load humanize %}
+{%block content%}
+
+<div align ="center" style="background-color:#ccccc0;border-radius:20px;width:100%;height:25px;; font-size:14px;color:black;padding-top:5px;">{{access}}  Access {{commence}} Set up</div>
+<div align="center" style="color:red;font-family:courier;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+<table align ="center" style="border:0px solid black;width:100%">
+<tr><td>
+<form action="" method="post" name ="main" id = "form1" onsubmit="disable(this)">
+<table align ="left" style="border:1px;color:red;background-color:white;width:100%">
+
+<tr>
+     <td>Session :</td>
+      <td>{{ form.session}}</td>
+</tr>
+<tr>
+        <td align ="left">
+           Term :
+        </td>
+        <td align ="left">{{ form.term}}
+        </td>
+</tr>
+
+<tr>
+    <td>Deadline :</td>
+    <td>{{ form.date}}</td>
+</tr>
+</table>
+
+<tr>
+        <td colspan="1" align='center' style="text-align:;">
+        <input name="submit" type= "submit" value="Submit" style="width:150px;height:25px;">
+         </td>
+</tr>
+
+
+
+</form>
+
+<tr>
+<td>
+{% if getdetails %}
+<table align ="center" style="width:100%;background-color:white;border-collapse:collapse;">
+<tr></tr>
+ <tr>
+             <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">S/N</td>
+             <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Session</td>
+             <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Term</td>
+              <td align="center" valign="top" style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Dead line</td>
+
+</tr>
+
+         {% for pincode in getdetails %}
+
+           <tr>
+               <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ forloop.counter}}</td>
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.session }}</td>
+             <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ pincode.term}}</td>
+
+              <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.deadline}}</td>
+
+           {% endfor %}
+            </tr>
+</table>
+{% endif %}
+</td>
+</tr>
+</table >
+
+    <div id="myDialog" title="Edit Account"></div>
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function() {
+            var pickerOpts = {
+                appendText: "mm/dd/yy",
+                showOtherMonths: true,
+                changeMonth: true,
+                changeYear: true,
+                dateFormat:"mm/dd/yy"
+            };
+            $("#id_date").datepicker(pickerOpts);
+            //alert("welcome");
+            $("#id_session").focus();
+            autocomplete();
+        });
+    </script>
+
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+
+
+{%endblock%}

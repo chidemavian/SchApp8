@@ -1,100 +1,69 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>SchApp 8.0 Enterprise School Software</title>
 
-
-    <script language="javascript" type="text/javascript">
-        function disable(f)
-        {
-            var button = f.elements['submit'];
-            button.value = 'Please wait...';
-            button.disabled = 'true';
-            return true;
-        }
-    </script>
-
-
-
-<style type="text/css">
-<!--
-.style11 {
-	font-size: 100px;
-	color: #FF3300;
-}
-.style1 {
-	color: #000000;
-	font-weight: bold;
-	font-size: 16px;
-}
-.style2 {font-size: 9px}
-.labeltax {
-	color: #0F0;
-	text-decoration: blink;
-	text-emphasis: accent;
-	font-weight: bold;
-}
-.l {
-	font-size: 16px;
-}
--->
-</style>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>SchApp 8.0</title>
+     <script type="text/javascript" src="/static/jquery/jquery.js"></script>
+    <link type="text/css" rel="Stylesheet" href="/static/CSS/new_lekan.css" />
 </head>
-
 <body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+      <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">SchApp v8.0</a>
+      </div>
+      <!-- /.navbar-header -->      
+  </nav>
 
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<div align="center"><table width="101">
-        <td width="90" align="center"><span class="style11">SchApp</span></td>
- <form  action="" method="post" name ="main" id ="main" onsubmit="disable(this)">
-  <tr>
-    <td><table width= "714"><tr>
-      <br/>
-      <td width="400" align="left"><span class="labeltax">User Login&gt;&gt;&gt; </span></td>
-          <td width="5"><span class="style1">{{ form.username.label }}</span></td>
-          <td width="93" class="l">{{ form.username }}</td>
-          <td width="103">{{ form1.username.lbel }}</td>
-          <td width="5"><span class="style1">{{ form.password.label }}</span></td>
-          <td width="93">{{ form.password }}</td>
-          <td width="100"><input name="submit" type= "submit" value=" Enter "id="submit" style="width: 100px; height: 25px; border-bottom-left-radius: 15;"/></td>
-    </table>
-      
-    <tr>
-    <td align="center"style="background-color:#fffff;font-size:13px;color:#0f0;font-weight:bold;text-decoration:blink;">{{ varerr }}</td>
-  </table> 
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="login-panel panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Please Sign In</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form action = "/login/"  method="post" role="form">
+                            <fieldset>
+                                <div class="form-group">
+                                  <label style='color:red'> {{varerr}}</label>
+                                    <input class="form-control" placeholder="Username" name="username" type="text" autofocus>
+                                </div>
+                                <div class="form-group">
+                                    <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
+                                    </label>
+                                </div>
 
-   <script type="text/javascript">
-    document.getElementById('id_username').focus()
-</script> 
-  
-<script type="text/javascript">
-    $(document).ready(function() {
-    $('#submit').click(function(){
-          });
-    });
-</script>
-</div>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
-<br/>
+                                <!-- Change this to a button or input when using this as a form -->
+                                <input class="btn btn-lg btn-success btn-block" name="submit" type= "submit" value="    Log On    ">
+                                <!-- <a class="btn btn-lg btn-success btn-block">Login</a> -->
+                                <div>
+                                <a href="#"> Forgot Your Password?</a>
+                              </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
-<div align="center" class="style1">Enterprise School Application Software V6.0
-  </div>
+
 </html>

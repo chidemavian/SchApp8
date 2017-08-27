@@ -29,7 +29,8 @@ def sessi():
 
 def wel(request):
     if  "userid" in request.session:
-        return render_to_response('bill/success1.html')
+        varuser=request.session['userid']
+        return render_to_response('bill/success1.html',{'varuser':varuser})
     else:
         return HttpResponseRedirect('/login/')
 def well(request):
@@ -55,7 +56,7 @@ def addexpensesname(request):
                 if tblexpenses.objects.filter(name=na):
                     varerr = 'Bill Already Exists!'
                     getdetails = tblexpenses.objects.all()
-                    return render_to_response('bill/expenses.html',{'form':form,'varerr':varerr,'getdetails':getdetails})
+                    return render_to_response('bill/expenses.html',{'form':form,'varerr':varerr,'getdetails':getdetails,'varuser':varuser})
                 savecon = tblexpenses(name = na)
                 savecon.save()
                 return HttpResponseRedirect('/bill/billname/')
@@ -63,7 +64,7 @@ def addexpensesname(request):
             form = expensesForm()
             getdetails = tblexpenses.objects.all()
 
-        return render_to_response('bill/expenses.html',{'form':form,'varerr':varerr,'getdetails':getdetails})
+        return render_to_response('bill/expenses.html',{'form':form,'varerr':varerr,'getdetails':getdetails,'varuser':varuser})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -119,7 +120,7 @@ def billsetup(request):
                 return HttpResponseRedirect('/bill/billsetup/')
         else:
             form = billForm()
-        return render_to_response('bill/bill.html',{'form':form,'varerr':varerr})
+        return render_to_response('bill/bill.html',{'form':form,'varerr':varerr,'varuser':varuser})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -198,7 +199,7 @@ def additionalbill(request):
                 return HttpResponseRedirect('/bill/additionalbill/')
         else:
             form = additionalbillform()
-        return render_to_response('bill/addbill.html',{'form':form,'varerr':varerr})
+        return render_to_response('bill/addbill.html',{'form':form,'varerr':varerr,'varuser':varuser})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -526,7 +527,7 @@ def printbillschdule(request):
                 #return render_to_response('bill/billschedule.html',{'form':form,'varerr':varerr,'bill_list':bill_list,'school':school,'session':session,'term':term,'klass':klass,'blist':blist,'adlist':adlist})
         else:
             form = billscheduleform()
-        return render_to_response('bill/billschedule.html',{'form':form,'varerr':varerr})
+        return render_to_response('bill/billschedule.html',{'form':form,'varerr':varerr,'varuser':varuser})
     else:
         return HttpResponseRedirect('/login/')
 @json_view
@@ -635,7 +636,7 @@ def bill_calendar_update(request):
                 return render_to_response('bill/promotion1.htm',{'form': form,'succ':succ})
         else:
             form = calendar_form()
-        return render_to_response('bill/promotion1.htm', {'form': form,'succ':succ})
+        return render_to_response('bill/promotion1.htm', {'form': form,'succ':succ,'varuser':varuser})
     else:
         return HttpResponseRedirect('/login/')
 

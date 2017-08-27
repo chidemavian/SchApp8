@@ -6,46 +6,40 @@
 
 </head>
 <body>
-<table style="width:100%;">
+<table style="width:auto;text-size:12px">
 
     <tr>
-        <td colspan="10">
+        <td >
 
-            <table style="width:100%;background-color:white;border-collapse:collapse;">
+            <table style="width:auto;background-color:white;border-collapse:collapse;border:1px solid black">
                 <thead >
-                <tr>
-                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">S/N</td>
-                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Admission No</td>
-                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Name</td>
-                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Sex</td>
-                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Class</td>
-                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Arm</td>
-                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Session</td>
-                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Term</td>
-                    <td  style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Affective</td>
-                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Psychomotive</td>
-                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Comment</td>
-                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Academic Performance</td>
+                <tr class='ajaxhead3'>
+                    <td >S/N</td>
+                    <td >Admission No</td>
+                    <td >Name</td>
+                    <td >Sex</td>
+                    <td >Class</td>
+                    <td >Arm</td>
+                    <td >Session</td>
+                    <td >Term</td>
+         
+                    <td >P& S D</td>
                 </tr>
                 </thead>
                 <tbody>
                 {% for student in data %}
-                    <tr>
-
-                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ forloop.counter }}</td>
-                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.comment.student.admissionno }}</td>
-                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.comment.student.fullname }}</td>
-                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.comment.student.sex }}</td>
-                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.comment.student.admitted_class }}</td>
-                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.comment.student.admitted_arm }}</td>
-                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.comment.student.admitted_session }}</td>
-                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.comment.term }}</td>
-                        <td title = "Assess Affective domain for {{student.comment.student.fullname }}"style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  <a href="#" style="color:blue" onClick= "getdialogtry({{ student.affective.id  }});"> Affective</a> </td>
-                        <td  title = "Assess Psychomotive domain for {{student.comment.student.fullname }}"style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="#" style="color:blue" onClick= "psyco({{ student.psyco.id  }});"> Psychomotor </a> </td>
-                        <td title = "Enter Comment for {{student.comment.student.fullname }}"style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="#" style="color:blue" onClick= "comment({{ student.comment.id  }});"> Teacher's Comment </a> </td>
-                        <td title = "View Academic Performance for {{student.comment.student.fullname }}"style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="#" style="color:blue" onClick= "getdialogtry1({{ student.comment.id  }});">Academic Performance </a> </td>
+                    <tr class ='ajaxbody3'>
+                        <td >{{ forloop.counter }}</td>
+                        <td >{{ student.comment.student.admissionno }}</td>
+                        <td >{{ student.comment.student.fullname }}</td>
+                        <td >{{ student.comment.student.sex }}</td>
+                        <td >{{ student.comment.student.admitted_class }}</td>
+                        <td >{{ student.comment.student.admitted_arm }}</td>
+                        <td >{{ student.comment.student.admitted_session }}</td>
+                        <td >{{ student.comment.term }}</td>
+                    <!--    <td title = "Assess Affective domain for {{student.comment.student.fullname }}">  <a href="#" onClick= "getdialogtry({{ student.affective.id  }});"> Affective</a> </td>-->
+                        <td  title = "Assess Psychomotive domain for {{student.comment.student.fullname }}"> <a href="#" onClick= "psyco({{ student.psyco.id  }});"> PSD Rating </a> </td>
                     </tr>
-
                 {% endfor %}
                 </tbody>
             </table>
@@ -177,7 +171,7 @@
             position: ["center", "middle"],
             height:"auto",
             width:550,
-            title:'<a>SchApp 8.0 | Comment by Class Teacher</a>' ,
+            title:"<a>SchApp 8.0 | Class Teacher's Comment</a>" ,
             closeOnEscape:true,
             show: true,
             hide: true,

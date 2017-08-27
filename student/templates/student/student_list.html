@@ -1,134 +1,74 @@
 {% extends 'student/base.htm' %}
 {% block content %}
-    <table style="width: auto; height: auto;">
-
-
-        <tr>
-            <td colspan="10">
-                <form action="" method="POST" onsubmit="disable(this)">
-                    <table  style="width:auto;height:100%; text-align: left; vertical-align: middle;background-color:#ffffff;color:#000;">
-                        <tr >
-                            <td colspan="14"  style="background-color:#ccccc0;font-size:12px;color:black;width:100%;text-align:center;height:25px;" > Student Report</td>
-                        </tr>
-                        <tr >
-                            <td colspan="14"  style="background-color:#ffffff;font-size:13px;color:red;width:100%;font-weight:bold;text-decoration:blink;text-align:center" > {{ varerr }}</td>
-                        </tr>
+    <table >       
+                        <form action="" method="POST" onsubmit="disable(this)">
                         <tr>
-                            <td>
-                                {{ form.session.label }}
-                            </td>
-                            <td>
-                                {{ form.session }}
-                            </td>
-                            <td>
-                                {{ form.klass.label }}
-                            </td>
-                            <td>
-                                {{ form.klass }}
-                            </td>
-                            <td>
-                                {{ form.arm.label }}
-                            </td>
-                            <td>
-                                {{ form.arm }}
-                            </td>
-                            <td>
-                                {{ form.dayboarding.label }}
-                            </td>
-                            <td>
-                                {{ form.dayboarding }}
-                            </td>
-                            <td>
-                                {{ form.filtermethod.label }}
-                            </td>
-                            <td>
-                                {{ form.filtermethod }}
-                            </td>
-                            <td>
-                                {{ form.excelfile.label }}
-                            </td>
-                            <td>
-                                {{ form.excelfile }}
-                            </td>
+                            <td>{{ form.session.label }}</td>
+                            <td>{{ form.session }}</td>
+                            <td>{{ form.klass.label }}</td>
+                            <td>{{ form.klass }}</td>
+                            <td>{{ form.arm.label }}</td>
+                            <td>{{ form.arm }}</td>
+                            <td>{{ form.dayboarding.label }}</td>
+                            <td>{{ form.dayboarding }}</td>
+                            <td>{{ form.filtermethod.label }}</td>
+                            <td>{{ form.filtermethod }}</td>
+                            <td>{{ form.excelfile.label }}</td>
+                            <td>{{ form.excelfile }}</td>
                             <td  style="text-align: center; vertical-align: middle;"><input type="submit" value=":: View Report ::" name = "submit"></td>
-
                         </tr>
-                    </table>
                 </form>
+</table>
 
-            </td>
-        </tr>
-    <tr>
-        <td colspan="10">
-         {% if students_list %}
+<table>
+        {% if students_list %}
+    <tr>  
             <input name="submitprint" type= "submit" value="Print Report" onclick = "openrecprint();">
             <div class="printable">
-            <table  style="width:100%;background-color:white;border-collapse:collapse;">
-
                 <tr>
-                    <td style="width:auto; text-align: right; vertical-align: middle;">
-                        <img style="width: 120px; height: 100px;" src="/static/{{ school.logo }}" alt="{{ school.name }}">
+                    <td >
+                        <img style="width: 120px; height: 50px;" src="/static/{{ school.logo }}" alt="{{ school.name }}">
                     </td>
-                    <td style="width:auto; text-align: left; vertical-align: middle; padding-left: 5px;">
+                    <td >
                         <span style="font-size:20px;font-weight:bold;">{{ school.name }}</span><br>
-                        {{ school.address }}<br>
-                        {{ school.website }}
+                        {{ school.address }}<br>{{ school.website }}
                     </td>
                 </tr>
                 <tr>
-
-                    <td style="text-align:center;width:100%;" colspan="2"><h2>Student List for {{ disclass }}&nbsp;{{ disarm }},<span style="font-size:25px;font-weight:bold;"> {{ session }} Session</span> </td>
+                    <td>Student List for {{ disclass }}&nbsp;{{ disarm }} {{ session }} Session</td>
 
                 </tr>
-                <tr>
-                    <td colspan="2">
-                        <table style="width:auto;background-color:white;border-collapse:collapse;">
-                            <tr >
-                                <td>
-                                    <table>
-                                <td align="center"style = "border-radius:5px;width:30px; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">S/N</td>
-                                <td align="center"style = "border-radius:5px;width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Name</td>
-                                <td align="center"style = "border-radius:5px;width:40px; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Sex</td>
-                                <td align="center"style = "border-radius:5px;width:85px; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Admission No</td>
-                                <td align="center"style = "border-radius:5px;width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Class</td>
-                                <td align="center"style = "border-radius:5px;width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Arm</td>
-                                <td align="center"style = "border-radius:5px;width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">House</td>
-                                <td align="center"style = "border-radius:5px;width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Day/Boarding</td>
-                                <td align="center"style = "border-radius:5px;width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Parent Phone</td>
-                                <td align="center"style = "border-radius:5px;width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Parent E-Mail</td>
+                            <tr class = 'ajaxhead' >
+                                <td >S/N</td>
+                                <td >Name</td>
+                                <td >Sex</td>
+                                <td >Admission No</td>
+                                <td >Class</td>
+                                <td >Arm</td>
+                                <td >House</td>
+                                <td >Day/Boarding</td>
+                                <td >Parent Phone </td>
+                                
+                                <td >Parent E-Mail</td>
                             </tr>
-
                             {% for student in students_list %}
-                                <tr>
-                                    <td align="center"style = "border-radius:5px;background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ forloop.counter }}</td>
-                                    <td align="center"style = "border-radius:5px;background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.fullname }}</td>
-                                    <td align="center"style = "border-radius:5px;background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.sex }}</td>
-                                    <td align="center"style = "border-radius:5px;background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.admissionno }}</td>
-                                    <td align="center"style = "border-radius:5px;background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.admitted_class }}</td>
-                                    <td align="center"style = "border-radius:5px;background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.admitted_arm }}</td>
-                                    <td align="center"style = "border-radius:5px;background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.house }}</td>
-                                    <td align="center"style = "border-radius:5px;background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.dayboarding }}</td>
-                                    <td align="center"style = "border-radius:5px;background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.fathernumber }}</td>
-                                    <td align="center"style = "border-radius:5px;background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.fatheremail|lower }}</td>
+                                <tr class = 'ajaxbody3'>
+                                    <td >{{ forloop.counter }}</td>
+                                    <td >{{ student.fullname }}</td>
+                                    <td >{{ student.sex }}</td>
+                                    <td >{{ student.admissionno }}</td>
+                                    <td >{{ student.admitted_class }}</td>
+                                    <td >{{ student.admitted_arm }}</td>
+                                    <td >{{ student.house }}</td>
+                                    <td >{{ student.dayboarding }}</td>
+                                    <td >{{ student.fathernumber }}</td>
+                       
+                                    <td >{{ student.fatheremail|lower }}</td>
                                 </tr>
                             {% endfor %}
-
-
-
-                                    </table>
-                                </td>
- 
-
-                        </table>
-                    </td>
-                </tr>
-
-
-            </table>
             </div>
+ </tr>     
         {% endif %}
-        </td>
-    </tr>
 
     </table>
 <script language="javascript" type="text/javascript">

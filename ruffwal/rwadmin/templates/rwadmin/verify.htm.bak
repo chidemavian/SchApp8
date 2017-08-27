@@ -1,0 +1,102 @@
+{% extends "rwadmin/base.htm" %}
+{%block title %}{%endblock%}
+{% load humanize %}
+{%block content%}
+<table style="text-align:center;font-style:italic;color:red;font-size:15px;border:1px solid #336666">
+    <tr>
+        <td colspan="15">
+            <form action="" method="POST" enctype="multipart/form-data" onsubmit="disable(this)">
+                <table style="width:auto;border:0px solid #336666">
+                    <tr>
+                        <td colspan="15" style="text-align:center;background-color:#ccccc0;color:black;font-size:17px;height:25px;font-weight:normal;">DELETE TRANSACTION</td>
+                    </tr>
+                    <tr>
+                        <td colspan="15" style="font-size:14px;color:red;font-weight:bold;text-align:center;">
+                            {{ varerr }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="normal-textct">Trans. ID</td>
+                        <td>{{ form.transid }} </td>
+                        <td ><input name="submit" type= "submit" value=" View Posting "></td>
+                    </tr>
+                </table>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="15">
+            {% if data %}
+            <div style="width:100%;text-align:left">
+                <form action="/SchApp/account/controllers/confirm-deletion/{{ transid }}/" method="POST"  onsubmit="disable(this)">
+                <input name="submit" type= "submit" value="Delete This Transaction">
+                 </form>
+            </div>
+            <div class="printable" align="left">
+
+                <table align ="left" style="width:auto;color:black;border-collapse:collapse;" cellpadding="2" cellspacing="2">
+
+                    <tr>
+                        <td align="center" valign="top" style = "width:auto; height:20px;background-color:#336666;font-size:12px;color:white;border:1px solid #000;padding-top:6px;"><strong>S/N</strong></td>
+                        <td align="center" valign="top" style = "width:auto; height:20px;background-color:#336666;font-size:12px;color:white;border:1px solid #000;padding-top:6px;"><strong>Account Code</strong></td>
+                        <td align="center" valign="top" style = "width:auto; height:20px;background-color:#336666;font-size:12px;color:white;border:1px solid #000;padding-top:6px;"><strong>Account Name</strong></td>
+                        <!--<td align="center" valign="top" style = "width:auto; height:20px;background-color:#336666;font-size:12px;color:white;border:1px solid #000;padding-top:6px;"><strong>Subgroup</strong></td>
+                        <td align="center" valign="top" style = "width:auto; height:20px;background-color:#336666;font-size:12px;color:white;border:1px solid #000;padding-top:6px;"><strong>Group</strong></td>-->
+                        <td align="left" valign="top" style = "width:auto; height:20px;background-color:#336666;font-size:12px;color:white;border:1px solid #000;padding-top:6px;"><strong>Particulars</strong></td>
+                        <td align="left" valign="top" style = "width:auto; height:20px;background-color:#336666;font-size:12px;color:white;border:1px solid #000;padding-top:6px;"><strong>Trans Date</strong></td>
+                        <td align="left" valign="top" style = "width:auto; height:20px;background-color:#336666;font-size:12px;color:white;border:1px solid #000;padding-top:6px;"><strong>Ref. No</strong></td>
+                        <td align="left" valign="top" style = "width:auto; height:20px;background-color:#336666;font-size:12px;color:white;border:1px solid #000;text-align:right;padding-top:6px;"><strong>DR</strong></td>
+                        <td align="left" valign="top" style = "width:auto; height:20px;background-color:#336666;font-size:12px;color:white;border:1px solid #000;text-align:right;padding-top:6px;"><strong>CR</strong></td>
+                        <td align="left" valign="top" style = "width:auto; height:20px;background-color:#336666;font-size:12px;color:white;border:1px solid #000;padding-top:6px;"><strong>Posted By</strong></td>
+                    </tr>
+                    {% for pincode in data.trans %}
+                    <tr>
+
+                        <td align="center" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;font-weight:normal;"> {{ forloop.counter }}</td>
+                        <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;font-weight:normal;"> {{ pincode.acccode}}</td>
+                        <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;font-weight:normal;"> {{ pincode.accname|title}}</td>
+                        <!--<td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;font-weight:normal;"> {{ pincode.subgroup|title}}</td>
+                        <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;font-weight:normal;"> {{ pincode.group|title}}</td>-->
+
+                        <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;font-weight:normal;"> {{ pincode.particulars}}</td>
+                        <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;font-weight:normal;"> {{ pincode.transdate|date:'d-m-Y'}}</td>
+                        <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;font-weight:normal;"> {{ pincode.refno}}</td>
+                        <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;text-align:right;font-weight:normal;"> {{ pincode.debit}}</td>
+                        <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;text-align:right;font-weight:normal;"> {{ pincode.credit}}</td>
+                        <td align="left" valign="top" style = "background-color:white;font-size:10px;width:auto;color:#000000;border:1px solid black;font-weight:normal;"> {{ pincode.userid}}</td>
+                        {% endfor %}
+                    </tr>
+
+                </table>
+            </div>
+            {% endif %}
+
+        </td>
+    </tr>
+</table>
+
+<script language="javascript" type="text/javascript">
+    $(document).ready(function() {
+        $("#id_transid").focus();
+    });
+</script>
+
+<script language="javascript" type="text/javascript">
+    function openrecprint()
+    {
+        $( ".printable" ).print();
+    }
+</script>
+
+<script language="javascript" type="text/javascript">
+function disable(f)
+{
+var button = f.elements['submit'];
+button.value = 'Processing';
+button.disabled = 'true';
+return true;
+}
+</script>
+
+
+{%endblock%}

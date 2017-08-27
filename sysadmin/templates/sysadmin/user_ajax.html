@@ -1,0 +1,47 @@
+
+<html>
+{% if getdetails %}
+<tr>
+     <td colspan="10">
+         <table style="width:100%;color:black;border-collapse:collapse;">
+             <tr>
+                <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong>S/N </strong></td>
+                 <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong>UserName </strong></td>
+                 
+                 <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong>Staff Name</strong></td>
+                 <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"><strong>Status </strong></td>
+
+                 <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black">Student/Bill</td>
+                 <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black">Accounts</td>
+                 <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black">H-R</td>
+                 <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black">Administrator</td>
+                 <td align="center" valign="top" style = "width : auto; height:10px;background-color:#e5e5e5;font-size:11px;color:#000000;border:1px solid black"> Home Views</td>
+             </tr>
+
+             {% for pincode in getdetails %}
+
+                 <tr>
+                    <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">  {{ forloop.counter }} </td>
+                 <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> {{ pincode.username|upper }}</td>
+                 
+                 <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ pincode.staffname|title }}</td>
+                 <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="#" style ="color:#1c94c4;" onclick="admno({{ pincode.id }});" title="Edit This User"> {{ pincode.status}} </a></td>
+                 <td align="left" valign="top" style = "background-color:white;font-size:11px;widt:auto;color:#000000;border:1px solid black">  <a href="#" style ="color:#1c94c4;" onclick="academic({{ pincode.id }});" title="Manage Student/Academic/Bill">Student/Academic/Bill  </a></td>
+                 <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="#" style ="color:#1c94c4;" onclick="acc({{ pincode.id }});" title="Manage Account">Accounts  </a></td>
+                 <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="#" style ="color:#1c94c4;" onclick="hrm({{ pincode.id }});" title="Manage Human Resources">Human Resources </a></td>
+                 <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="#" style ="color:#1c94c4;" onclick="admin({{ pincode.id }});" title="Manage Administrator"> Administrator </a></td>
+                 <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="#" style ="color:#1c94c4;" onclick="homeview({{ pincode.id }});" title="Manage Home View"> Home Views </a></td>
+             {% endfor %}
+
+
+             </tr>
+         </table>
+
+
+     </td>
+ </tr>
+</table>
+{% else %}
+<label style='color:red'> No record found for  {{session}}</label>
+{% endif %}
+</html>

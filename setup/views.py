@@ -17,7 +17,8 @@ currse = currentsession.objects.get(id = 1)
 
 def welcome(request):
     if  "userid" in request.session:
-        return render_to_response('setup/success1.html')
+        varuser=request.session['userid']
+        return render_to_response('setup/success1.html',{'varuser':varuser})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -47,10 +48,42 @@ def classarm(request):
 
          else:
            form = ClassForm()
-
-         return render_to_response('setup/class_and_arm.html',{'form':form,'form2':form2,'class':getdetails,'arm':getarm})
+         return render_to_response('setup/class_and_arm.html',{'varuser':varuser,'form':form,'form2':form2,'class':getdetails,'arm':getarm})
     else:
         return HttpResponseRedirect('/login/')
+
+
+def addarm(request):
+    if  "userid" in request.session:
+        varuser = request.session['userid']
+        user = userprofile.objects.get(username = varuser)
+        uenter = user.setup
+        getdetails = Class.objects.all().order_by('klass')
+        getarm = Arm.objects.all().order_by('arm')
+        if uenter is False :
+           return HttpResponseRedirect('/unauthorised/')
+        varerr =''
+        form = ClassForm()
+        form2 = ArmForm()
+        if request.method == 'POST':
+            form2 = ArmForm(request.POST) # A form bound to the POST data
+            if form2.is_valid():
+                arm = form2.cleaned_data['arm']
+                if Arm.objects.filter(arm = arm.upper()).count() == 0:
+                   savecon = Arm(arm = arm.upper())
+                   savecon.save()
+                   return HttpResponseRedirect('/setup/arm/')
+                else:
+                    varerr = 'Arm in Existence'
+                    return render_to_response('setup/arm.html',{'form':form,'form2':form2,'class':getdetails,'arm':getarm,'varerr':varerr})
+
+        else:
+            form = ClassForm()
+
+        return render_to_response('setup/arm.html',{'form':form,'form2':form2,'varuser':varuser,'class':getdetails,'arm':getarm})
+    else:
+        return HttpResponseRedirect('/login/')
+
 
 def deleteclasscode(request,invid):
     varerr =""
@@ -74,37 +107,6 @@ def deleteclasscode(request,invid):
         return HttpResponseRedirect('/login/')
 
 
-def addarm(request):
-    if  "userid" in request.session:
-        varuser = request.session['userid']
-        user = userprofile.objects.get(username = varuser)
-        uenter = user.setup
-        getdetails = Class.objects.all().order_by('klass')
-        getarm = Arm.objects.all().order_by('arm')
-        if uenter is False :
-           return HttpResponseRedirect('/unauthorised/')
-        varerr =''
-        form = ClassForm()
-        form2 = ArmForm()
-
-        if request.method == 'POST':
-            form2 = ArmForm(request.POST) # A form bound to the POST data
-            if form2.is_valid():
-                arm = form2.cleaned_data['arm']
-                if Arm.objects.filter(arm = arm.upper()).count() == 0:
-                   savecon = Arm(arm = arm.upper())
-                   savecon.save()
-                   return HttpResponseRedirect('/setup/class/')
-                else:
-                    varerr = 'Arm in Existence'
-                    return render_to_response('setup/class_and_arm.html',{'form':form,'form2':form2,'class':getdetails,'arm':getarm,'varerr':varerr})
-
-        else:
-            form = ClassForm()
-
-        return render_to_response('setup/class_and_arm.html',{'form':form,'form2':form2,'class':getdetails,'arm':getarm})
-    else:
-        return HttpResponseRedirect('/login/')
 
 def deletearmcode(request,invid):
     varerr =""
@@ -116,14 +118,14 @@ def deletearmcode(request,invid):
         if Student.objects.filter(admitted_arm = k ).count() == 0 :
             seldata = Arm.objects.get(id = invid)
             seldata.delete()
-            return HttpResponseRedirect('/setup/class/')
+            return HttpResponseRedirect('/setup/arm/')
         else:
             varerr = 'Students already in this Arm'
             form = ClassForm()
             form2 = ArmForm()
             getdetails = Class.objects.all().order_by('klass')
             getarm = Arm.objects.all().order_by('arm')
-            return render_to_response('setup/class_and_arm.html',{'form':form,'form2':form2,'class':getdetails,'arm':getarm,'varerr':varerr})
+            return render_to_response('setup/arm.html',{'form':form,'form2':form2,'class':getdetails,'arm':getarm,'varerr':varerr})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -139,7 +141,7 @@ def subject(request):
          sublist = ['KG','Nursery','Primary','JS','Art','Science','Commercial','Science/Math','Technology']
          suball = []
          for p in sublist:
-             subcat = Subject.objects.filter(category = p).order_by('num')  #num is a count of similar entries in the db
+             subcat = Subject.objects.filter(category = p).order_by('subject')  #num is a count of similar entries in the db
              sbdic = {'category':p,'subject':subcat}
              suball.append(sbdic)
          varerr =''
@@ -164,7 +166,7 @@ def subject(request):
                return HttpResponseRedirect('/setup/subject/')
          else:
              form = SubjectForm()
-         return render_to_response('setup/subjects.html',{'form':form,'suball':suball,'varerr':varerr})
+         return render_to_response('setup/subjects.html',{'varuser':varuser,'form':form,'suball':suball,'varerr':varerr})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -190,7 +192,7 @@ def house(request):
                 return HttpResponseRedirect('/setup/schoolhouse/')
         else:
             form = HouseForm()
-        return render_to_response('setup/schoolhouse.html',{'form':form,'getdetails':getdetails,'varerr':varerr})
+        return render_to_response('setup/schoolhouse.html',{'varuser':varuser,'form':form,'getdetails':getdetails,'varerr':varerr})
     else:
         return HttpResponseRedirect('/login/')
 

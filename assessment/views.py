@@ -6,11 +6,15 @@ from myproject.assessment.forms import *
 from myproject.academics.models import *
 from myproject.sysadmin.models import *
 from myproject.setup.models import *
+from myproject.bill.utils import *
 from myproject.assessment.getordinal import *
 from myproject.assessment.utils import *
 from myproject.assessment.bsheet import *
+from myproject.lesson.models import *
 from myproject.utilities.views import *
+from myproject.ruffwal.rsetup.models import tblaccount
 from django.db.models import Max,Sum
+from myproject.assignment.models import *
 import datetime
 from datetime import date
 import locale
@@ -21,9 +25,383 @@ currse = currentsession.objects.get(id = 1)
 
 sublists=[]
 
+date=datetime.date.today()
+
 def wel(request):
     if  "userid" in request.session:
-        return render_to_response('assessment/success.html')
+        varuser=request.session['userid']
+        return render_to_response('assessment/success.html',{'varuser':varuser})
+    else:
+        return HttpResponseRedirect('/login/')
+
+
+def mysubjects(request):
+    if 'userid' in request.session:
+        varuser=request.session['userid']
+        form= studentform()
+        return render_to_response('assessment/subjectpage.html',{'form':form,'varuser':varuser})
+    else:
+        return HttpResponseRedirect('/login/')
+
+
+def mysubjectpage(request):
+    if 'userid' in request.session:
+        varuser=request.session['userid']
+        if request.method=='POST':
+            form = stuform(request.POST)
+            if form.is_valid():
+                session=form.cleaned_data['session']
+                term = form.cleaned_data['term']
+                chk=tblcf.objects.get(session=session,term=term)
+                chkdate = chk.deadline
+                # if date< chkdate:
+                #     return render_to_response('assessment/checkback.html',{'ckk':chkdate})
+                data=Student.objects.get(fullname=varuser.upper(),admitted_session=currse,gone=False)
+                replist=[]
+                if StudentAcademicRecord.objects.get(student=data,term=term):
+                    acaderec=StudentAcademicRecord.objects.filter(student=data,term=term)
+                    subsco=SubjectScore.objects.filter(academic_rec=acaderec).order_by('subject_teacher')
+                    return render_to_response('assessment/mysubjects.html',{'getdetails':subsco,
+                        'varuser':varuser,
+                        'data':data,
+                        'term':term,
+                        'stuid':data.id,
+                        'ckk':chkdate})
+    else:
+        return HttpResponseRedirect('/login/')
+
+
+def my_results_page(request):
+    if 'userid' in request.session:
+        varuser=request.session['userid']
+        if request.method=='POST':
+            form = stuform(request.POST)
+            if form.is_valid():
+                session=form.cleaned_data['session']
+                term = form.cleaned_data['term']
+                chk=tblresult.objects.get(session=session,term=term)
+                chkdate = chk.deadline
+                if date < chkdate:
+                    return render_to_response('assessment/checkback.html',{'ckk':chkdate})
+                else:
+                    data=Student.objects.get(fullname=varuser.upper(),admitted_session=currse)
+                    varerr =''
+                    getdetails =''
+                    # school = get_object_or_404(School, pk=1)
+                    school=School.objects.get(id =1)
+
+                    try:
+                      codi = ClassTeacher.objects.get(klass=data.admitted_class,session=session,teachername='N/A')
+                    except:
+                      codi = 'NOT AVAILABLE'
+                    replist = []
+                    varbeg = data.admitted_class[0]
+                    getgrading = gradingsys.objects.filter(classsub__startswith = varbeg)
+                    classtot = 0
+                    totsub = 0
+                    totalmarkcount = 0
+                    stuno1 = Student.objects.filter(admitted_session = data.admitted_session,
+                        first_term = 1, 
+                        admitted_class = data.admitted_class,
+                        admitted_arm = data.admitted_arm,
+                        gone = False).count()
+                    acaderec = StudentAcademicRecord.objects.get(student = data.id,term = term)
+                    psycho = PsychomotorSkill.objects.get(academic_rec = acaderec)  
+                    subsco = SubjectScore.objects.filter(academic_rec = acaderec).order_by('num')
+                    totsub = SubjectScore.objects.filter(academic_rec = acaderec).count()
+
+                    totalmark2 = 0
+                    totalmark = SubjectScore.objects.filter(academic_rec = acaderec).aggregate(Sum('term_score'))
+                    totalmark2 = totalmark['term_score__sum']
+                    rtotal = int(totalmark2) #total of term scores from all subject            
+                    if float(totsub) == 0:
+                        perc = 0
+                    else:
+                        perc = float(rtotal)/float(totsub)
+                        #perc == student average for the term
+                    classtot += rtotal
+                    ks = totsub*100 
+                    totsub += ks
+
+                    jdic = {'studentinfo':data,'codi':codi, 'psyco':psycho,'academic':acaderec,'subject':subsco,'totalmark':rtotal,'percentage':locale.format("%.2f",perc,grouping=True)}
+                    replist.append(jdic)
+
+                    if classtot == 0 or stuno1 == 0:
+                       clavg = 0.0
+                    else:
+                        p = classtot/stuno1
+                        clavg =p/float(totsub)                            
+                return render_to_response('assessment/my_results.html',{'varuser':varuser,'school':school,'date':date, 'varerr':varerr,'replist':replist,'term':term,'stuno1':stuno1,'classavg':locale.format("%.2f",clavg,grouping=True)})
+    else:
+        return HttpResponseRedirect('/login/')
+
+def myassess(request):
+    if 'userid' in request.session:
+        varuser=request.session['userid']
+        form= studentform()
+        return render_to_response('assessment/myassess.html',{'form':form,'varuser':varuser})
+    else:
+        return HttpResponseRedirect('/login/')
+
+
+def stunotes(request):
+    if 'userid' in request.session:
+        varuser=request.session['userid']
+        varerr='Lesson Notes'
+        if request.method=='POST':
+            form= myform(request.POST)
+            # varerr='varerr'
+            if form.is_valid():
+                session=form.cleaned_data['session']
+                term=form.cleaned_data['term']
+                subject= form.cleaned_data['subject']
+                data= Student.objects.get(admitted_session=session,fullname= varuser,gone=False)
+                klass=data.admitted_class
+                sett = tbltopic.objects.filter(klass = data.admitted_class,term = term, subject = subject)
+                questions=[]
+                for qst in sett:
+                    sub=qst.subject
+                    topic=qst.topic
+                    note=str(qst.lessonnote)
+                    note=note.split('/')[-1]
+                    sett={'sub':sub,'topic':topic,'note':note}
+                    questions.append(sett)
+                return render_to_response('assessment/notes.html',{'sett':questions,'varuser':varuser ,'varerr':varerr, 'session':session,'term':term,'klass':klass,'subject':subject})
+        else:
+            form= myform()
+        return render_to_response('assessment/stunotes.html',{'form':form,'varuser':varuser,'varerr':varerr})
+    else:
+        return HttpResponseRedirect('/login/')
+
+
+def getstusubject(request):
+    if  "userid" in request.session:
+        if request.is_ajax():
+            if request.method == 'POST':
+                varuser = request.session['userid']
+                varerr =""
+                post = request.POST.copy()
+                acccode = post['userid']
+                session,term,varuser= acccode.split(':')
+                kk = []
+                sdic = {}
+                stu = Student.objects.get(admitted_session=session,gone=False,fullname= varuser)
+                acadec = StudentAcademicRecord.objects.get(student=stu,term=term)
+                data = SubjectScore.objects.filter(academic_rec=acadec).order_by('subject')
+                for j in data:
+                    j = j.subject
+                    s = {j:j}
+                    sdic.update(s)
+                klist = sdic.values()
+                for p in klist:
+                   # print 'The Subject :',p
+                    kk.append(p)
+                return HttpResponse(json.dumps(kk), mimetype='application/json')
+            else:
+                gdata = ""
+                return render_to_response('index.html',{'gdata':gdata})
+        else:
+
+            gdata = ""
+            return render_to_response('getlg.htm',{'gdata':gdata})
+    else:
+        return HttpResponseRedirect('/login/')
+
+
+def pq(request):
+    if 'userid' in request.session:
+        varuser=request.session['userid']
+        varerr='Past Questions'
+        if request.method=='POST':   
+            form= mypqform(request.POST)
+            if form.is_valid():
+                session=form.cleaned_data['session']
+                term=form.cleaned_data['term']
+                subject= form.cleaned_data['subject']
+                klass= form.cleaned_data['klass']         
+                if Student.objects.get(admitted_session=session,fullname=varuser,gone=False):
+                    sett = tblquest.objects.filter(klass = klass,term = term, session=session,subject = subject)
+                    questions=[]
+                    for qst in sett:
+                        sub=qst.subject
+                        qst=str(qst.question)
+                        qst=qst.split('/')[-1]
+                        sett={'sub':sub,'qst':qst}
+                        questions.append(sett)
+                    return render_to_response('assessment/pq.html',{'sett':questions,'varuser':varuser ,'varerr':varerr, 'session':session,'term':term,'klass':klass,'subject':subject})
+        else:
+
+            form= mypqform()
+        return render_to_response('assessment/stupq.html',{'form':form,'varuser':varuser,'varerr':varerr})
+    else:
+        return HttpResponseRedirect('/login/')
+
+
+def my_results(request):
+    if 'userid' in request.session:
+        varuser=request.session['userid']
+        form= studentform()
+        return render_to_response('assessment/resultpage.html',{'form':form,'varuser':varuser})
+    else:
+        return HttpResponseRedirect('/login/')
+
+
+def castudent(request):
+    if  "userid" in request.session:
+        if request.is_ajax():
+            if request.method=='POST':                
+                varuser = request.session['userid']
+                varerr =''
+                getdetails =''
+                post= request.POST.copy()
+                acccode=post['userid']
+                term,session,ca = acccode.split(':')
+                school=School.objects.get(id =1)
+                stuinfo = Student.objects.get(admitted_session = session,fullname=varuser,gone = False)
+
+                try:
+                  codi = ClassTeacher.objects.get(klass=stuinfo.admitted_class,session=session,teachername='N/A')
+                except:
+                  codi = 'Not Entered'
+
+                if ca == '1st Ca':
+                    replist = []
+                    varbeg = stuinfo.admitted_class[0]
+                    acaderec = StudentAcademicRecord.objects.get(student = stuinfo,term = term)
+                    psycho = PsychomotorSkill.objects.get(academic_rec = acaderec)
+                    subsco = SubjectScore.objects.filter(academic_rec = acaderec).order_by('num')
+                    totsub = SubjectScore.objects.filter(academic_rec = acaderec).count()
+                    msublist = []
+                    for jj in subsco:
+                        fca = jj.first_ca
+                        totalperc1 = fca/20
+                        totalperc = totalperc1 * 100
+                        if varbeg == 'S':
+                            remark = seniorgrade(float(totalperc))                                    
+                        else:
+                            remark = juniorgrade(float(totalperc))
+
+                        msub = {'subject':jj.subject,'first_ca':fca,'totalperc':locale.format("%.1f",totalperc,grouping=True),'remark':remark['remark'],'grade':remark['grade'],'teacher':jj.subject_teacher}
+                        msublist.append(msub)
+                        #****************all i need in report******************************
+                    jdic = {'date':date,'codi':codi,'studentinfo':stuinfo,'academic':acaderec,'pyscho':psycho,'subject':msublist}
+                    replist.append(jdic)
+                    return render_to_response('assessment/myassessajax.html',{'session':session,'varuser':varuser,'varerr':varerr,'replist':replist,'school':school,'term':term})
+
+                elif ca == '2nd Ca':
+                    replist = []
+                    varbeg = stuinfo.admitted_class[0]
+                    acaderec = StudentAcademicRecord.objects.get(student = stuinfo,term = term)
+                    psycho = PsychomotorSkill.objects.get(academic_rec = acaderec)
+                    subsco = SubjectScore.objects.filter(academic_rec = acaderec).order_by('num')
+                    totsub = SubjectScore.objects.filter(academic_rec = acaderec).count()
+                    msublist = []
+                    for jj in subsco:
+                        sca = jj.second_ca
+                        totalperc1 = sca/20
+                        totalperc = totalperc1 * 100
+                        if varbeg == 'S':
+                            remark = seniorgrade(float(totalperc))                                    
+                        else:
+                            remark = juniorgrade(float(totalperc))
+
+                        msub = {'subject':jj.subject,'second_ca':sca,'totalperc':locale.format("%.1f",totalperc,grouping=True),'remark':remark['remark'],'grade':remark['grade'],'teacher':jj.subject_teacher}
+                        msublist.append(msub)
+                        #****************all i need in report******************************
+                    jdic = {'date':date,'codi':codi,'studentinfo':stuinfo,'academic':acaderec,'pyscho':psycho,'subject':msublist}
+                    replist.append(jdic)
+
+                    return render_to_response('assessment/stuassess.html',{'session':session,'varuser':varuser,'varerr':varerr,'replist':replist,'school':school,'term':term})
+
+                else:
+                    return render_to_response('index.html')
+        else:
+            return render_to_response('index.html')
+    else:
+        return HttpResponseRedirect('/login/')
+
+
+def mybills(request):
+    if 'userid' in request.session:
+        varuser=request.session['userid']
+        form= studentform()
+        return render_to_response('assessment/mybills.html',{'form':form,'varuser':varuser})
+    else:
+        return HttpResponseRedirect('/login/')
+
+def printmybill(request):
+    if 'userid' in request.session:
+        varuser = request.session['userid']
+        varerr = ''
+        getdetails = ''
+        school = get_object_or_404(School, pk = 1)
+        if request.method == 'POST':
+            form = stuform(request.POST)
+            if form.is_valid():
+                session = form.cleaned_data['session']
+                term = form.cleaned_data['term']
+                bill_list = []
+                # studata = Student.objects.filter(fullname =varuser, admitted_session = session, gone = False)
+                studata = Student.objects.get(fullname =varuser, admitted_session = session, gone = False)
+                varrid2 = 0
+                getaddbill = ''
+                billlist = []
+                if tblbill.objects.filter(klass = studata.admitted_class, term = term, dayboarding = studata.dayboarding).count() == 0:
+                    varrid = 0
+                else:
+                    getbill = tblbill.objects.filter(klass = studata.admitted_class, term = term, dayboarding = studata.dayboarding)
+                    varrid1 = tblbill.objects.filter(klass = studata.admitted_class, term = term, dayboarding = studata.dayboarding).aggregate(Sum('billamount'))
+                    varrid = varrid1['billamount__sum']
+                    for j in getbill:
+                        billdic = {
+                            'desc': j.desc,
+                            'billamount': locale.format('%.2f', j.billamount, grouping = True) }
+                        billlist.append(billdic)
+
+                if tbladditionalbill.objects.filter(session = session, admissionno = studata.admissionno, klass = studata.admitted_class, term = term).count() == 0:
+                    varrid2 = 0
+                    getaddbill = ''
+                else:
+                    getaddbill = tbladditionalbill.objects.filter(session = session, admissionno = studata.admissionno, klass = studata.admitted_class, term = term)
+                    varrid11 = tbladditionalbill.objects.filter(session = session, admissionno = studata.admissionno, klass = studata.admitted_class, term = term).aggregate(Sum('billamount'))
+                    varrid2 = varrid11['billamount__sum']
+                    for h in getaddbill:
+                        billdic = {
+                            'desc': h.desc,
+                            'billamount': locale.format('%.2f', h.billamount, grouping = True) }
+                        billlist.append(billdic)
+
+                varrid = varrid + varrid2
+                billdic = {
+                    'student': studata,
+                    'bill': billlist,
+                    'totalbill': locale.format('%.2f', varrid, grouping = True) }
+                bill_list.append(billdic)
+                
+
+                return render_to_response('assessment/billreport.html',{'varuser':varuser, 'varerr':varerr,'bill_list':bill_list,'school':school,'session':session,'term':term,'klass':studata.admitted_class})
+
+        # return render_to_response('bill/printbill.html',{'form':form,'varerr':varerr})
+    else:
+        return HttpResponseRedirect('/login/')
+
+
+def mystudykit(request):
+    if 'userid' in request.session:
+        varuser=request.session['userid']
+        form= studentform()
+        return render_to_response('assessment/mystudykit.html',{'form':form,'varuser':varuser})
+    else:
+        return HttpResponseRedirect('/login/')
+
+def mycomm(request):
+    if 'userid' in request.session:
+        varuser=request.session['userid']
+        data=Student.objects.get(fullname=varuser,admitted_session=currse,gone=False)
+        assignment=tblassignment.objects.filter(session=data.admitted_session,klass=data.admitted_class).order_by('submit_on','id')
+
+        # form= studentform()
+        return render_to_response('assignment/assignment.html',{'data':assignment,'varuser':varuser})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -64,17 +442,20 @@ def enterca(request):
 
         else:
             form = caform()
-        return render_to_response('assessment/enterca.html',{'form':form,'varerr':varerr})
+        return render_to_response('assessment/enterca.html',{'varuser':varuser,'form':form,'varerr':varerr})
     else:
         return HttpResponseRedirect('/login/')
-"""
-def enterca(request):
+
+
+
+def teacher_report(request):
     if  "userid" in request.session:
         varuser = request.session['userid']
         user = userprofile.objects.get(username = varuser)
         varerr =''
         sec = ''
         pry = ''
+        school=School.objects.get(id =1)
         for j in appused.objects.all():
             pry = j.primary
             sec = j.secondary
@@ -83,23 +464,74 @@ def enterca(request):
         else:
             return HttpResponseRedirect('/assessment/access-denied/')
         if request.method == 'POST':
-            form = caform(request.POST) # A form bound to the POST data
+            form = caform(request.POST)
             if form.is_valid():
                 session = form.cleaned_data['session']
                 klass = form.cleaned_data['klass']
                 term = form.cleaned_data['term']
                 arm = form.cleaned_data['arm']
                 subject = form.cleaned_data['subject']
-                ns = str(subject).replace(' ','z')
-                ns = str(subject).replace('$','q')
-                return HttpResponseRedirect('/assessment/secondary_print_assessment/%s/%s/%s/%s/%s/'%(str(session).replace('/','j'),str(klass).replace(' ','k'),str(arm).replace(' ','k'),ns,str(term).replace(' ','0')))
+                stu=Student.objects.filter(admitted_session=session,admitted_class=klass,admitted_arm=arm,gone=False)
+                replist=[]
+                for j in stu:
+                        acadec= StudentAcademicRecord.objects.filter(student=j,term=term)
+                        for recf in acadec:                          
+                            rec=SubjectScore.objects.filter(academic_rec=recf,subject=subject)
+                            reca={'rec':rec,'stu':j}
+                            replist.append(reca)        
+            return render_to_response('assessment/scoresheet.html',{'varuser':varuser,'school':school,'session':session,'term':term, 'date':date,'form':form,'subject':subject,'class':klass,'replist':replist})
         else:
             form = caform()
-        return render_to_response('assessment/enterca.html',{'form':form,'varerr':varerr})
+        return render_to_response('assessment/scoresheet.html',{'varuser':varuser,'form':form,'varerr':varerr})
     else:
         return HttpResponseRedirect('/login/')
 
-"""
+
+
+def commentca(request):
+    if  "userid" in request.session:
+        varuser=request.session['userid']
+        varerr=''
+        form = cacomform()
+        return render_to_response('assessment/entcom.html',{'varuser':varuser,'form':form,'varerr':varerr})
+    else:
+        return HttpResponseRedirect('/login/')
+
+def stucom(request):
+    if  "userid" in request.session:
+        if request.is_ajax():
+            if request.method == 'POST':
+                varuser = request.session['userid']
+                varerr =""
+                post = request.POST.copy()
+                acccode = post['userid']
+                session,klass,arm,term,ca = acccode.split(':')
+                #print klass
+                data = []
+                getstu = Student.objects.filter(admitted_class = klass,admitted_arm=arm,admitted_session = session,gone = False).order_by('-sex','fullname')
+                for p in getstu:
+                    if StudentAcademicRecord.objects.filter(student = p,term = term):
+                        comm = StudentAcademicRecord.objects.get(student = p,term = term)
+                        affec = AffectiveSkill.objects.get(academic_rec = comm)
+                        psyco = PsychomotorSkill.objects.get(academic_rec = comm)
+                        stdic = {'studentinfo':p,'comment':comm,'affective':affec,'psyco':psyco}
+                        data.append(stdic)
+                return render_to_response('assessment/comca.html',{'ca':ca,
+                    'klass':klass,
+                    'data':data,
+                    'session':session,
+                    'term':term,
+                    'arm':arm
+                    })
+            else:
+                gdata = ""
+                return render_to_response('index.html',{'gdata':gdata})
+        else:
+            gdata = ""
+            return render_to_response('getlg.htm',{'gdata':gdata})
+    else:
+        return HttpResponseRedirect('/login/')
+
 
 def getclass(request):
     if  "userid" in request.session:
@@ -315,6 +747,25 @@ def getstudent(request):
         return HttpResponseRedirect('/login/')
 
 
+def getassign(request):
+    if  "userid" in request.session:
+        if request.is_ajax():
+            if request.method == 'POST':
+                varuser = request.session['userid']
+                varerr =""
+                post = request.POST.copy()
+                acccode = post['userid']
+                state=acccode
+                session,klass,arm,term, subject= acccode.split(':')
+                myassign=tblassignment.objects.filter(teacher=varuser,session=session,term=term,klass=klass,arm=arm,subject=subject)
+                return HttpResponse(json.dumps(kk), mimetype='application/json')
+                # return render_to_response('assignment/tview.html',{'data':myassign})
+                
+    else:
+        return HttpResponseRedirect('/login/')
+
+
+
 def editca(request,vid):
     if  "userid" in request.session:
         varuser = request.session['userid']
@@ -465,8 +916,6 @@ def editcas(request,vid):
         if request.method == 'POST':
              ca1 = request.POST['firstca']
              ca2 = request.POST['secondca']
-             ca3 = request.POST['thirdca']
-       #      ca4 = request.POST['fourthca']
              exam = request.POST['exam']
              if exam == "":
                  exam = 0
@@ -474,10 +923,6 @@ def editcas(request,vid):
                  ca1 = 0
              if ca2 == "":
                  ca2 = 0
-             if ca3 == "":
-                 ca3 = 0
-        #     if ca4 == "":
-        #         ca4 = 0
              try:
                 h = int(exam)
              except :
@@ -490,39 +935,22 @@ def editcas(request,vid):
                  h2 = int(ca2)
              except :
                  return HttpResponseRedirect('/assessment/enterca/')
-             try:
-                 h3 = int(ca3)
-             except :
-                 return HttpResponseRedirect('/assessment/enterca/')
-        #     try:
-        #         h4 = int(ca4)
-        #     except :
-        #         return HttpResponseRedirect('/assessment/enterca/')
              if klass1 =='SS 3' and term1 =='Second':
                  h1 = 0
                  h2 = 0
-                 h3 = 0
              elif klass1 =='JS 3' and term1 =='Second':
                  h1 = 0
                  h2 = 0
-                 h3 = 0
              else:
-                 if h > 70 :
+                 if h > 60 :
                      h = 0
-                 if h1 > 10 :
+                 if h1 > 20 :
                      h1 = 0
-                 if h2 > 10 :
+                 if h2 > 20 :
                      h2 = 0
-                 if h3 > 10 :
-                     h3 = 0
-         #        if h4 > 10 :
-         #            h4 = 0
+             
              getdetails.first_ca = h1
              getdetails.second_ca = h2
-             getdetails.third_ca = h3
-         #    getdetails.fourth_ca = h4
-        #     getdetails.sixth_ca = h3
-        #     getdetails.fifth_ca = h1+h2
              getdetails.exam_score = h
              getdetails.save()
              #**********************getting the class average
@@ -539,6 +967,7 @@ def editcas(request,vid):
              #********************term score total****************
              totsubject = SubjectScore.objects.filter(session = session,term = term,klass = klass,arm = arm,subject = subject).aggregate(Sum('term_score'))
              varrid = totsubject['term_score__sum']
+
              subavg = varrid/totstudent
              annavg = 0
              if term == 'Third':
@@ -548,11 +977,67 @@ def editcas(request,vid):
              sp = subjectposition(str(session),str(subject),str(term),str(klass),str(arm))
              #*****************************calculate percentage
              tn = percent(str(session),str(klass),str(arm),str(admno),str(term))
-             #***********************getting the class position
+             #******************getting class average for ca1*****************              
+            
+             stupop= Student.objects.filter(admitted_session=session1,
+                gone=False,
+                admitted_class=klass1,
+                admitted_arm=arm1).count()
+             classca = StudentAcademicRecord.objects.filter(session=session,
+                klass=klass,
+                term=term,
+                arm=arm).aggregate(Sum('stu_ave1'))
+             classum = classca['stu_ave1__sum']
+             classaverage1= classum / stupop
+
+             #******************getting class average for ca2*****************
+             classca2 = StudentAcademicRecord.objects.filter(session=session,
+                klass=klass,
+                term=term,
+                arm=arm).aggregate(Sum('stu_ave2'))
+             classum2 = classca2['stu_ave2__sum']
+             classaverage2= classum2 / stupop
+          ##*****************class average for whole class*************************
+
+             wholeclassave = StudentAcademicRecord.objects.filter(session=session,
+                klass=klass,
+                term=term,
+                arm=arm).aggregate(Sum('percentage'))
+             whole_classave = wholeclassave['percentage__sum']
+             whole_classave1= whole_classave / stupop
+
+             stu = Student.objects.filter(admitted_session=session,gone=False,admitted_class=klass,admitted_arm=arm)             
+             for j in stu:
+                acaderec=StudentAcademicRecord.objects.get(student=j,term=term)
+                totsub = SubjectScore.objects.filter(academic_rec = acaderec,term = term).count()
+                subcount = SubjectScore.objects.filter(academic_rec = acaderec,term = term).aggregate(Sum('first_ca'))
+                casum = subcount['first_ca__sum']
+                staver=casum/int(totsub)
+
+
+                totalmark = SubjectScore.objects.filter(academic_rec = acaderec,term = term).aggregate(Sum('second_ca'))
+                totalmark2 = totalmark['second_ca__sum']
+                stave2=totalmark2 / int(totsub)
+
+
+                StudentAcademicRecord.objects.filter(student=j,term=term).update(stu_ave2=stave2, 
+                    class_ave2=classaverage2,
+                    stu_ave1=staver,
+                    class_ave1=classaverage1,
+                    classAve=whole_classave1)          
+                
+
+
+                
+#  StudentAcademicRecord.objects.filter(student=j,term=term).update(stu_ave2=stave2, class_ave2=classaverage2)
+
+
+
+             #***********************getting the class position*******
              cp = classposition(str(session),str(term),str(klass),str(arm))
              #************getting stream position****************
              cp1 = classposition1(str(session),str(term),str(klass))
-             c = klass[0] #if the first alphabet of thee selected class is P FOR PRIMMARY, Y FOR YEAR, B FOR BASIC , N FOR NURSERY C FOR CLASS, L FOR LOWER PRIMARY
+             c = klass[0]
              if c.upper() =='P' or c.upper() == 'Y' or c.upper() == 'B' or c.upper() == 'N' or c.upper() == 'C' or c.upper() == 'L':
                  return HttpResponseRedirect('/assessment/primary_assessment/%s/%s/%s/%s/%s/'%(str(session).replace('/','j'),str(klass).replace(' ','k'),str(arm).replace(' ','k'),str(fullname).replace(' ','z'),str(term).replace(' ','0')))
              else:  #for JSS AND SSS
@@ -834,15 +1319,19 @@ def affectivedomain(request):
         user = userprofile.objects.get(username = varuser)
         varerr =''
         getdetails =''
-        if request.method == 'POST':
-            form = caform(request.POST) # A form bound to the POST data
-            if form.is_valid():
-                expenses = form.cleaned_data['expenses']
-                return HttpResponseRedirect('/bill/expensesname/')
-        else:
-            form = caform()
+        form = caform()
+        return render_to_response('assessment/affective.html',{'varuser':varuser,'form':form,'varerr':varerr})
+    else:
+        return HttpResponseRedirect('/login/')
 
-        return render_to_response('assessment/affective.html',{'form':form,'varerr':varerr})
+def getcomm(request):
+    if  "userid" in request.session:
+        varuser = request.session['userid']
+        user = userprofile.objects.get(username = varuser)
+        varerr =''
+        getdetails =''
+        form = caform()
+        return render_to_response('assessment/comm.html',{'varuser':varuser,'form':form,'varerr':varerr})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -925,6 +1414,35 @@ def getstudentaff(request):
                         stdic = {'studentinfo':p,'comment':comm,'affective':affec,'psyco':psyco}
                         data.append(stdic)
                 return render_to_response('assessment/affec.html',{'data':data})
+            else:
+                gdata = ""
+                return render_to_response('index.html',{'gdata':gdata})
+        else:
+            gdata = ""
+            return render_to_response('getlg.htm',{'gdata':gdata})
+    else:
+        return HttpResponseRedirect('/login/')
+
+def comment(request):
+    if  "userid" in request.session:
+        if request.is_ajax():
+            if request.method == 'POST':
+                varuser = request.session['userid']
+                varerr =""
+                post = request.POST.copy()
+                acccode = post['userid']
+                session,klass,arm,term = acccode.split(':')
+                #print klass
+                data = []
+                getstu = Student.objects.filter(admitted_class = klass,admitted_arm=arm,admitted_session = session,gone = False).order_by('-sex','fullname')
+                for p in getstu:
+                    if StudentAcademicRecord.objects.filter(student = p,term = term):
+                        comm = StudentAcademicRecord.objects.get(student = p,term = term)
+                        affec = AffectiveSkill.objects.get(academic_rec = comm)
+                        psyco = PsychomotorSkill.objects.get(academic_rec = comm)
+                        stdic = {'studentinfo':p,'comment':comm,'affective':affec,'psyco':psyco}
+                        data.append(stdic)
+                return render_to_response('assessment/comment.html',{'data':data})
             else:
                 gdata = ""
                 return render_to_response('index.html',{'gdata':gdata})
@@ -1043,6 +1561,32 @@ def getcomment(request):
     else:
         return HttpResponseRedirect('/login/')
 
+def getcommentca(request):
+    if  "userid" in request.session:
+        if request.is_ajax():
+            if request.method == 'POST':
+                varuser = request.session['userid']
+                varerr =""
+                post = request.POST.copy()
+                acccode = post['userid']
+                vid,ca =acccode.split(':')
+                getdetails = StudentAcademicRecord.objects.get(id = vid)
+                ca=ca
+                if ca == '1st CA':
+                    return render_to_response('assessment/edicacom.html',{'ca':ca,'getdetails':getdetails})
+                else:
+                    return render_to_response('assessment/editcacom.html',{'ca':ca,'getdetails':getdetails})
+            else:
+                gdata = ""
+                return render_to_response('index.html',{'gdata':gdata})
+        else:
+
+            gdata = ""
+            return render_to_response('getlg.htm',{'gdata':gdata})
+    else:
+        return HttpResponseRedirect('/login/')
+
+
 def editcomment(request,vid):
     if  "userid" in request.session:
         varuser = request.session['userid']
@@ -1058,9 +1602,9 @@ def editcomment(request,vid):
                 tday = datetime.date.today()
             else:
                 rday,rmonth,ryear = nexttem.split('-')
-                tday = date(int(ryear),int(rmonth),int(rday))
-            if comments == "" or nopresent =="" or noopen =="":
-                return HttpResponseRedirect('/assessment/affective/')
+                tday = int(ryear),int(rmonth),int(rday)
+            if comments == "" or nopresent == "" or noopen == "" :
+                return HttpResponseRedirect('/assessment/comment/')
             try:
                 j = int(noopen)
             except :
@@ -1087,25 +1631,48 @@ def editcomment(request,vid):
     else:
         return HttpResponseRedirect('/login/')
 
+def editcommentca1(request,vid):
+    if  "userid" in request.session:
+        varuser = request.session['userid']
+        varerr =''
+        getdetails = ''
+        if request.method == 'POST':
+            comments = request.POST['comment']
+            getdetails = StudentAcademicRecord.objects.filter(id = vid).update(com1=comments)
+            return HttpResponseRedirect('/assessment/ca_comments/')
+    else:
+        return HttpResponseRedirect('/login/')
+
+def editcommentca2(request,vid):
+    if  "userid" in request.session:
+        varuser = request.session['userid']
+        varerr =''
+        getdetails = ''
+        if request.method == 'POST':
+            comments = request.POST['comment']
+            getdetails = StudentAcademicRecord.objects.filter(id = vid).update(com2=comments)
+            return HttpResponseRedirect('/assessment/ca_comments/')
+    else:
+        return HttpResponseRedirect('/login/')
+
+
 def editpsyco(request,vid):
     if  "userid" in request.session:
         varuser = request.session['userid']
         varerr =''
         getdetails = ''
         if request.method == 'POST':
-            handwriting = request.POST['handwriting']
-            games = request.POST['games']
-            art = request.POST['art']
-            painting = request.POST['painting']
-            music = request.POST['music']
-            if handwriting == "" or music == "" or painting == "" or art == "" or games == "" :
+            attendance = request.POST['attendance']
+            motivation = request.POST['motivation']
+            contribution = request.POST['contribution']
+            social_behaviour = request.POST['social_behaviour']
+            if contribution == "" or motivation == "" or attendance == "" or social_behaviour == "" :
                 return HttpResponseRedirect('/assessment/affective/')
             getdetails = PsychomotorSkill.objects.get(id = vid)
-            getdetails.handwriting = handwriting.upper()
-            getdetails.games = games.upper()
-            getdetails.art = art.upper()
-            getdetails.painting = painting.upper()
-            getdetails.music = music.upper()
+            getdetails.attendance = attendance.upper()
+            getdetails.motivation = motivation.upper()
+            getdetails.contribution = contribution.upper()
+            getdetails.social_behaviour = social_behaviour.upper()
             getdetails.save()
             return HttpResponseRedirect('/assessment/affective/')
         else:
@@ -1159,10 +1726,16 @@ def editaffective(request,vid):
 def addsubject(request):
     if  "userid" in request.session:
         varuser = request.session['userid']
-        user = userprofile.objects.get(username = varuser)
-        uenter = user.expensedecription
-        if ClassTeacher.objects.filter(teachername = varuser).count() == 0 :
-            return HttpResponseRedirect('/assessment/access-denied/')
+
+        # user = userprofile.objects.get(username = varuser)
+        # uenter = user.expensedecription
+
+        try:
+            if Student.objects.get(fullname=varuser,admitted_session=currse,gone=False):
+                return HttpResponseRedirect('/assessment/student/my_subjects/')
+        except:
+            if ClassTeacher.objects.filter(teachername = varuser).count() == 0 :
+                return HttpResponseRedirect('/assessment/access-denied/')
         varerr =''
         getdetails =''
         if request.method == 'POST':
@@ -1172,7 +1745,31 @@ def addsubject(request):
                 return HttpResponseRedirect('/bill/expensesname/')
         else:
             form = addsubjectform()
-        return render_to_response('assessment/addsubject.html',{'form':form,'varerr':varerr})
+        return render_to_response('assessment/addsubject.html',{'varuser':varuser,'form':form,'varerr':varerr})
+    else:
+        return HttpResponseRedirect('/login/')
+
+def addstudentsubject(request):
+    if  "userid" in request.session:
+        varuser = request.session['userid']
+        
+        user = userprofile.objects.get(username = varuser)
+        uenter = user.expensedecription
+
+
+        if ClassTeacher.objects.filter(teachername = varuser).count() == 0 :
+            return HttpResponseRedirect('/assessment/access-denied/')
+
+        varerr =''
+        getdetails =''
+        if request.method == 'POST':
+            form = addsubjectform(request.POST) # A form bound to the POST data
+            if form.is_valid():
+                expenses = form.cleaned_data['expenses']
+                return HttpResponseRedirect('/bill/expensesname/')
+        else:
+            form = addsubjectform()
+        return render_to_response('assessment/addsubject.html',{'varuser':varuser,'form':form,'varerr':varerr})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -1214,7 +1811,7 @@ def getsubject4student(request):
                 if StudentAcademicRecord.objects.filter(student = getstu,term = term):
                    comm = StudentAcademicRecord.objects.get(student = getstu,term = term)
                    getdetails = SubjectScore.objects.filter(session = session,klass = klass, arm = arm,term = term,academic_rec = comm).order_by('num')
-                return render_to_response('assessment/subject.html',{'getdetails':getdetails,'stuid':getstu.id,'fullname':getstu.fullname})
+                return render_to_response('assessment/subject.html',{'varuser':varuser,'getdetails':getdetails,'stuid':getstu.id,'fullname':getstu.fullname})
             else:
                 gdata = ""
                 return render_to_response('index.html',{'gdata':gdata})
@@ -1223,6 +1820,104 @@ def getsubject4student(request):
             return render_to_response('getlg.htm',{'gdata':gdata})
     else:
         return HttpResponseRedirect('/login/')
+
+# def addmoresubject(request):
+#     if  "userid" in request.session:
+#         varuser = request.session['userid']
+#         user = userprofile.objects.get(username = varuser)
+#         uenter = user.expensedecription
+#         varerr =''
+#         getdetails =''
+#         term_l = ['First','Second','Third']
+#         if request.method == 'POST':
+#             admno = request.POST['admno']
+#             session = request.POST['session']
+#             term1 = request.POST['term']
+#             subclass = request.POST['subclass']
+#             subjectlist = request.POST['subjectlist']
+#             stuacarec = Student.objects.get(admissionno = admno,admitted_session = session)
+#             for term in term_l:
+#                 if StudentAcademicRecord.objects.filter(student = stuacarec,term = term):
+#                     pass
+#                 else:
+#                     academic_record = StudentAcademicRecord(student=stuacarec, klass=stuacarec.admitted_class,arm=stuacarec.admitted_arm, term=term, session=stuacarec.admitted_session)
+#                     academic_record.save()
+#                     aff =  AffectiveSkill(academic_rec=academic_record)
+#                     aff.save()
+#                     psyco = PsychomotorSkill(academic_rec=academic_record)
+#                     psyco.save()
+
+#             gets = Subject.objects.filter(subject = subjectlist)
+#             num = 1
+#             for p in gets:
+#                num = p.num
+#             if term1 == 'First':
+#                 for term in term_l:
+#                     stuac = StudentAcademicRecord.objects.get(student = stuacarec,term = term)
+#                     if SubjectScore.objects.filter(academic_rec = stuac,term = term,subject = subjectlist).count() == 0:
+#                        SubjectScore(academic_rec = stuac,term = term,subject = subjectlist,num = num,session = session,klass = stuacarec.admitted_class,arm = stuacarec.admitted_arm).save()
+#                 return HttpResponseRedirect('/assessment/addsubject/')
+#             else:
+#                 stuac = StudentAcademicRecord.objects.get(student = stuacarec,term = term1)
+#                 if SubjectScore.objects.filter(academic_rec = stuac,term = term1,subject = subjectlist).count() == 0:
+#                     SubjectScore(academic_rec = stuac,term = term1,subject = subjectlist,num = num,session = session,klass = stuacarec.admitted_class,arm = stuacarec.admitted_arm).save()
+#                     return HttpResponseRedirect('/assessment/addsubject/')
+#                 else:
+#                    return HttpResponseRedirect('/assessment/addsubject/')
+#         else:
+#             form = addsubjectform()
+#         return render_to_response('assessment/addsubject.html',{'form':form,'varerr':varerr})
+#     else:
+#         return HttpResponseRedirect('/login/')
+
+
+def getmorestudentsubject(request):
+    if  "userid" in request.session:
+        if request.is_ajax():
+            if request.method == 'POST':
+                varuser = request.session['userid']
+                varerr =""
+                post = request.POST.copy()
+                code = post['userid']
+                acccode,ter = str(code).split(':')
+                getstu = Student.objects.get(id = acccode)
+                session = getstu.admitted_session
+                admno = getstu.admissionno
+                klass = getstu.admitted_class
+                subclass = getstu.subclass
+                arm = getstu.admitted_arm
+                term = ter
+                fullname = getstu.fullname
+                subjectlist = Subject.objects.filter(category = subclass, category2 = 'Optional').order_by('num')
+                fs = {}
+                for k in subjectlist:
+                    l = {k.subject:k.subject}
+                    fs.update(l)
+                nlist = fs.keys()
+                chk=tblcf.objects.get(session=session,term=term)
+                chkdate = chk.deadline
+                if chkdate < date:
+                    return render_to_response('assessment/checkbackcf.html',{'ckk':chkdate})
+
+                return render_to_response('assessment/moresubject.html',{'session':session,
+                    'fullname':fullname,
+                    'admno':admno,
+                    'subjectlist':nlist,
+                    'klass':klass,
+                    'subclass':subclass,
+                    'arm':arm,
+                    'term':ter})
+            else:
+                gdata = ""
+                return render_to_response('index.html',{'gdata':gdata})
+        else:
+            gdata = ""
+            return render_to_response('getlg.htm',{'gdata':gdata})
+    else:
+        return HttpResponseRedirect('/login/')
+
+
+
 
 def getmoresubject(request):
     if  "userid" in request.session:
@@ -1278,8 +1973,8 @@ def getmoresubject(request):
 def addmoresubject(request):
     if  "userid" in request.session:
         varuser = request.session['userid']
-        user = userprofile.objects.get(username = varuser)
-        uenter = user.expensedecription
+        # user = userprofile.objects.get(username = varuser)
+        # uenter = user.expensedecription
         varerr =''
         getdetails =''
         term_l = ['First','Second','Third']
@@ -1289,7 +1984,7 @@ def addmoresubject(request):
             term1 = request.POST['term']
             subclass = request.POST['subclass']
             subjectlist = request.POST['subjectlist']
-            stuacarec = Student.objects.get(admissionno = admno,admitted_session = session)
+            stuacarec = Student.objects.get(admissionno = admno,admitted_session = session,gone=False)
             for term in term_l:
                 if StudentAcademicRecord.objects.filter(student = stuacarec,term = term):
                     pass
@@ -1364,7 +2059,7 @@ def principalcomment(request):
         varuser = request.session['userid']
         user = userprofile.objects.get(username = varuser)
         uenter = user.expensedecription
-        if Principal.objects.filter(teachername = varuser).count() == 0 :
+        if Principal.objects.filter(teachername = varuser).count() == 0:
             return HttpResponseRedirect('/assessment/access-denied/')
         varerr =''
         getdetails =''
@@ -1375,7 +2070,7 @@ def principalcomment(request):
                 return HttpResponseRedirect('/bill/expensesname/')
         else:
             form = caform()
-        return render_to_response('assessment/principalcomment.html',{'form':form,'varerr':varerr})
+        return render_to_response('assessment/principalcomment.html',{'varuser':varuser,'form':form,'varerr':varerr})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -1550,6 +2245,169 @@ def getclassaffpry(request):
     else:
         return HttpResponseRedirect('/login/')
 
+
+def indreport(request):
+    if  "userid" in request.session:
+        varuser = request.session['userid']
+        user= userprofile.objects.get(username=varuser)
+        uenter = user.reportsheet
+        if uenter is False:
+            return HttpResponseRedirect('/assessment/access-denied/')
+        varerr = ''
+        getdetails= ''
+        bal = 250
+        
+        school = get_object_or_404(School,pk=1)
+        if request.method == 'POST':
+            form = indreportform(request.POST)
+            if form.is_valid():
+                session = form.cleaned_data['session']
+                term = form.cleaned_data['term']
+                admno = form.cleaned_data['admno']
+                Pin = form.cleaned_data['Pin']
+                replist = [] 
+                varclas=[]               
+                varused= 0
+                varurem = 0
+                if Student.objects.filter(admissionno=admno,admitted_session=session).count()==0:
+                    varerr= 'ADMISSION NUMBER NOT FOUND'
+                    form = indreportform()
+                    return render_to_response ('assessment/indreport.html',{'form':form, 'varerr':varerr})
+
+
+                if tblrpin.objects.filter(rpin=Pin).count()== 0:                    
+                    varerr= 'PLEASE CHECK THE PIN AND TRY AGAIN'
+                    return render_to_response('assessment/indreport.html',{'varerr':varerr,'form':form})
+
+                
+                if tblexpress.objects.filter(pin = Pin):
+                    usd = tblexpress.objects.get(pin=Pin)
+                    usdpin = usd.pin
+                    usdterm = usd.term
+                    usdsession = usd.session
+                    usdadmno = usd.admno
+                    if usdadmno == admno and usdterm==term and usdsession==session and usdpin==Pin:
+                        varu = count( Pin) 
+                        if varu >='5':
+                           varerr= 'PIN ALREADY USED '+ varu + ' TIMES'
+                           return render_to_response('assessment/indreport.html',{'varerr':varerr,'form':form})
+                        else:
+                            varused= int(varu) +1
+                            tblexpress.objects.filter(pin=  Pin).update(count= varused)
+                            varurem =5 - varused
+                    else:
+                       varerr= 'THIS PIN HAS BEEN USED'
+                       return render_to_response('assessment/indreport.html',{'varerr':varerr,'form':form})     
+                else:
+                    totbil = printbill (admno,session,term)
+                    allowable_debt = 0.15 * int(totbil)
+                    allowable_debt = locale.format('%.0f',allowable_debt)
+                    allowable_debt= int(allowable_debt) # what i can owe
+
+                    acc=tblaccount.objects.get(acccode = admno)
+                    actual_debt = acc.accbal
+                    actual_debt = int(actual_debt) # what i'm actually owing
+                    bal = actual_debt            
+                    if allowable_debt <= actual_debt:                  
+                        varerr = "KINDLY UPDATE YOUR WARD'S ACCOUNT " #+totbil+ '  ' +str(actual_debt)
+                        return render_to_response('assessment/indreport.html',{'varerr':varerr,'form':form})
+                    else:
+                        st = Student.objects.get(admissionno=admno, admitted_session=session)
+                        tblexpress(count=1,session=session, admno=admno, klass=st.admitted_class, term=term,pin=Pin).save()
+                        varurem = 4
+
+              ##########  calc. total bill for the term ******************
+                totbil = printbill (admno,session,term)
+                allowable_debt = 0.15 * int(totbil)
+                allowable_debt = locale.format('%.0f',allowable_debt)
+                allowable_debt= int(allowable_debt) # what i can owe
+############## cal account balaance *************************************
+                acc=tblaccount.objects.get(acccode = admno)
+                actual_debt = acc.accbal
+                actual_debt = int(actual_debt) # what i'm actually owing
+                bal = actual_debt
+
+    
+                classtot = 0
+                totsub = 0
+                totalmarkcount = 0
+                st = Student.objects.get(admissionno=admno, admitted_session=session)
+                if term == "First":
+                    stuno1 = Student.objects.filter(
+                        admitted_session = session,
+                        first_term = 1, admitted_class = st.admitted_class,
+                        admitted_arm = st.admitted_arm,gone = False).count()
+                    stuinfo = Student.objects.get(
+                        admitted_session = session,
+                        admissionno = admno, 
+                        first_term = 1)
+                elif term == "Second":
+                    stuno1 = Student.objects.filter(admitted_session = session,second_term = 1, admitted_class = st.admitted_class,admitted_arm = st.admitted_arm,gone = False).count()
+                    stuinfo = Student.objects.get(admitted_session = session, admissionno = admno, second_term = 1)
+                else:
+                    stuno1 = Student.objects.filter(admitted_session = session,third_term = 1,term = term, admitted_class = varclass,admitted_arm = vararm,gone = False).count()
+                    stuinfo = Student.objects.get(admitted_session = session, admissionno = admno, third_term = 1,term=term)
+                varclass= stuinfo.admitted_class
+                vararm = stuinfo.admitted_arm
+                varclas=varclass[0]
+                getgrading=gradingsys.objects.filter(classsub__startswith = varclas)
+                
+                if StudentAcademicRecord.objects.filter(student = stuinfo,term = term):
+                    acaderec = StudentAcademicRecord.objects.get(student = stuinfo,term = term)
+                    affskill = AffectiveSkill.objects.get(academic_rec = acaderec)
+                    psycho = PsychomotorSkill.objects.get(academic_rec = acaderec)
+                    subsco = SubjectScore.objects.filter(academic_rec = acaderec,term = term).order_by('num')
+                    totsub = SubjectScore.objects.filter(academic_rec = acaderec,term = term).count()
+                    totalmark2 = 0
+                    if SubjectScore.objects.filter(academic_rec = acaderec,session = session,term = term):
+                        totalmark = SubjectScore.objects.filter(academic_rec = acaderec,session = session,term = term).aggregate(Sum('term_score'))
+                        totalmark2 = totalmark['term_score__sum']
+                        totalmarkcount = SubjectScore.objects.filter(academic_rec = acaderec,session = session,term = term).count()
+                        rtotal = int(totalmark2)
+                        if float(totsub) == 0:
+                            perc = 0
+                        else:
+                            perc = float(rtotal)/float(totsub)
+                        classtot += rtotal
+                        ks = totalmarkcount * 100
+                        totsub += ks
+                        jdic = {'studentinfo':stuinfo,'academic':acaderec,'affective':affskill,'pyscho':psycho,'subject':subsco,'totalmark':rtotal,'getgrading':getgrading,'percentage':locale.format("%.2f",perc,grouping=True)}
+                        replist.append(jdic)
+                if classtot == 0 or stuno1 == 0:
+                   clavg = 0.0
+                else:
+                    j = classtot/stuno1
+                    clavg =j/float(totalmarkcount)
+
+
+                #varclas= varclass[0]
+
+                if varclas == 'S':
+                    return render_to_response('assessment/reportsss.html',{'form':form,'varu':varurem,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno})
+
+                if varclas == 'N' or varclas == 'K' or varclas == 'P':
+                    return render_to_response('assessment/reportnpin.html',{'form':form,'varclas':varclas,'varu':varurem,'bal':bal,'pin':Pin,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno1':stuno1,'classavg':locale.format("%.2f",clavg,grouping=True)})
+
+                if varclas =='J':
+                    return render_to_response('assessment/reportpin.html',{'form':form,'varclas':varclas,'varu':varurem,'bal':bal,'pin':Pin,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno1':stuno1,'classavg':locale.format("%.2f",clavg,grouping=True)})
+
+
+            else:
+                varerr='FILL OUT ALL BOXES'
+                return render_to_response('assessment/indreport.html',{'form':form, 'varerr':varerr})
+        else:
+            form = indreportform()
+            return render_to_response('assessment/indreport.html',{'form':form,})
+    else:
+        return HttpResponseRedirect('/login/')
+
+def reportopt(request):
+    if "userid" in request.session:
+        return render_to_response('assessment/select.html')
+    else:
+        return HttpResponseRedirect('/login/')
+
+
 def reportsheet(request):
     if  "userid" in request.session:
         varuser = request.session['userid']
@@ -1559,7 +2417,8 @@ def reportsheet(request):
             return HttpResponseRedirect('/assessment/access-denied/')
         varerr =''
         getdetails =''
-        school = get_object_or_404(School, pk=1)
+        # school = get_object_or_404(School, pk=1)
+        school=School.objects.get(id =1)
         if request.method == 'POST':
             form = reportsheetform(request.POST)
             if form.is_valid():
@@ -1567,244 +2426,52 @@ def reportsheet(request):
                 klass = form.cleaned_data['klass']
                 term = form.cleaned_data['term']
                 arm = form.cleaned_data['arm']
-                stuno = Student.objects.filter(admitted_session = session,admitted_class = klass,admitted_arm = arm,gone = False).count()
-                stuinfo = Student.objects.filter(admitted_session = session,admitted_class = klass,admitted_arm = arm,gone = False).order_by('-sex','fullname')
+                try:
+                  codi = ClassTeacher.objects.get(klass=klass,session=session,teachername='N/A')
+                except:
+                  pass
                 replist = []
                 varbeg = klass[0]
                 getgrading = gradingsys.objects.filter(classsub__startswith = varbeg)
                 classtot = 0
                 totsub = 0
                 totalmarkcount = 0
+                stuinfo = Student.objects.filter(admitted_session = session, admitted_class = klass,admitted_arm = arm,gone = False).order_by('fullname')
+                stuno1 = Student.objects.filter(admitted_session = session,first_term = 1, admitted_class = klass,admitted_arm = arm,gone = False).count()
+                for j in stuinfo:       
+                    acaderec = StudentAcademicRecord.objects.get(student = j,term = term)
+                    psycho = PsychomotorSkill.objects.get(academic_rec = acaderec)  
+                    subsco = SubjectScore.objects.filter(academic_rec = acaderec).order_by('num')
+                    totsub = SubjectScore.objects.filter(academic_rec = acaderec).count()
 
-                if term == "First":
-                    for j in stuinfo:
-                        if StudentAcademicRecord.objects.filter(student = j,term = term):
-                            acaderec = StudentAcademicRecord.objects.get(student = j,term = term)
-                            affskill = AffectiveSkill.objects.get(academic_rec = acaderec)
-                            psycho = PsychomotorSkill.objects.get(academic_rec = acaderec)
-                            subsco = SubjectScore.objects.filter(academic_rec = acaderec,term = term).order_by('num')
-                            totsub = SubjectScore.objects.filter(academic_rec = acaderec,term = term).count()
-                            totalmark2 = 0
-                            if SubjectScore.objects.filter(academic_rec = acaderec,session = session,term = term):
-                               totalmark = SubjectScore.objects.filter(academic_rec = acaderec,session = session,term = term).aggregate(Sum('term_score'))
-                               totalmark2 = totalmark['term_score__sum']
-                            totalmarkcount = SubjectScore.objects.filter(academic_rec = acaderec,session = session,term = term).count()
-                            rtotal = int(totalmark2)
-                            if float(totsub) == 0:
-                                perc = 0
-                            else:
-                                perc = float(rtotal)/float(totsub)
-                            classtot += rtotal
-                            ks = totalmarkcount * 100
-                            totsub += ks
-                            jdic = {'studentinfo':j,'academic':acaderec,'affective':affskill,'pyscho':psycho,'subject':subsco,'totalmark':rtotal,'getgrading':getgrading,'percentage':locale.format("%.2f",perc,grouping=True)}
-                            replist.append(jdic)
-                    if classtot == 0 or stuno == 0:
-                       clavg = 0.0
+                    totalmark2 = 0
+                    totalmark = SubjectScore.objects.filter(academic_rec = acaderec).aggregate(Sum('term_score'))
+                    totalmark2 = totalmark['term_score__sum']
+
+                    rtotal = int(totalmark2) #total of term scores from all subject
+                    
+                    if float(totsub) == 0:
+                        perc = 0
                     else:
-                        j = classtot/stuno
-                        clavg =j/float(totalmarkcount)
-                    if klass[0] == 'S':
-                        if form.cleaned_data['pdffile']:
-                            template ='assessment/reportviewsss.html'
-                            context = {'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno}
-                            return render_to_pdf(template, context)
-                        else:
-                            return render_to_response('assessment/reportsss.html',{'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno})
+                        perc = float(rtotal)/float(totsub)
+                        #perc == student average for the term
+                    classtot += rtotal
+                    ks = totsub*100 
+                    totsub += ks
 
-                    elif klass[0] == 'N' or klass[0] == 'C' or klass[0] == 'L' or klass[0] == 'P':
-                        if form.cleaned_data['pdffile']:
-                            template ='assessment/reportnview.html'
-                            context = {'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno,'classavg':locale.format("%.2f",clavg,grouping=True)}
-                            return render_to_pdf(template, context)
-                        else:
-                            return render_to_response('assessment/reportn.html',{'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno,'classavg':locale.format("%.2f",clavg,grouping=True)})
+                    jdic = {'studentinfo':j,'codi':codi, 'psyco':psycho,'academic':acaderec,'subject':subsco,'totalmark':rtotal,'percentage':locale.format("%.2f",perc,grouping=True)}
+                    replist.append(jdic)
 
-                    else:
-                        if form.cleaned_data['pdffile']:
-                           template ='assessment/reportview.html'
-                           context = {'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno,'classavg':locale.format("%.2f",clavg,grouping=True)}
-                           return render_to_pdf(template, context)
-                        else:
-                           return render_to_response('assessment/report.html',{'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno,'classavg':locale.format("%.2f",clavg,grouping=True)})
-                elif term == 'Second':
-                    for j in stuinfo:
-                        if StudentAcademicRecord.objects.filter(student = j,term = term):
-                            acaderec = StudentAcademicRecord.objects.get(student = j,term = term)
-                            acaderec1 = StudentAcademicRecord.objects.get(student = j,term = 'First')
-                            affskill = AffectiveSkill.objects.get(academic_rec = acaderec)
-                            psycho = PsychomotorSkill.objects.get(academic_rec = acaderec)
-                            totsub = SubjectScore.objects.filter(academic_rec = acaderec,term = term).count()
-                            totalmarkcount = SubjectScore.objects.filter(academic_rec = acaderec,session = session,term = term).count()
-                            subsco = SubjectScore.objects.filter(academic_rec = acaderec,term = term).order_by('num')
-                            secsublist = []
-                            sdic = {}
-                            for h in subsco:
-                                if SubjectScore.objects.filter(academic_rec = acaderec1,term = 'First',subject = h.subject).count() == 0:
-                                    fscore = '-'
-                                else:
-                                    fsc = SubjectScore.objects.get(academic_rec = acaderec1,term = 'First',subject = h.subject)
-                                    if float(fsc.term_score) <= 0:
-                                        fscore = '-'
-                                    else:
-                                        fsco = fsc.term_score
-                                        fscore = str(fsco)
-                                secdic ={'secondterm':h,'firstterm':fscore}
-                                secsublist.append(secdic)
-                            totalmark2 = 0
-                            if SubjectScore.objects.filter(academic_rec = acaderec,session = session,term = term):
-                                totalmark = SubjectScore.objects.filter(academic_rec = acaderec,session = session,term = term).aggregate(Sum('term_score'))
-                                totalmark2 = totalmark['term_score__sum']
-                            rtotal = int(totalmark2)
-                            if float(totsub) == 0:
-                                perc = 0
-                            else:
-                                perc = float(rtotal)/float(totsub)
-                            classtot += rtotal
-                            ks = totalmarkcount * 100
-                            totsub += ks
-
-                            #total for first term
-                            totalmark2sec = 0
-                            rtotalsec = 0
-                            if SubjectScore.objects.filter(academic_rec = acaderec1,session = session,term = 'First'):
-                                totalmarksec = SubjectScore.objects.filter(academic_rec = acaderec1,session = session,term = 'First').aggregate(Sum('term_score'))
-                                totalmark2sec = totalmarksec['term_score__sum']
-                                rtotalsec = int(totalmark2sec)
-
-                            jdic = {'studentinfo':j,'academic':acaderec,'affective':affskill,'pyscho':psycho,'subject':secsublist,'totalmark':rtotal,'totalmark1':rtotalsec,'getgrading':getgrading,'percentage':locale.format("%.2f",perc,grouping=True)}
-                            replist.append(jdic)
-                    if classtot == 0 or stuno == 0:
-                            clavg = 0.0
-                    else:
-                             j = classtot/stuno
-                             clavg =j/float(totalmarkcount)
-                    if klass[0] == 'S':
-                        if form.cleaned_data['pdffile']:
-                            template ='assessment/reportviewsecondsss.html'
-                            context = {'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno}
-                            return render_to_pdf(template, context)
-                        else:
-                            return render_to_response('assessment/reportsecondsss.html',{'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno})
-                    elif klass[0] == 'N' or klass[0] == 'C' or klass[0] == 'L':
-                        if form.cleaned_data['pdffile']:
-                            template ='assessment/reportnviewsecond.html'
-                            context = {'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno,'classavg':locale.format("%.2f",clavg,grouping=True)}
-                            return render_to_pdf(template, context)
-                        else:
-                            return render_to_response('assessment/reportnsecond.html',{'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno,'classavg':locale.format("%.2f",clavg,grouping=True)})
-
-                    else:
-                        if form.cleaned_data['pdffile']:
-                            template ='assessment/reportviewsecond.html'
-                            context = {'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno,'classavg':locale.format("%.2f",clavg,grouping=True)}
-                            return render_to_pdf(template, context)
-                        else:
-                            return render_to_response('assessment/reportsecond.html',{'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno,'classavg':locale.format("%.2f",clavg,grouping=True)})
+                if classtot == 0 or stuno1 == 0:
+                   clavg = 0.0
                 else:
-                    stuno = Student.objects.filter(admitted_session = session,admitted_class = klass,gone = False).count()
-                    for j in stuinfo:
-                        if StudentAcademicRecord.objects.filter(student = j,term = term):
-                            acaderec = StudentAcademicRecord.objects.get(student = j,term = term)
-                            acaderec1 = StudentAcademicRecord.objects.get(student = j,term = 'First')
-                            acaderec2 = StudentAcademicRecord.objects.get(student = j,term = 'Second')
-                            affskill = AffectiveSkill.objects.get(academic_rec = acaderec)
-                            psycho = PsychomotorSkill.objects.get(academic_rec = acaderec)
-                            totsub = SubjectScore.objects.filter(academic_rec = acaderec,term = term).count()
-                            totalmarkcount = SubjectScore.objects.filter(academic_rec = acaderec,session = session,term = term).count()
-                            subsco = SubjectScore.objects.filter(academic_rec = acaderec,term = term).order_by('num')
-                            secsublist = []
-                            sdic = {}
-                            for h in subsco:
-                                if SubjectScore.objects.filter(academic_rec = acaderec1,term = 'First',subject = h.subject).count() == 0:
-                                    fscore = '-'
-                                    fscoret = '-'
-                                else:
-                                    fsc = SubjectScore.objects.get(academic_rec = acaderec1,term = 'First',subject = h.subject)
-                                    if float(fsc.term_score) <= 0:
-                                        fscore = '-'
-                                    else:
-                                        fsco = fsc.term_score
-                                        fscore = str(fsco)
-                                if SubjectScore.objects.filter(academic_rec = acaderec2,term = 'Second',subject = h.subject).count() == 0:
-                                    fscoret = '-'
-                                else:
-                                    fsct = SubjectScore.objects.get(academic_rec = acaderec2,term = 'Second',subject = h.subject)
-                                    if float(fsct.term_score) <= 0:
-                                        fscoret ='-'
-                                    else:
-                                        fscot = fsct.term_score
-                                        fscoret = str(fscot)
-                                secdic ={'thirdterm':h,'firstterm':fscore,'secondterm':fscoret}
-                                secsublist.append(secdic)
-                            if SubjectScore.objects.filter(academic_rec = acaderec,session = session,term = term):
-                                totalmark = SubjectScore.objects.filter(academic_rec = acaderec,session = session,term = term).aggregate(Sum('term_score'))
-                                totalmark2 = totalmark['term_score__sum']
-                                rtotal = int(totalmark2)
-                            else:
-                               rtotal = 0
-                            if totsub == 0:
-                               per = 0
-                            else:
-                               perc = float(rtotal)/float(totsub)
-                            classtot += rtotal
-                            ks = totalmarkcount * 100
-                            totsub += ks
-                            #total for first term
-                            totalmark2sec = 0
-                            rtotalsec = 0
-                            if SubjectScore.objects.filter(academic_rec = acaderec1,session = session,term = 'First'):
-                                totalmarksec = SubjectScore.objects.filter(academic_rec = acaderec1,session = session,term = 'First').aggregate(Sum('term_score'))
-                                totalmark2sec = totalmarksec['term_score__sum']
-                                rtotalsec = int(totalmark2sec)
-                            #*********************************************
-                            totalmark2sec1 = 0
-                            rtotalsec1 = 0
-                            if SubjectScore.objects.filter(academic_rec = acaderec2,session = session,term = 'Second'):
-                                totalmarksec1 = SubjectScore.objects.filter(academic_rec = acaderec2,session = session,term = 'Second').aggregate(Sum('term_score'))
-                                totalmark2sec1 = totalmarksec1['term_score__sum']
-                                rtotalsec1 = int(totalmark2sec1)
-                            #**************************************************
-                            #annual average
-                            totalmark24 = 0
-                            rtotal4 = 0
-                            if SubjectScore.objects.filter(academic_rec = acaderec,session = session,term = term):
-                                totalmark4 = SubjectScore.objects.filter(academic_rec = acaderec,session = session,term = term).aggregate(Sum('annual_avg'))
-                                totalmark24 = totalmark4['annual_avg__sum']
-                                rtotal4 = float(totalmark24)
-                            #**********************************************
-                            jdic = {'studentinfo':j,'academic':acaderec,'affective':affskill,'pyscho':psycho,'subject':secsublist,'totalmark':rtotal,'totalmark1':rtotalsec,'totalmark2':rtotalsec1,'annualavg':locale.format("%.2f",rtotal4,grouping=True),'getgrading':getgrading,'percentage':locale.format("%.2f",perc,grouping=True)}
-                            replist.append(jdic)
-                    if classtot == 0 or stuno == 0:
-                        clavg = 0.0
-                    else:
-                        j = classtot/stuno
-                        clavg =j/float(totalmarkcount)
-                    if klass[0] == 'S':
-                        if form.cleaned_data['pdffile']:
-                            template ='assessment/reportviewthirdsss.html'
-                            context = {'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno}
-                            return render_to_pdf(template, context)
-                        else:
-                            return render_to_response('assessment/reportthirdsss.html',{'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno})
-                    elif klass[0] == 'N' or klass[0] == 'C' or klass[0] == 'L':
-                        if form.cleaned_data['pdffile']:
-                            template ='assessment/reportnviewthird.html'
-                            context = {'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno,'classavg':locale.format("%.2f",clavg,grouping=True)}
-                            return render_to_pdf(template, context)
-                        else:
-                            return render_to_response('assessment/reportnthird.html',{'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno,'classavg':locale.format("%.2f",clavg,grouping=True)})
-
-                    else:
-                        if form.cleaned_data['pdffile']:
-                            template ='assessment/reportviewthird.html'
-                            context = {'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno,'classavg':locale.format("%.2f",clavg,grouping=True)}
-                            return render_to_pdf(template, context)
-                        else:
-                            return render_to_response('assessment/reportthird.html',{'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno,'classavg':locale.format("%.2f",clavg,grouping=True)})
+                    p = classtot/stuno1
+                    clavg =p/float(totsub)
+                        
+                return render_to_response('assessment/mysummarysheet.html',{'varuser':varuser,'school':school,'form':form,'date':date, 'varerr':varerr,'replist':replist,'term':term,'stuno1':stuno1,'classavg':locale.format("%.2f",clavg,grouping=True)})
         else:
             form = reportsheetform()
-        return render_to_response('assessment/report.html',{'form':form,'varerr':varerr})
+        return render_to_response('assessment/report.html',{'varuser':varuser,'form':form,'varerr':varerr})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -1818,158 +2485,145 @@ def reportsheetmidterm(request):
             return HttpResponseRedirect('/assessment/access-denied/')
         varerr =''
         getdetails =''
-        school = get_object_or_404(School, pk=1)
+      #  school = get_object_or_404(School, pk=1)
+        school=School.objects.get(id =1)
         if request.method == 'POST':
-            form = reportsheetform(request.POST)
+            form = reportsheetmidform(request.POST)
             if form.is_valid():
                 session = form.cleaned_data['session']
                 klass = form.cleaned_data['klass']
                 term = form.cleaned_data['term']
                 arm = form.cleaned_data['arm']
-                stuno = Student.objects.filter(admitted_session = session,admitted_class = klass,admitted_arm = arm,gone = False).count()
-                stuinfo = Student.objects.filter(admitted_session = session,admitted_class = klass,admitted_arm = arm,gone = False).order_by('-sex','fullname')
-                midposition = mid_term_position(session,term,klass,arm)#getting the mid-term position
-                replist = [] #empty list
-                varbeg = klass[0]
-                getgrading = gradingsys.objects.filter(classsub__startswith = varbeg)
-                classtot = 0
-                totsub = 0
-                totalmarkcount = 0
-                stuno = Student.objects.filter(admitted_session = session,admitted_class = klass,gone = False,admitted_arm = arm).count()
-                for j in stuinfo:
-                        if StudentAcademicRecord.objects.filter(student = j,term = term):
-                            acaderec = StudentAcademicRecord.objects.get(student = j,term = term)
-                            acaderec1 = StudentAcademicRecord.objects.get(student = j,term = 'First')
-                            acaderec2 = StudentAcademicRecord.objects.get(student = j,term = 'Second')
-                            affskill = AffectiveSkill.objects.get(academic_rec = acaderec)
-                            psycho = PsychomotorSkill.objects.get(academic_rec = acaderec)
-                            totsub = SubjectScore.objects.filter(academic_rec = acaderec,term = term).count()
-                            totalmarkcount = SubjectScore.objects.filter(academic_rec = acaderec,session = session,term = term).count()
-                            subsco = SubjectScore.objects.filter(academic_rec = acaderec,term = term).order_by('num')
-                            secsublist = []  #empty list
-                            sdic = {}  #empty dictionary
-                            for h in subsco:
-                                if SubjectScore.objects.filter(academic_rec = acaderec1,term = 'First',subject = h.subject).count() == 0:
-                                    fscore = '-'
-                                    fscoret = '-'
-                                else:
-                                    fsc = SubjectScore.objects.get(academic_rec = acaderec1,term = 'First',subject = h.subject)
-                                    fsco = fsc.term_score
-                                    fscore = str(fsco)
-                                if SubjectScore.objects.filter(academic_rec = acaderec2,term = 'Second',subject = h.subject).count() == 0:
-                                    fscoret = '-'
-                                else:
-                                    fsct = SubjectScore.objects.get(academic_rec = acaderec2,term = 'Second',subject = h.subject)
-                                    fscot = fsct.term_score
-                                    fscoret = str(fscot)
-                                secdic ={'thirdterm':h,'firstterm':fscore,'secondterm':fscoret}
-                                secsublist.append(secdic)
-                            if SubjectScore.objects.filter(academic_rec = acaderec,session = session,term = term).count() == 0:
-                                 rtotal = 0
-                            else:
-                                totalmark = SubjectScore.objects.filter(academic_rec = acaderec,session = session,term = term).aggregate(Sum('term_score'))
-                                totalmark2 = totalmark['term_score__sum']
-                                rtotal = int(totalmark2)
-                            if rtotal == 0:
-                               perc = 0
-                            else:
-                               perc = float(rtotal)/float(totsub)
-                            classtot += rtotal
-                            ks = totalmarkcount * 100
-                            totsub += ks
-                            #total for first term
-                            if SubjectScore.objects.filter(academic_rec = acaderec1,session = session,term = 'First').count()==0:
-                               totalmark2sec = 0
-                            else:
-                                totalmarksec = SubjectScore.objects.filter(academic_rec = acaderec1,session = session,term = 'First').aggregate(Sum('term_score'))
-                                totalmark2sec = totalmarksec['term_score__sum']
-                            rtotalsec = int(totalmark2sec)
-                            #*********************************************
-                            if SubjectScore.objects.filter(academic_rec = acaderec2,session = session,term = 'Second').count() == 0:
-                                totalmark2sec1 = 0
-                            else:
-                                totalmarksec1 = SubjectScore.objects.filter(academic_rec = acaderec2,session = session,term = 'Second').aggregate(Sum('term_score'))
-                                totalmark2sec1 = totalmarksec1['term_score__sum']
-                            rtotalsec1 = int(totalmark2sec1)
-                            #**************************************************
-                            #***********************#annual average***********************
-                            if SubjectScore.objects.filter(academic_rec = acaderec,session = session,term = term).count() == 0:
-                                totalmark24 = 0
-                            else:
-                                totalmark4 = SubjectScore.objects.filter(academic_rec = acaderec,session = session,term = term).aggregate(Sum('annual_avg'))
-                                totalmark24 = totalmark4['annual_avg__sum']
-                            rtotal4 = int(totalmark24)
-                            tscore = 0
-                            submid = 0
-                            for uuu in Subject.objects.all():
-                                submid = uuu.ca  #totalca obtainable
-                            submiddiv = int(submid)/2 #divide total CA by 2 e.g if ca = 30 we need 15
-                            if klass [0] == 'N' or klass [0] == 'P':
-                                submiddiv = 40
-                            else:
-                                submiddiv= 30
-                            msublist = []
-                            for jj in subsco:
-                                mca = jj.mid_term
-                                fca = jj.first_ca
-                                sca = jj.second_ca
-                                tca = jj.third_ca
-                                foca = jj.fourth_ca
-                                totalca=mca
-                                #totalca=fca
-                                totalperc1 = mca/submiddiv
-                                totalperc = totalperc1 * 100 # getting the percentage
-                                subjposition = mid_term_subjectposition(session,jj.subject,term,klass,arm,totalca)#getting mid-term subject position
-                                if klass[0] == 'S':
-                                    remark = seniorgrade(float(totalperc))
-                                elif klass[0] == 'N' or klass[0] == 'C' or klass[0] == 'L' or klass[0] == 'B' or klass[0] == 'Y' or klass[0] == 'P':
-                                    remark = prygrade(float(totalperc))
-                                else:
-                                    remark = juniorgrade(float(totalperc))
-                                tscore += totalperc
-                                msub = {'subject':jj.subject,'first_ca':fca,'second_ca':sca,'third_ca':tca,'fourth_ca':foca,'totalca':totalca,'totalperc':locale.format("%.1f",totalperc,grouping=True),'remark':remark['remark'],'grade':remark['grade'],'teacher':jj.subject_teacher,'position':subjposition}
-                                msublist.append(msub)
-                            if totalmarkcount == 0:
-                               stuper = 0
-                            else:
-                                stuper = tscore / totalmarkcount
-                            #**********************************************
-                            jdic = {'studentinfo':j,'academic':acaderec,'affective':affskill,'pyscho':psycho,'subject':msublist,'totalmark':locale.format("%.1f",tscore,grouping=True),'totalmark1':rtotalsec,'totalmark2':rtotalsec1,'annualavg':rtotal4,'getgrading':getgrading,'percentage':locale.format("%.2f",stuper,grouping=True),'classposition':midposition[stuper]}
-                            replist.append(jdic)
-                if classtot == 0 or stuno == 0:
-                        clavg = 0.0
-                else:
-                        j = classtot/stuno
-                        clavg =j/float(totalmarkcount)
-                if klass[0] == 'S':
-                        if form.cleaned_data['pdffile']:
-                            template ='assessment/midreportviewthird.html'
-                            context = {'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno}
-                            return render_to_pdf(template, context)
-                        else:
-                            return render_to_response('assessment/midreportthird.html',{'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno})
-                elif klass[0] == 'N' or klass[0] == 'C' or klass[0] == 'L' or klass[0] == 'B' or klass[0] == 'Y' or klass[0] == 'P':
-                        if form.cleaned_data['pdffile']:
-                            template ='assessment/midreportnviewthird.html'
-                            context = {'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno,'classavg':locale.format("%.2f",clavg,grouping=True)}
-                            return render_to_pdf(template, context)
-                        else:
-                            return render_to_response('assessment/midreportnthird.html',{'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno,'classavg':locale.format("%.2f",clavg,grouping=True)})
+                ca = form.cleaned_data['ca']
+                # if ca == '1st CA':
+                #     fca = first_ca
+                # else:
+                #     fca=second_ca
 
+                if term=='First':
+                    stuinfo = Student.objects.filter(first_term=True,
+                        admitted_session = session,
+                        admitted_class = klass,
+                        admitted_arm = arm,
+                        gone = False).order_by('fullname')
+                    stuno = Student.objects.filter(first_term=True,
+                        admitted_session = session,
+                        admitted_class = klass,
+                        admitted_arm = arm,
+                        gone = False).count()
+                elif term=='Second':
+                    stuinfo = Student.objects.filter(second_term=True,
+                        admitted_session = session,
+                        admitted_class = klass,
+                        admitted_arm = arm,
+                        gone = False).order_by('fullname')
+                    stuno = Student.objects.filter(second_term=True,
+                        admitted_session = session,
+                        admitted_class = klass,
+                        admitted_arm = arm,
+                        gone = False).count()
                 else:
-                        if form.cleaned_data['pdffile']:
-                            template ='assessment/midreportviewthird.html'
-                            context = {'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno,'classavg':locale.format("%.2f",clavg,grouping=True)}
-                            return render_to_pdf(template, context)
-                        else:
-                            return render_to_response('assessment/midreportthird.html',{'form':form,'varerr':varerr,'replist':replist,'school':school,'term':term,'stuno':stuno,'classavg':locale.format("%.2f",clavg,grouping=True)})
-            else:
-                varerr ="All Fields Are Required"
-                return render_to_response('assessment/report.html',{'form':form,'varerr':varerr})
+                    stuinfo = Student.objects.filter(third_term=True,
+                        admitted_session = session,
+                        admitted_class = klass,
+                        admitted_arm = arm,
+                        gone = False).order_by('fullname')
+                    stuno= Student.objects.filter(third_term=True,
+                        admitted_session = session,
+                        admitted_class = klass,
+                        admitted_arm = arm,
+                        gone = False).count()
+                try:
+                  codi = ClassTeacher.objects.get(klass=klass,session=session,teachername='N/A')
+                except:
+                  codi='Not Available'
+                if ca == '1st CA':
+                    replist = []
+                    varbeg = klass[0]
+                    for j in stuinfo:
+                        totsub = 0
+                        acaderec = StudentAcademicRecord.objects.get(student = j,term = term)
+                        psycho = PsychomotorSkill.objects.get(academic_rec = acaderec)
+                        subsco = SubjectScore.objects.filter(academic_rec = acaderec).order_by('num')
+                        totsub = SubjectScore.objects.filter(academic_rec = acaderec).count()
+                        msublist = []
+                        for jj in subsco:
+                            fca = jj.first_ca
+                            totalperc1 = fca/20
+                            totalperc = totalperc1 * 100
+                            if varbeg == 'S':
+                                remark = seniorgrade(float(totalperc))                                    
+                            else:
+                                remark = juniorgrade(float(totalperc))
+                            msub = {'subject':jj.subject,
+                            'first_ca':fca,
+                            'totalperc':locale.format("%.1f",totalperc,grouping=True),
+                            'remark':remark['remark'],
+                            'grade':remark['grade'],
+                            'teacher':jj.subject_teacher}
+                            msublist.append(msub)
+                        #****************all i need in report******************************
+                        jdic = {'date':date,
+                        'codi':codi,
+                        'studentinfo':j,
+                        'academic':acaderec,
+                        'pyscho':psycho,
+                        'subject':msublist}
+                        replist.append(jdic)
 
+                    return render_to_response('assessment/midreport1.html',{'session':session, 
+                        'form':form,
+                        'varuser':varuser,
+                        'varerr':varerr,
+                        'replist':replist,
+                        'school':school,
+                        'term':term})
+
+                elif ca == '2nd CA':
+                    replist = []
+                    varbeg = klass[0]
+                    for j in stuinfo:
+                        totsub = 0
+                        acaderec = StudentAcademicRecord.objects.get(student = j,term = term)
+                        psycho = PsychomotorSkill.objects.get(academic_rec = acaderec)
+                        subsco = SubjectScore.objects.filter(academic_rec = acaderec).order_by('num')
+                        totsub = SubjectScore.objects.filter(academic_rec = acaderec).count()
+                        msublist = []
+                        for jj in subsco:
+                            sca = jj.second_ca
+                            totalperc1 = sca/20
+                            totalperc = totalperc1 * 100
+                            if varbeg == 'S':
+                                remark = seniorgrade(float(totalperc))                                    
+                            else:
+                                remark = juniorgrade(float(totalperc))
+                            msub = {'subject':jj.subject,
+                            'second_ca':sca,
+                            'totalperc':locale.format("%.1f",totalperc,grouping=True),
+                            'remark':remark['remark'],
+                            'grade':remark['grade'],
+                            'teacher':jj.subject_teacher}
+                            msublist.append(msub)
+                        #****************all i need in report******************************
+                        jdic = {'date':date,
+                        'codi':codi,
+                        'studentinfo':j,
+                        'academic':acaderec,
+                        'pyscho':psycho,
+                        'subject':msublist}
+                        replist.append(jdic)
+
+                    return render_to_response('assessment/midreport2.html',{
+                        'session':session,
+                        'varuser':varuser, 
+                        'form':form,
+                        'varerr':varerr,
+                        'replist':replist,
+                        'school':school,
+                        'term':term})
         else:
-            form = reportsheetform()
-        return render_to_response('assessment/report.html',{'form':form,'varerr':varerr})
+            form = reportsheetmidform()
+        return render_to_response('assessment/reportmid.html',{'varuser':varuser,'form':form,'varerr':varerr})
     else:
         return HttpResponseRedirect('/login/')
 
@@ -2071,11 +2725,11 @@ def broadsheet(request):
                        k += 1
                    wb.save(response)
                    return response
-                return render_to_response('assessment/broadsheet.html',{'form':form,'varerr':varerr})
+                return render_to_response('assessment/broadsheet.html',{'varuser':varuser,'form':form,'varerr':varerr})
                         #end of position
         else:
             form = broadsheetform()
-        return render_to_response('assessment/broadsheet.html',{'form':form,'varerr':varerr})
+        return render_to_response('assessment/broadsheet.html',{'varuser':varuser,'form':form,'varerr':varerr})
     else:
         return HttpResponseRedirect('/login/')
 #********************************************************Mid Term Broad Sheet *****************************************
@@ -2259,48 +2913,3 @@ def secondary_teacher_report(request,session1,klass1,arm1,name1,term1):
 
     else:
         return HttpResponseRedirect('/login/')
-"""
-def secondary_teacher_report(request,session1,klass1,arm1,name1,term1):
-    if  "userid" in request.session:
-        varuser = request.session['userid']
-        user = userprofile.objects.get(username = varuser)
-        session = str(session1).replace('j','/')
-        klass = str(klass1).replace('k',' ')
-        arm = str(arm1).replace('k',' ')
-        subject1 = str(name1).replace('z',' ')
-        subject = str(subject1).replace('q','$')
-        term = str(term1).replace('0',' ')
-        stlist = []
-        school = get_object_or_404(School, pk=1)
-        for j in Student.objects.filter(admitted_session = session,admitted_class = klass,admitted_arm = arm,gone = False).order_by('fullname'):
-            if StudentAcademicRecord.objects.filter(student = j,session = session,term = term):
-                if term == "Thirdddd":
-                	pass
-                else:
-                    st = StudentAcademicRecord.objects.get(student = j,session = session,term = term)
-                    acaderec1 = StudentAcademicRecord.objects.get(student = j,session = session,term = 'First')
-                    acaderec2 = StudentAcademicRecord.objects.get(student = j,session = session,term = 'Second')
-                    if SubjectScore.objects.filter(academic_rec = acaderec1,klass = klass,subject = subject,session = session,arm=arm,term ='First'):
-                        gs = SubjectScore.objects.get(academic_rec = acaderec1,klass = klass,subject = subject,session = session,arm=arm,term ='First')
-                        firstterm = gs.term_score
-                    else:
-                        firstterm = 0
-                    if SubjectScore.objects.filter(academic_rec = acaderec2,klass = klass,subject = subject,session = session,arm=arm,term ='Second'):
-                        gs = SubjectScore.objects.get(academic_rec = acaderec2,klass = klass,subject = subject,session = session,arm=arm,term ='Second')
-                        secondterm = gs.term_score
-                    else:
-                        secondterm = 0
-                    if SubjectScore.objects.filter(academic_rec = st,klass = klass,subject = subject,session = session,arm=arm,term =term):
-                        gs = SubjectScore.objects.get(academic_rec = st,klass = klass,subject = subject,session = session,arm=arm,term =term)
-                        kk = {'id':gs.id,'admissionno':j.admissionno,'fullname':j.fullname,'sex':j.sex,'subject':gs.subject,'term':str(term),'first_ca':gs.first_ca,'second_ca':gs.second_ca,'third_ca':gs.third_ca,'exam_score':gs.exam_score,'termscore':gs.term_score,'remark':gs.grade,'position':gs.subposition,'firstterm':firstterm,'secondterm':secondterm,'annual_avg':gs.annual_avg}
-                        stlist.append(kk)
-                    else:
-                        pass
-        if term =="Third":
-        	return render_to_response('assessment/printcathird.htm',{'data':stlist,'session':session,'klass':klass,'arm':arm,'subject':subject,'term':term,'teacher':str(user.staffname).title(),'school':school})
-        else:
-            return render_to_response('assessment/printca.htm',{'data':stlist,'session':session,'klass':klass,'arm':arm,'subject':subject,'term':term,'teacher':str(user.staffname).title(),'school':school})
-
-    else:
-        return HttpResponseRedirect('/login/')
-"""

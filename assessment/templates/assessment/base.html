@@ -1,0 +1,88 @@
+<html>
+<head>
+<title>  SchApp 8.0 - Enterprise School Software</title>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+
+<link type="text/css" rel="Stylesheet" href="/static/CSS/new_body_style.css" />
+<!--my css file abv--> 
+
+<!--sedn ot printre--> 
+
+<script type='text/javascript' src='/static/JS/jquery-1.7.1.min.js'></script>
+<link rel="stylesheet" type="text/css" href="/static/JS/css/hot-sneaks/jquery-ui-1.8.18.custom.css" />
+<script type='text/javascript' src='/static/JS/jquery-ui-1.8.18.custom.min.js'></script>
+<script type='text/javascript' src='/static/JS/myprint.js'></script>
+
+
+<script language="javascript" type="text/javascript">
+    function disable(f)
+    {
+        var button = f.elements['submit'];
+        button.value = 'Processing';
+        button.disabled = 'true';
+        return true;
+    }
+</script>
+
+<script type=text/javascript>
+    $(document).ready(function() {
+        openrec();
+    });
+</script>
+
+
+<script language="javascript" type="text/javascript">
+    function openrec()
+    {
+        var data='userid='+'test';
+        $.ajax({
+            type:"POST",
+            url:"/header/",
+            data:data,
+            success:function(html) {
+                $(".boxnn").show();
+                $(".boxnn").html(html);
+            }
+        });
+        return false;
+    }
+</script>
+
+
+</head>
+
+<body>
+
+	<div id="wrapper_subject"> 
+		<div id="header"> 
+			<div class="boxnn"></div>
+		</div>
+		<div id="contents" >
+			<div id="content_left_subject">
+				{%block content%}
+                {%endblock%}
+			</div>
+			<div id="content_right_subject">
+                <div class="side_menu_header">Menu Items</div>
+                <ul class="side_menu">
+                    <li><a href="/assessment/addsubject/">Student' Courses</a></li>
+                    <li><a href="/assessment/enterca/" >Subject Scores</a></li>
+                    <li><a href="/assessment/affective/"> Personal & Social, Development</a></li>
+                    <li><a href="/assessment/mid-term-report/">C.A Views</a></li>
+                    <li><a href="/assessment/teacherrport/">Score Sheet</a></li>
+                    <li><a href="/assessment/reportsheet/">Summary Sheet</a></li>
+                    <li><a href="/assessment/broadsheet/">Broad Sheet</a></li>
+                   <li><a href="/assessment/ca_comments/">C.A Comments</a></li>
+                    <li><a href="/assessment/comment/">Summary Sheet Comment</a></li>
+                    <li><a href="/assessment/principalcomment/">Princpal's Comment</a></li>
+                </ul>
+			</div>
+		</div>
+		<div id="footers">ADYSYS Technologies (07031009036, 08035076979)</div>
+	</div>
+
+
+</body>
+
+</html>

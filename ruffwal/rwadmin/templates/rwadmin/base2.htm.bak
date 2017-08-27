@@ -64,7 +64,7 @@ A:visited {
     text-decoration:none;
 }
 A:hover {
-    background-color: #ffd700;
+    background-color: #ffd8.0;
     color: red;
 }
 .submit {
@@ -366,17 +366,17 @@ ul.errorlist {
 
                     <tr>
                         <td style="width:auto;border:1px solid white;background-color:#000;color:#ffffff">
-                            <a href="/SchApp/account/sysadmin/accrollover/" style="color:yellow;">
+                            <a href="/SchApp/account/controllers/accrollover/" style="color:yellow;">
                                 Acc. RollOver
                             </a>
                         </td>
                         <td style="width:auto;border:1px solid white;background-color:#000;color:#ffffff">
-                            <a href="/SchApp/account/sysadmin/delete-transaction/" style="color:yellow;">
+                            <a href="/SchApp/account/controllers/delete-transaction/" style="color:yellow;">
                                 Delete Transaction
                             </a>
                         </td>
                         <td style="width:auto;border:1px solid white;background-color:#000;color:#ffffff">
-                            <a href="/SchApp/account/sysadmin/view-transaction/" style="color:yellow;">
+                            <a href="/SchApp/account/controllers/view-transaction/" style="color:yellow;">
                                 View Transaction
                             </a>
                         </td>

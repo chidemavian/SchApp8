@@ -1,42 +1,52 @@
+
+
 <!DOCTYPE html>
+
+
+
 <html>
+
+
+
 <head>
     <title>SchApp v8.0 {% block title %}{% endblock %}</title>
     <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
 </head>
+
+
 <body>
+    
+    <div>
 <table style="width:100%;">
     <tr>
         <td colspan="10">
             {% if getdetails %}
-            <table style="width:100%;background-color:white;border-collapse:collapse;">
+            <table style="width:100%;background-color:#D1B37F;border-collapse:collapse;">
                 <thead >
-                <tr>
-                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">S/N</td>
-                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Admission No</td>
-                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Name</td>
-                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Class</td>
-                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Arm</td>
-                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Session</td>
-                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Term</td>
-                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Subject Offered</td>
-                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"></td>
-                    <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"></td>
+                <tr class='ajaxhead4'>
+                    <td >S/N</td>
+                    <td >Admission No</td>
+                    <td >Name</td>
+                    <td >Class</td>
+                    <td >Arm</td>
+                    <td >Session</td>
+                    <td >Term</td>
+                    <td >Subject Offered</td>
+                    <td> Delete Subject</td>
                 </tr>
                 </thead>
                 <tbody>
                 {% for student in getdetails %}
-                    <tr>
-                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ forloop.counter }}</td>
-                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.academic_rec.student.admissionno }}</td>
-                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.academic_rec.student.fullname }}</td>
-                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.academic_rec.student.admitted_class }}</td>
-                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.academic_rec.student.admitted_arm }}</td>
-                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.academic_rec.student.admitted_session }}</td>
-                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.term }}</td>
-                        <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.subject }}</td>
-                        <td title = "Add Subject for {{ student.academic_rec.student.fullname}}" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="#" style="color:blue" onClick= "getdialogtry({{ stuid  }});"> Add Subject</a> </td>
-                        <td title = "Delete {{ student.subject}} for {{student.academic_rec.student.fullname}}" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="#" style="color:blue" onClick= "deletesub({{ student.id  }});" > Remove Subject </a> </td>
+                    <tr class='ajaxbody4'>
+                        <td >{{ forloop.counter }}</td>
+                        <td >{{ student.academic_rec.student.admissionno }}</td>
+                        <td >{{ student.academic_rec.student.fullname }}</td>
+                        <td >{{ student.academic_rec.student.admitted_class }}</td>
+                        <td >{{ student.academic_rec.student.admitted_arm }}</td>
+                        <td >{{ student.academic_rec.student.admitted_session }}</td>
+                        <td >{{ student.term }}</td>
+                        <td >{{ student.subject }}</td>
+                        <td title = "Delete {{ student.subject}} for {{student.academic_rec.student.fullname}}"> <a href="#" style="color:blue" onClick= "deletesub({{ student.id  }});" > Delete</a> </td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -46,12 +56,16 @@
             {% endif %}
         </td>
     </tr>
+    <div>
+        <td title = "Add Subject for {{ student.academic_rec.student.fullname}}" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <a href="#" style="color:blue" align= 'center' onClick= "getdialogtry({{ stuid  }});"> Click here to add subject</a> </td>
+    </div>
 </table>
+</div>
 <div id="myDialog" title="Add Subject">
 </div>
 <div id="deletesubject" title="Delete Subject">
 </div>
-
+</body>
 <script type="text/javascript" >
     $(document).ready(function() {
         $("#myDialog").hide();
@@ -97,26 +111,6 @@
     }
 
 </script>
-
-<script type="text/javascript" language="javascript">
-    function deletedialog(){
-        var dialogOpts = {
-            autoOpen:true,
-            modal:true,
-            position: ["center", "middle"],
-            height:350,
-            width:510,
-            title:'<a>SchApp 8.0 | Confirm Subject Delete</a>' ,
-            closeOnEscape:true,
-            show: true,
-            hide: true,
-            bgiframe: true
-        };
-        $("#deletesubject").dialog(dialogOpts);
-    }
-
-</script>
-
 <script type="text/javascript" language="javascript">
     function deletesub(vid){
         //alert(vid);
@@ -138,7 +132,24 @@
     }
 
 </script>
+<script type="text/javascript" language="javascript">
+    function deletedialog(){
+        var dialogOpts = {
+            autoOpen:true,
+            modal:true,
+            position: ["center", "middle"],
+            height:350,
+            width:510,
+            title:'<a>SchApp 8.0 | Confirm Subject Delete</a>' ,
+            closeOnEscape:true,
+            show: true,
+            hide: true,
+            bgiframe: true
+        };
+        $("#deletesubject").dialog(dialogOpts);
+    }
 
-</body>
+</script>
+
 </html>
 

@@ -5,7 +5,6 @@ urlpatterns = patterns('myproject.bill.views',
     # Examples:
     url(r'^billname/$', 'addexpensesname'),
     url(r'^wel/$', 'wel'),
-  #  url(r'^well/$', 'well'),
     url(r'^deleteexpense/(\d+)/$', 'deleteexpensesname'),
     url(r'^billsetup/$', 'billsetup'),
     url(r'^setupajax/$', 'billsetupajax'),

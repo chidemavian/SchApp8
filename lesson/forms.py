@@ -17,7 +17,7 @@ class settopicForm(forms.Form):
     klass = forms.ChoiceField(label='Class',choices = [(c.klass, c.klass) for c in Class.objects.all()])
     term = forms.ChoiceField(label='Term',choices=[(a.term, a.term) for a in tblterm.objects.filter(status = 'ACTIVE')])
     subject = forms.ChoiceField(label= 'Subject', choices = [(a.subject, a.subject) for a in Subject.objects.all()])
-    topic = forms.CharField(label='Topic',max_length= 200,required=True,widget=forms.TextInput(attrs={'size':'35'}))
+    topic = forms.CharField(label='Topic',max_length= 200,required=True,widget=forms.Textarea(attrs={'size':'30'}))
 
 
     def __init__(self, *args):
@@ -30,18 +30,15 @@ class settopicForm(forms.Form):
         self.fields['term'].choices = [(a.term, a.term) for a in tblterm.objects.filter(status = 'ACTIVE')]
         self.fields['term'].initial = tblterm.objects.filter(status = 'ACTIVE')
 
-
-class setsubtopicform(forms.Form):
-    session = forms.CharField(label='Session',max_length= 190,required=True,widget= forms.TextInput(attrs ={'size':'8','readonly':'readonly'}),initial=sess())
+class setobjForm(forms.Form):
+    session = forms.CharField(label='Session',max_length= 190,required=True,widget= forms.TextInput(attrs ={'size':'10','readonly':'readonly'}),initial=sess())
     klass = forms.ChoiceField(label='Class',choices = [(c.klass, c.klass) for c in Class.objects.all()])
     term = forms.ChoiceField(label='Term',choices=[(a.term, a.term) for a in tblterm.objects.filter(status = 'ACTIVE')])
     subject = forms.ChoiceField(label= 'Subject', choices = [(a.subject, a.subject) for a in Subject.objects.all()])
-#    topic = forms.ChoiceField(label='Topics',choices=[(a.topic,a.topic) for a in psetup.objects.all()])
-#    subtopic = forms.CharField(label='Subtopic',required=True,widget=forms.TextInput(attrs={'size':'35'}))
 
 
     def __init__(self, *args):
-        super(setsubtopicform, self).__init__(*args)
+        super(setobjForm, self).__init__(*args)
         self.fields['klass'].choices = [(c.klass, c.klass) for c in Class.objects.all()]
         self.fields['klass'].initial = Class.objects.all()
         self.fields['subject'].choices = [(a.subject, a.subject) for a in Subject.objects.all()]
@@ -49,17 +46,28 @@ class setsubtopicform(forms.Form):
         self.fields['session'].widget.attrs['class'] = 'loginTxtbox'
         self.fields['term'].choices = [(a.term, a.term) for a in tblterm.objects.filter(status = 'ACTIVE')]
         self.fields['term'].initial = tblterm.objects.filter(status = 'ACTIVE')
-#        self.fields['topic'].choices=[(a.topic, a.topic) for a in psetup.objects.all()]
-#        self.fields['topic'].initial = psetup.objects.all()
 
 
+
+class lesc(forms.Form):
+    session = forms.CharField(label='Session',max_length= 190,required=True,widget= forms.TextInput(attrs ={'size':'8','readonly':'readonly'}),initial=sess())
+    klass = forms.ChoiceField(label='Class',choices = [(c.klass, c.klass) for c in Class.objects.all()])
+    term = forms.ChoiceField(label='Term',choices=[(a.term, a.term) for a in tblterm.objects.filter(status = 'ACTIVE')])
+    wl = forms.CharField(label= 'No. Lesson/ Week', widget= forms.TextInput(attrs ={'size':'8'}))
+
+    def __init__(self, *args):
+        super(lesc, self).__init__(*args)
+        self.fields['klass'].choices = [(c.klass, c.klass) for c in Class.objects.all()]
+        self.fields['klass'].initial = Class.objects.all()
+        self.fields['session'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['term'].choices = [(a.term, a.term) for a in tblterm.objects.filter(status = 'ACTIVE')]
+        self.fields['term'].initial = tblterm.objects.filter(status = 'ACTIVE')
 
 class lessonplanform(forms.Form):
     session = forms.CharField(label='Session',max_length= 190,required=True,widget= forms.TextInput(attrs ={'size':'10','readonly':'readonly'}),initial=sess())
     klass = forms.ChoiceField(label='Class',choices = [(c.klass, c.klass) for c in Class.objects.all()])
     term = forms.ChoiceField(label='Term',choices=[(a.term, a.term) for a in tblterm.objects.filter(status = 'ACTIVE')])
     subject = forms.ChoiceField(label= 'Subject', choices = [(a.subject, a.subject) for a in Subject.objects.all()])
-    arm = forms.ChoiceField(label= 'Arm', choices = [(a.arm, a.arm) for a in Arm.objects.all()])
 
     def __init__(self, *args):
         super(lessonplanform, self).__init__(*args)
@@ -70,5 +78,35 @@ class lessonplanform(forms.Form):
         self.fields['session'].widget.attrs['class'] = 'loginTxtbox'
         self.fields['term'].choices = [(a.term, a.term) for a in tblterm.objects.filter(status = 'ACTIVE')]
         self.fields['term'].initial = tblterm.objects.filter(status = 'ACTIVE')
-        self.fields['arm'].choices = [(a.arm, a.arm) for a in Arm.objects.all()]
+
+
+class waform(forms.Form):
+    session = forms.CharField(label='Session',max_length= 190,required=True,widget= forms.TextInput(attrs ={'size':'10','readonly':'readonly'}),initial=sess())
+    klass = forms.ChoiceField(label='Class',choices = [(c.klass, c.klass) for c in Class.objects.all()])
+    subject = forms.ChoiceField(label= 'Subject', choices = [(a.subject, a.subject) for a in Subject.objects.all()])
+    wa = forms.CharField(label='WA',required=True,widget= forms.TextInput(attrs ={'size':'10'}))
+    
+    def __init__(self, *args):
+        super(waform, self).__init__(*args)
+        self.fields['klass'].choices = [(c.klass, c.klass) for c in Class.objects.all()]
+        self.fields['klass'].initial = Class.objects.all()
+        self.fields['subject'].choices = [(a.subject, a.subject) for a in Subject.objects.all()]
+        self.fields['subject'].initial = Subject.objects.all()
+        self.fields['session'].widget.attrs['class'] = 'loginTxtbox'
+
+class mynotes(forms.Form):
+    session = forms.CharField(label='Session',max_length= 190,required=True,widget= forms.TextInput(attrs ={'size':'10','readonly':'readonly'}),initial=sess())
+    klass = forms.ChoiceField(label='Class',choices = [(c.klass, c.klass) for c in Class.objects.all()])
+    term = forms.ChoiceField(label='Term',choices=[(a.term, a.term) for a in tblterm.objects.filter(status = 'ACTIVE')])
+    subject = forms.ChoiceField(label= 'Subject', choices = [(a.subject, a.subject) for a in Subject.objects.all()])
+
+    def __init__(self, *args):
+        super(mynotes, self).__init__(*args)
+        self.fields['klass'].choices = [(c.klass, c.klass) for c in Class.objects.all()]
+        self.fields['klass'].initial = Class.objects.all()
+        self.fields['subject'].choices = [(a.subject, a.subject) for a in Subject.objects.all()]
+        self.fields['subject'].initial = Subject.objects.all()
+        self.fields['session'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['term'].choices = [(a.term, a.term) for a in tblterm.objects.filter(status = 'ACTIVE')]
+        self.fields['term'].initial = tblterm.objects.filter(status = 'ACTIVE')
 

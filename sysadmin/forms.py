@@ -4,8 +4,14 @@ from myproject.student.models import *
 from myproject.setup.models import *
 from myproject.bill.models import *
 
+
+cat_choices=(('JS', 'JS'), ('SS', 'SS'))
+filterss=(('ACTIVE', 'ACTIVE'), ('INACTIVE', 'SS'))
+cas= (('1st CA', '1st CA'), ('2nd CA', '2nd CA'), ('SCORE SHEET', 'SCORE SHEET'), ('SUMMARY SHEET', 'SUMMARY SHEET'), ('PRINCIPAL', 'PRINCIPAL'))
+ta= ( ('First', 'First'), ('Second', 'Second'), ('Third', 'Third'))
 def sess():
     return currentsession.objects.get(id = 1)
+
 currse = currentsession.objects.get(id = 1)
 cur = billsession.objects.get(id = 1)
 x,y = str(currse).split('/')
@@ -67,6 +73,8 @@ class userloginform(forms.Form):
 class creatuserform(forms.Form):
     username = forms.CharField(label = "Username",max_length = 20,required = True,widget = forms.TextInput(attrs={'size':'40'}))
     staffname = forms.CharField(label = "Full Name",max_length = 220,required = True,widget = forms.TextInput(attrs={'size':'40'}))
+    Filters = forms.ChoiceField(label= 'Sort By', choices=( ('-----', '-----'), ('ACTIVE', 'ACTIVE'), ('INACTIVE', 'INACTIVE')))
+
 
     def __init__(self, *args, **kwargs):
         super(creatuserform, self).__init__(*args, **kwargs)
@@ -86,10 +94,53 @@ class classteacher(forms.Form):
         self.fields['arm'].choices = [(a.arm, a.arm) for a in Arm.objects.all()]
         self.fields['arm'].initial = Arm.objects.all()
 
+class autorunform(forms.Form):
+    ca = forms.ChoiceField(label= 'Run Auto comment for', choices=cas)
+    session = forms.CharField(label= 'Session', max_length=13,initial=sess(),widget = forms.TextInput(attrs={'size':'10','readonly':'readonly'}))
+    term = forms.ChoiceField(label='Term',choices= ta)
+    def __init__(self, *args):
+        super(autorunform, self).__init__(*args)
+        self.fields['ca'].choices=cas
+        self.fields['session'].widget.attrs['class'] = 'loginTxtbox'
+
+
+class cfform(forms.Form):
+    date = forms.CharField(label = "Date",max_length = 280,required = True,widget = forms.TextInput(attrs={'readonly':'readonly'}))
+    session = forms.CharField(label= 'Session', max_length=13,initial=sess(),widget = forms.TextInput(attrs={'size':'10','readonly':'readonly'}))
+    term = forms.ChoiceField(label='Term',choices=[(a.term, a.term) for a in tblterm.objects.filter(status = 'ACTIVE')])
+    def __init__(self, *args):
+        super(cfform, self).__init__(*args)
+        self.fields['session'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['date'].widget.attrs['class'] = 'loginTxtbox'
+        # self.fields['term'].choices = [(a.term, a.term) for a in tblterm.objects.filter(status = 'ACTIVE')]
+
+class autocomform(forms.Form):
+    comment = forms.CharField(label = "Comment",max_length = 5000,required = True)
+    krang = forms.ChoiceField(label='Range',choices = [(c.grade, c.grade) for c in gradingsys.objects.all()])
+    category = forms.ChoiceField(label= 'Category', choices = cat_choices)
+
+    def __init__(self, *args, **kwargs):
+        super(autocomform, self).__init__(*args, **kwargs)
+        self.fields['krang'].choices = [(c.grade, c.grade) for c in gradingsys.objects.all()]
+        self.fields['krang'].initial = Class.objects.all()
+        self.fields['category'].choices = cat_choices
+       # self.fields['category'].initial = Arm.objects.all()
+
+class cocoform(forms.Form):
+    teachername = forms.CharField(label = "Teacher Name",max_length = 120,required = True,widget = forms.TextInput(attrs={'size':'13'}))
+    klass = forms.ChoiceField(label='Class',choices = [(c.klass, c.klass) for c in Class.objects.all()])
+
+    def __init__(self, *args, **kwargs):
+        super(cocoform, self).__init__(*args, **kwargs)
+        self.fields['teachername'].widget.attrs['class'] = 'loginTxtbox'
+        self.fields['klass'].choices = [(c.klass, c.klass) for c in Class.objects.all()]
+        self.fields['klass'].initial = Class.objects.all()
+
 class suteacher(forms.Form):
     teachername = forms.CharField(label = "Teacher Name",max_length = 120,required = True,widget = forms.TextInput(attrs={'size':'12'}))
     klass = forms.ChoiceField(label='Class',choices = [(c.klass, c.klass) for c in Class.objects.all()])
     arm = forms.ChoiceField(label= 'Arm', choices = [(a.arm, a.arm) for a in Arm.objects.all()])
+    subclass = forms.ChoiceField(label = 'Subclass')
     subject = forms.ChoiceField(label= 'Subject', choices = [(a,a) for a in slist])
 
     def __init__(self, *args, **kwargs):
@@ -100,6 +151,7 @@ class suteacher(forms.Form):
         self.fields['arm'].choices = [(a.arm, a.arm) for a in Arm.objects.all()]
         self.fields['arm'].initial = Arm.objects.all()
         self.fields['subject'].choices = [(a,a) for a in slist]
+        self.fields['subclass'].choices=[(a.category, a.category) for a in Subject.objects.all()]
 
 
 class principalform(forms.Form):
@@ -138,8 +190,8 @@ class promotion_form(forms.Form):
         self.fields['session'].widget.attrs['class'] = 'loginTxtbox'
 
 class calendar_form(forms.Form):
-    session = forms.CharField(label= 'Session', max_length=25,initial=cur,widget = forms.TextInput(attrs={'size':'12','readonly':'readonly'}))
-    sessionnew = forms.CharField(label= 'Session', max_length=25,initial=newsession1,widget = forms.TextInput(attrs={'size':'12','readonly':'readonly'}))
+    session = forms.CharField(label= 'Current Session', max_length=25,initial=cur,widget = forms.TextInput(attrs={'size':'12','readonly':'readonly'}))
+    sessionnew = forms.CharField(label= 'Next Session', max_length=25,initial=newsession1,widget = forms.TextInput(attrs={'size':'12','readonly':'readonly'}))
     def __init__(self, *args):
         super(calendar_form, self).__init__(*args)
         self.fields['session'].widget.attrs['class'] = 'loginTxtbox'
@@ -161,7 +213,7 @@ class statement_form(forms.Form):
     def __init__(self, *args):
         super(statement_form, self).__init__(*args)
         self.fields['session'].widget.attrs['class'] = 'loginTxtbox'
-      #  self.fields['session'].initial = oldsession
+  
 
 #*******************************************SUBJECT REPORT***********************************
 class subject_report_form(forms.Form):

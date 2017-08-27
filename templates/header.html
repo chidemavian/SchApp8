@@ -1,86 +1,25 @@
-<style type="text/css">
-.style1 {
-	color: #990000;
-	font-weight: bold;
-}
-</style>
-
-
 {% block content %}
-
     {% load humanize  %}
-
-    <div  style="width:100%;font-family:times;" >
-    </div>
-
-    <table>
+<table>
         <tr class="header_nav_bar">
-            <td>
-                <div>
-                    <span>Logged in as :</span> 
-                    <span style="color:red;"> {{ useracc.username }}</span>
-                </div>
-            </td>
-
-            <td>
-                <div title="Change Your Password">
-                <a href="#" onClick= "getdialogtrynew();">
-                Change Password </a>
-                </div>
-            </td>
-
-            <td>
-                <div title="Main Page">
-                <a href="/welcome/">Home
-                </a>
-                </div>
-            </td>
-
-            <td>
-                <div title="Search For Student">
-                <a href="/student_search/">Name Search </a>
-                </div>
-            </td>
-
-            <td>
-                <div>
-                <a href="/SchApp/account/"> School Account </a>
-                </div>
-            </td>
-
-            <td>
-                <div>
-                <a href="/hrm/">Staff Management  </a>
-                </div>
-            </td>
-
-            <td> 
-                <div title="Log Out">
-                <a href="/logout/">Log Out</a>
-                </div>
-             </td>
-
-            <td>
-                <div>
-                System Date :
-                <span style="">{{ vvtoday }} </span>
-                </div>
-            </td>
+            <td><a href="/welcome/">Home </a></td>
+            <td><a href="#" onClick= "getdialogtrynew();">Change Password </a></td>
+            <td><a href="/student_search/">Name Search </a></td>
+            <td>UserName :<span style="color:green;"> {{ useracc.username }}</span></td>
+            <td><a >Date :{{ vvtoday }}</a></td>
+            <td><a href="/logout/">Log Out</a></td>
     </tr>
-
-</table>
-    
-    <div id="myDialognew" title="Change Password">    </div>
-    <div id="mynews" title="News">    </div>
-
-
+    </table>
+    <div id="myDialognew" title="Change Password"> </div>
+    <div id="mynews" title="News">   </div>
     <script type="text/javascript" >
         $(document).ready(function() {
             $("#myDialognew").hide();
             $("#mynews").hide();
         });
     </script>
-   <script type="text/javascript" language="javascript">
+    
+      <script type="text/javascript" language="javascript">
         function getdialogtrynew(){
             //alert(vid);
             var state = 'test';
@@ -119,6 +58,7 @@
         }
 
     </script>
+
 
    <script type="text/javascript" language="javascript">
         function getdialogtrynews(vid){

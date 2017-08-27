@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{%block content%}
+    <table align ="center" style="border: 0px solid #f5deb3; width: 100%; position: relative; font-family: Georgia, 'Times New Roman', Times, serif; font-size: 24px;" cellspacing="3" cellpadding="3" >
+        <tr align = "center"> </tr>
+        <tr>
+            <td  title="HRM Set Up">
+                <a href="/hrm/setuplg/" >
+                    <div class="app_menu">1. Set Up
+                    </div>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td  title="Posting Module">
+                <a href="/hrm/hrm/staffdata/" >
+                    <div class="app_menu">  2. Human Resorces
+                    </div>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td  title="Stock Management">
+                <a href="/hrm/contract/contractstaff/" >
+                    <div class="app_menu">  3. Contract Staff
+                    </div>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td  title="Budget">
+                <a href="/hrm/leave/leavesetup/" >
+                    <div class="app_menu">  4. Leave Management
+                    </div>
+                </a>
+
+            </td>
+        </tr>
+
+        <tr>
+            <td  title="Temporary Posting">
+                <a href="/hrm/payroll/enterworkingdays/" >
+                    
+                    <div class="app_menu">5. Payroll Management
+                    </div>
+                </a>
+           </td>
+        </tr>
+
+            <td title="Bank Reconciliation">
+                <a href="/hrm/staff/redeployment/" >
+                    <div class="app_menu"> 6. Staff Management
+                    </div>
+                </a>
+            </td>
+        </tr>
+
+        <tr>    <td  title="Financial Report">
+                <a href="/hrm/train/trainingsetup/" >
+                    <div class="app_menu">  7. Training Management
+                    </div>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td  title="Asset Register">
+                <a href="/hrm/query/setup/" >
+                    <div class="app_menu"> 8. Disciplinary Module
+                    </div>
+                </a>
+            </td>
+        </tr>
+       </table>
+
+
+{%endblock%}

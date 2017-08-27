@@ -1,32 +1,82 @@
-{% load humanize %}
-<table style="border-collapse:collapse;width:100%;">
-    <tr style="border-bottom:solid #000000">
-        <td style="font-weight: bold; background-color: #000; text-align:left;color:white;border:1px solid #000">S/N</td>
-        <td style="font-weight: bold; background-color: #000; text-align:left;color:white;border:1px solid black">Name</td>
-        <td style="font-weight: bold; background-color: #000; text-align:left;color:white;border:1px solid black">Sex</td>
-        <td style="font-weight: bold; background-color: #000; text-align:left;color:white;border:1px solid black">Admission No</td>
-        <td style="font-weight: bold; background-color: #000; text-align:left;color:white;border:1px solid black">Class</td>
-        <td style="font-weight: bold; background-color: #000; text-align:left;color:white;border:1px solid black">Arm</td>
-        <td style="font-weight: bold; background-color: #000; text-align:left;color:white;border:1px solid black">House</td>
-        <td style="font-weight: bold; background-color: #000; text-align:left;color:white;border:1px solid black">Day/Boarding</td>
-        <td style="font-weight: bold; background-color: #000; text-align:left;color:white;border:1px solid black">Phone Number</td>
-        <td style="font-weight: bold; background-color: #000; text-align:left;color:white;border:1px solid black">E-Mail</td>
-        <td style="font-weight: bold; background-color: #000; text-align:left;color:white;border:1px solid black"></td>
-    </tr>
-    {% for student in data %}
-        <tr>
-            <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ forloop.counter }}</td>
-            <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.fullname }}</td>
-            <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.sex }}</td>
-            <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.admissionno }}</td>
-            <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.admitted_class }}</td>
-            <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.admitted_arm }}</td>
-            <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.house }}</td>
-            <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.dayboarding }}</td>
-            <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.fathernumber }}</td>
-            <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black">{{ student.fatheremail|lower }}</td>
-            <td style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"><a href="/student/search/{{ student.id }}/" style="color:blue;font-weight:bold;font-size:12px;">View Details</a></td>
-        </tr>
-    {% endfor %}
 
-</table>
+{%block content%}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Dowen College Lagos</title>
+
+</head>
+
+<body>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                           Search Result
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <table class="table table-responsive table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th>S/N</th>
+                                        <th>Name</th>
+                                        <th>Gender</th>
+                                        <th>Class</th>
+                                        <th>Adm No.</th>
+                                        <th>Arm</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                  {% for student in data %}
+                       <tr >
+                           <td>{{ forloop.counter }}</td>
+                           <td>{{ student.fullname }}</td>
+                           <td>{{ student.sex }}</td>
+                            <td >{{ student.admitted_class }}</td>
+                           <td>{{ student.admissionno }}</td>                          
+                           <td>{{ student.admitted_arm }}</td>
+                           <td ><a href="/student/search/{{ student.id }}/" style="color:blue;font-weight:bold;font-size:12px;">View Details</a></td>
+<!-- 
+                           <li><a href="#" onClick= "getdialogtrynew()">
+
+
+                           <a href="/student/search/{{ student.id }}/" style="color:blue;font-weight:bold;font-size:12px;"> -->
+                       </tr>
+                   {% endfor %}
+                                    
+                 </tbody>
+                </table>
+
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+
+    <script>
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+            responsive: true
+        });
+    });
+    </script>
+
+</body>
+
+</html>
+{% endblock %}

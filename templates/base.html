@@ -1,9 +1,5 @@
-
-
 <html>
-
 <head>
-
 <title>  SchApp 8.0 - Enterprise School Software</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <link rel="shortcut icon" href="/static/favicon.png" />
@@ -23,24 +19,33 @@
 
 <link type="text/css" rel="Stylesheet" href="/static/CSS/new_body_style.css" />
 
+</head>
+<body>
+	<div id="wrapper"> 
+		<div id="header"> 
+			<div class="boxnn"></div>
+		</div>
+		<div id="content" >
+			<div id="content_left">
+				{%block content%}
+                {%endblock%}
+			</div>
+		</div>
+
+		<div id="footer">ADYSYS Technologies (07031009036,  08035076979)</div>
+
+	</div>
 
 
-<script language="javascript" type="text/javascript">
-    function disable(f)
-    {
-        var button = f.elements['submit'];
-        button.value = 'Processing';
-        button.disabled = 'true';
-        return true;
-    }
-</script>
+</body>
+
+</html>
 
 <script type=text/javascript>
     $(document).ready(function() {
         openrec();
     });
 </script>
-
 
 <script language="javascript" type="text/javascript">
     function openrec()
@@ -58,30 +63,3 @@
         return false;
     }
 </script>
-
-
-</head>
-
-<body>
-
-	<div id="wrapper"> 
-		<div id="header"> 
-			<div id="app_name">SchApp 8.0 - Enterprise School Solution</div>
-			<div class="boxnn"></div>
-		</div>
-		<div id="content" >
-			<div id="content_left">
-				{%block content%}
-                {%endblock%}
-			</div>
-			<div id="content_right"></div>
-		</div>
-
-		<div id="footer">ADYSYS Technologies (07031009036,  08035076979)</div>
-
-	</div>
-
-
-</body>
-
-</html>

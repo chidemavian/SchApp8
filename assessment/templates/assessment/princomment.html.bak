@@ -9,7 +9,7 @@
     <tr>
         <td colspan="10">
 
-            <table style="width:100%;background-color:white;border-collapse:collapse;">
+            <table style="width:100%;background-color:whte;border-collapse:collapse;">
                 <thead >
                 <tr>
                     <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">S/N</td>

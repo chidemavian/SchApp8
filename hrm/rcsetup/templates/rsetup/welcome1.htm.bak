@@ -3,32 +3,32 @@
     <table align ="center" style="border:0px solid #f5deb3;width:100%;position:relative;" cellspacing="3" cellpadding="3" >
         <tr align = "center">
             <td style="width:auto;" title="Set Up">
-                <a href="/humanresources/setuplg/" >
+                <a href="/hrmes/setuplg/" >
                     <div class="circleBase type1"><br>Set Up
                     </div>
                 </a>
             </td>
             <td style="width:auto;" title="Human Resources">
-                <a href="/humanresources/hrm/staffdata/" >
+                <a href="/hrmes/hrm/staffdata/" >
                     <div class="circleBase type1">  Human <br> Resorces
                     </div>
                 </a>
             </td>
             <td style="width:auto;" title="Contact Staff">
-                <a href="/humanresources/contract/contractstaff/" >
+                <a href="/hrmes/contract/contractstaff/" >
                     <div class="circleBase type1">  Contract <br>Staff
                     </div>
                 </a>
             </td>
             <td style="width:auto;" title="Leave Management">
-                <a href="/humanresources/leave/leavesetup/" >
+                <a href="/hrmes/leave/leavesetup/" >
                     <div class="circleBase type1">  Leave<br>Management
                     </div>
                 </a>
 
             </td>
             <td style="width:auto;">
-                <a href="/humanresources/payroll/enterworkingdays/" title="ayroll Management">
+                <a href="/hrmes/payroll/enterworkingdays/" title="ayroll Management">
 
                     <div class="circleBase type1">Payroll <br>  Management
                     </div>
@@ -49,20 +49,20 @@
             </td>
 
             <td style="width:auto;" title="Staff Management">
-                <a href="/humanresources/staff/redeployment/" >
+                <a href="/hrmes/staff/redeployment/" >
                     <div class="circleBase type1"> Staff <br>Management
                     </div>
                 </a>
             </td>
 
             <td style="width:auto;" title="Training Management">
-                <a href="/humanresources/train/trainingsetup/" >
+                <a href="/hrmes/train/trainingsetup/" >
                     <div class="circleBase type1">  Training <br> Management
                     </div>
                 </a>
             </td>
             <td style="width:auto;" title="Disciplinary Module">
-                <a href="/humanresources/query/setup/">
+                <a href="/hrmes/query/setup/">
                     <div class="circleBase type1"> Disciplinary <br>Module
                     </div>
                 </a>

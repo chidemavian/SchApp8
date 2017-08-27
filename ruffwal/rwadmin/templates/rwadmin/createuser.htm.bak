@@ -1,0 +1,166 @@
+{% extends "rwadmin/base.htm" %}}
+{%block head %}
+{%block title %}{%endblock%}
+{%endblock %}
+{%block content%}
+
+<div class="adv1"><div class="advin" align="left" ><img style ="width:25px;height:25px;float:left;" src ="/static/imgs/loogo.png" ></div> <div class="advout" align="right"> Welcome, {{varuser|upper}} |<a href="/welcome/"> Main Page </a>|<a href="/logoutuser/"> Log Out </a></div></div>
+<div class="pmiddle">
+<!-- <div align ="center" style = "width:100%;heigth:10%;background:black;color:white;font-size:18px"> CONTROL PANEL</div>
+<div align ="left" style="border:1px solid black;width:100%;heigth:10%;font-family: verdana;color:black">-->
+<div align ="center" style="background-color:black;border:0px solid black;width:100%;height:10%; font-size:12px;color:white"> <strong>USER CREATION  </strong> </div>
+<div align="center" style="color:red;font-family:verdana;font-size:13px;text-decoration:blink;" > {{varerr}}</div>
+<table align ="center" style="border:0px solid black;width:100%">
+ <form action="" method="post" name ="main" onsubmit="disable(this)">
+<tr>
+        <td align ="left" style="width:30%">
+User Name :
+        </td>
+<td align ="left" style="width:30%">{{ form.username}}
+</td>
+<td align ="left" style="width:30%">{{ form.username.errors}}
+</td>
+</tr>
+<tr>
+     <td align ="left" style="width:30%">
+Staff Name :
+        </td>
+<td align ="left" style="width:30%">{{ form.staffname}}
+</td>
+<td align ="left" style="width:30%">{{ form.staffname.errors}}
+</td>
+
+</tr>
+
+<tr>
+        <td>
+Expiry Date :
+        </td>
+<td>{{ form.expiredate}}
+</td>
+<td>{{ form.expiredate.errors}}
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan = 20> <hr></td>
+</tr>
+<tr><td colspan = 20 style="vertical-align:top; width:auto;align:left"><strong>Set Up Module :</strong> Account Creation{{ form.createacc}}   Payables{{ form.payables}}  Receivables{{ form.receivables}}</td>
+</tr>
+<tr>
+<td colspan = 20> <hr></td>
+</tr>
+<tr><td colspan = 20 style="vertical-align:top; width:auto;align:left" ><table><tr><td><strong>Posting Module ::</strong></td><td>Invoice{{ form.invoice}}  Receipt{{ form.receipt}} </td><td> Payment{{ form.payment}} </td><td>Geneneral Ledger{{ form.genledger}}</td><td>Standard Ledger{{ form.standardledger}}</td></tr></table>    </td>
+</tr>
+<tr>
+<td colspan = 20> <hr></td>
+</tr>
+<!--
+ Inventory{{ form.inventory}}
+<tr><td colspan = 20 style="vertical-align:top; width: auto;align:left" ><strong>Inventory Module ::</strong> Add To Stock{{ form.stockin}}  Stock Out{{ form.stockout}}  Stock Report{{ form.stockreport}}</td>
+</tr>
+<tr>
+<td colspan = 20> <hr></td>
+</tr>
+Additional Job{{ form.addsetup}}  Costing{{ form.jobcosting}}  Return Item{{ form.returnmat}}  Invoice{{ form.wipinvoice}}  Report{{ form.wipreport}}
+-->
+<tr><td colspan = 20 style="vertical-align:top; width: auto;align:left" ><strong>Hrm Module ::</strong> Allow{{ form.jobsetup}}  </td>
+</tr>
+<tr>
+<td colspan = 20> <hr></td>
+</tr>
+<tr><td colspan = 20 style="vertical-align:top; width: auto;align:left" ><strong>Reconciliation Module ::</strong> Allow {{ form.unpresented}}  </td>
+</tr>
+<tr>
+<td colspan = 20> <hr></td>
+</tr>
+<tr><td colspan = 20 style="vertical-align:top; width: auto;align:left" ><strong>Report Module ::</strong> Statutory Report  {{ form.statutory}}</td>
+</tr>
+<tr>
+<td colspan = 20> <hr></td>
+</tr>
+<tr><td colspan = 20 style="vertical-align:top; width: auto;align:left" ><strong>Sys Admin Module ::</strong> Create User  {{ form.createuser}}  Reset User  {{ form.resetuser}}  User Report  {{ form.userreport}}  Rollover {{ form.rollover}}</td>
+</tr>
+<tr>
+<td colspan = 20> <hr></td>
+</tr>
+
+
+
+
+<tr>
+        <td align ="left" style="width:30%">
+
+
+                        </td>
+<td align ="left" style="width:30%">
+
+<input name="submit" type= "submit" value="Create User Account" name = "submit">
+ </td>
+<td align ="left" style="width:30%">
+ </td>
+<td>
+</td>
+</tr>
+</form>
+<table align ="center" style="border:0px solid black;width:100%">
+ <tr>
+             <td align="center" valign="top" style = "width:auto; height:10px;background-color:#E6E6E6;font-size:11px"><strong>UserName </strong></td>
+             <td align="center" valign="top" style = "width:auto; height:10px;background-color:#E6E6E6;font-size:11px"><strong>Staff Name</strong></td>
+
+              <td align="center" valign="top" style = "width:auto; height:10px;background-color:#E6E6E6;font-size:11px"><strong> Creation Date</strong></td>
+              <td align="center" valign="top" style = "width:auto ;height:10px;background-color:#E6E6E6;font-size:11px"><strong> Expiry Date</strong></td>
+               <td align="center" valign="top" style = "width:auto ;height:10px;background-color:#E6E6E6;font-size:11px"><strong> Status</strong></td>
+               <td align="center" valign="top" style = "width:auto ;height:10px;background-color:#E6E6E6;font-size:11px"><strong> Created By</strong></td>
+               </tr>
+
+         {% for pincode in getdetails %}
+
+           <tr>
+
+              <td align="left" valign="top" style = "background-color:gray;width:auto;color:white"> <strong><a href="/SchApp/account/controllers/edituser/{{ pincode.id }}/" style ="color:yellow"> {{ pincode.username|upper }} </a></strong></td>
+              <td align="left" valign="top" style = "background-color:gray;width:auto;color:white"><strong> {{ pincode.staffname|upper }}</strong></td>
+              <td align="left" valign="top" style = "background-color:gray;width:auto;color:white"> <strong>{{ pincode.recdate|date:"d-m-Y"}}</strong></td>
+              <td align="left" valign="top" style = "background-color:gray;width:auto;color:white"> <strong>{{ pincode.expiredate|date:"d-m-Y"}}</strong></td>
+               <td align="left" valign="top" style = "background-color:gray;width:auto;color:white"> <strong>{{ pincode.status|upper}}</strong></td>
+               <td align="left" valign="top" style = "background-color:gray;width:auto;color:white"> <strong>{{ pincode.userid|upper}}</strong></td>
+           {% endfor %}
+
+
+            </tr>
+</table>
+</table>
+</div>
+
+<!-- parti-->
+
+<script type="text/javascript">
+document.getElementById('id_username').focus()
+</script>
+<script>
+$(document).ready(function() {
+    var pickerOpts = {
+        //appendText: "mm/dd/yy",
+        //defaultDate: "+5",
+        showOtherMonths: true,
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true
+        // showOn: "button"
+    };
+         $("#id_expiredate").datepicker(pickerOpts);
+         //alert("welcome");
+         //$("#id_cuscode").focus();
+});
+</script>
+    <script language="javascript" type="text/javascript">
+        function disable(f)
+        {
+            var button = f.elements['submit'];
+            button.value = 'Processing';
+            button.disabled = 'true';
+            return true;
+        }
+    </script>
+ {%endblock%}

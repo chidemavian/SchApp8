@@ -1,5 +1,4 @@
-{% extends 'setup/base.htm' %}
-{% block title %}:: Setup Class And Arm{% endblock %}
+{%extends 'setup/typography.html' %}
 {% block content %}
     <div align ="center" style="background-color:#ccccc0;border:0px solid black;width:100%;height:3%; font-size:16px;color:black;text-align:center">School House Set Up </div>
     <div align="center" style="color:red;font-family:verdana;font-size:15px;background-color:#ffffff;height:5%; " > {{varerr}}</div>
@@ -8,7 +7,7 @@
         <form action="" method="post" name ="main" id="form1" onsubmit="disable(this)">
             <table align ="left" style="border:0px solid black;width:99%">
                 <thead> <tr>
-                    <td colspan="20" align="center" style="border-radius:10px;width:100%;font-weight: ld;background-color:#ccccc0;color: black;text-align:center" > House
+                    <td colspan="20" align="center" style="width:100%;font-weight: ld;background-color:#ccccc0;color: black;text-align:center" > House
                     </td></tr>
                 </thead>
                 <tbody>
@@ -80,5 +79,4 @@
         }
     </script>
 
-{% endblock %}
-
+    {% endblock %}

@@ -1,0 +1,81 @@
+{% extends "setup/base12.htm" %}
+{%block content%}
+        <table align ="center" style="border:0px solid #f5deb3;width:100%;position:relative;" cellspacing="3" cellpadding="3" >
+            <tr align = "center">
+                <td style="width:auto;" title="Account Setup">
+                    <a href="/SchApp/account/entersetup/" >
+         1               <div class="circleBase type1">Account<br> Setup
+                        </div>
+                    </a>
+                </td>
+                <td style="width:auto;" title="Posting">
+      2              <a href="/SchApp/account/posting/invoice/">
+                        <div class="circleBase type1">  Posting <br> Module
+                        </div>
+                    </a>
+                </td>
+                <td style="width:auto;" title="Stock Management">
+           3         <a href="/SchApp/account/stock/newstock/" >
+                        <div class="circleBase type1">  Stock <br>Management
+                        </div>
+                    </a>
+                </td>
+                <td style="width:auto;" title="Budget">
+            4        <a href="/SchApp/account/budget/enterbudget/" >
+                        <div class="circleBase type1"> <br> Budget
+                        </div>
+                    </a>
+
+                </td>
+                <td style="width:auto;" title="Temporary Posting">
+           5         <a href="/SchApp/account/newyear/receipt/" >
+
+                        <div class="circleBase type1">Temporary<br> Posting
+                        </div>
+                    </a>
+                </td>
+
+            </tr>
+
+
+
+
+            <tr align = "center">
+                <td style="width:auto;">
+                    <a href="#" >
+                        <!--
+                        <div class="circleBase type1">Temporary<br> Posting
+                        </div>-->
+                    </a>
+                </td>
+
+                <td style="width:auto;" title="Bank Reconciliation">
+            6        <a href="/SchApp/account/recon/unpresented/" >
+                        <div class="circleBase type1"> Bank <br>Reconciliation
+                        </div>
+                    </a>
+                </td>
+
+
+                <td style="width:auto;" title="Financial Report">
+             7       <a href="/SchApp/account/report/trialbalancerep/" >
+                        <div class="circleBase type1"> Financial <br>Report
+                        </div>
+                    </a>
+                </td>
+                <td style="width:auto;" title="Asset Register">
+          8          <a href="/SchApp/account/assets/welcome/" >
+                        <div class="circleBase type1">  Assets <br> Register
+                        </div>
+                    </a>
+                </td>
+                <td style="width:auto;" title="Super User">
+        9            <a href="/SchApp/account/controllers/accrollover/" >
+                        <div class="circleBase type1">  Super <br> User
+                        </div>
+                    </a>
+                </td>
+
+            </tr>
+        </table>
+    {%endblock%}

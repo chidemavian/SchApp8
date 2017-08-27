@@ -1,4 +1,4 @@
-{% extends "sysadmin/base.htm" %}
+{% extends "controllers/base.htm" %}
 {%block head %}
 {%block title %}{%endblock%}
 {%endblock %}
@@ -115,7 +115,7 @@ Expiry Date :
          {% for pincode in getdetails %}
 
            <tr>
-            <!-- <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="/sysadmin/edituser/{{ pincode.id }}/" style ="color:red" onclick="admno({{ pincode.id }});" title="Edit This User"> {{ pincode.username|upper }} </a></strong></td>-->
+            <!-- <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="/controllers/edituser/{{ pincode.id }}/" style ="color:red" onclick="admno({{ pincode.id }});" title="Edit This User"> {{ pincode.username|upper }} </a></strong></td>-->
               <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong><a href="#" style ="color:red" onclick="admno({{ pincode.id }});" title="Edit This User"> {{ pincode.username|upper }} </a></strong></td>
               <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"><strong> {{ pincode.staffname|upper }}</strong></td>
               <td align="left" valign="top" style = "background-color:white;font-size:11px;width:auto;color:#000000;border:1px solid black"> <strong>{{ pincode.recdate|date:"d-m-Y"}}</strong></td>
@@ -164,7 +164,7 @@ $(document).ready(function() {
         function admno(vid){
             //alert(vid);
             var state = vid;
-            var url = "/humanresources/sysadmin/getuseraccount/";
+            var url = "/hrmes/controllers/getuseraccount/";
             var i = 0;
             var data='userid='+state;
             $.ajax({

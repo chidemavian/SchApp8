@@ -23,7 +23,9 @@ urlpatterns = patterns('',
     url(r'^uploadlga/$',uploadlocal ),
     url(r'^uploadsubgroup/$',uploadaccsubgrp),
     url(r'^uploadacc/$',uploadacc),
+    url(r'^home_dashboard/$',dashboard),
     url(r'^uploadtransaction/$',uploadtransaction),
+    url(r'^pass_change/$', change_password),
     url(r'^getchangepassword/$', getchangepassword),
     url(r'^uploadstudent/$',uploadstudent),
     url(r'^uploadbill/$',uploadbill),#to upload bill setup
@@ -41,6 +43,8 @@ urlpatterns = patterns('',
     url(r'^hrmes/', include('myproject.hrm.urls')), #hrmes
     url(r'^hrm/', include('myproject.hrm.urls')),
     url(r'^lesson/', include('myproject.lesson.urls')),
+    url(r'^assignment/', include('myproject.assignment.urls')),
+   # url(r'^transport/', include('myproject.transport.urls')),
     url(r'^utils/', include('myproject.utilities.urls')),
     url(r'^forum/', include('myproject.forum.urls')),
     # Uncomment the admin/doc line below to enable admin documentation:

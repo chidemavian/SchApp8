@@ -24,9 +24,8 @@
                                 <td>
                                     Class :
                                 </td>
-                                <td>{{ form.klass}}
-                                </td>
-
+                                <td>{{ form.klass}}</td>
+                                <td>{{form.subclass}}</td>
                                 <td>
                                     Arm :
                                 </td>
@@ -138,6 +137,33 @@
     </script>
     <script>
         $(document).ready(function() {
+
+           $("#id_klass").change(function () {
+                subclass();
+            });
+            $("#id_subclass").change(function () {
+                getsub();
+            });  
+        });
+    </script>
+
+      <script>
+        $(document).ready(function() {
+            var pickerOpts = {
+                //appendText: "mm/dd/yy",
+                //defaultDate: "+5",
+                showOtherMonths: true,
+                changeMonth: true,
+                changeYear: true,
+                dateFormat:"yy-mm-dd"
+            };
+
+           subclass();
+        });
+
+    </script>
+    <script>
+        $(document).ready(function() {
             $("#id_teachername").focus();
             autocomplete();
 
@@ -163,5 +189,66 @@
 
         }
     </script>
+
+
+
+
+    <script type="text/javascript" language="javascript">
+        function subclass(){
+            var state = $("#id_klass").val() ;
+            //alert(state);
+            var p = state.charAt(0).toUpperCase();
+            //alert(p);
+            var url = "/student/subclass/";
+            var i = 0;
+            var data='userid='+p;
+            $("#id_subclass").val('');
+            $("#id_subclass").html('');
+            if (state != undefined){
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data:data,
+                    success: function(data){
+                        var options = '';
+                        for (i=0; i<data.length; i++){
+                            options += '<option value="' + data[i] +'">' + data[i] + '</option>'
+                        }
+                        $("#id_subclass").append(options);
+                         getsub();
+                       
+                    }
+                })
+            }
+        }
+
+    </script>
+
+        <script type="text/javascript" language="javascript">
+        function getsub(){
+            var state = $("#id_subclass").val();  // i need subclass to determine my subject
+            var url = "/sysadmin/subject-reportajax/";
+            var i = 0;
+            var data='userid='+state;
+            $("#id_subject").val('');  // here is subject, values depend on subclass
+            $("#id_subject").html('');
+            if (state != undefined){
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data:data,
+                    success: function(data){
+                        var options = '';
+                        for (i=0; i<data.length; i++){
+                            options += '<option value="' + data[i] +'">' + data[i] + '</option>'
+                        }
+                        $("#id_subject").append(options);
+                    }
+                })
+            }
+        }
+
+    </script>
+
 
 {%endblock%}

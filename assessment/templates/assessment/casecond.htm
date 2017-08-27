@@ -35,11 +35,9 @@
                         <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Sex</td>
                         <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Subject</td>
                         <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Term</td>
-                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">C/A 1</td>
-                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">C/A 2</td>
-                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">C/A 3</td>
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">1st CA</td>
+                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">2nd CA</td>
                         <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle">Exam Score</td>
-                        <td style = "width:auto; height:20px;background-color:#E6E6E6;font-size:14px;border:1px solid black;color:#000000;vertical-align:middle"></td>
                     </tr>
                     </thead>
                     <tbody>
@@ -54,10 +52,9 @@
 
                             <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ student.first_ca }}</td>
                             <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ student.second_ca }}</td>
-                            <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ student.third_ca }}</td>
                             <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black">{{ student.exam_score }}</td>
-                            <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black"> <a href="#" style="color:blue" onClick= "getdialogtry({{ student.id  }});"> Edit Score </a> </td>
-                            <!--      <td> <a href="/assessment/editca/{{ student.id }}/" style="color:blue" onClick= "return hs.htmlExpand(this, { objectType: 'iframe' } )"> Edit Score </a> </td>-->
+                          <!--  <td style = "background-color:white;font-size:12px;width:auto;color:#000000;border:1px solid black"> <a href="#" style="color:blue" onClick= "getdialogtry({{ student.id  }});"> Edit Score </a> </td>
+                                  <td> <a href="/assessment/editca/{{ student.id }}/" style="color:blue" onClick= "return hs.htmlExpand(this, { objectType: 'iframe' } )"> Edit Score </a> </td>-->
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -99,8 +96,8 @@
                 autoOpen:true,
                 modal:true,
                 position: ["center", "middle"],
-                height:400,
-                width:410,
+                height:450,
+                width:500,
                 closeOnEscape:true,
                 show: true,
                 hide: true,

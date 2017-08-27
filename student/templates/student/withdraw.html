@@ -12,7 +12,7 @@
             <td colspan="6"  style="background-color:#ffffff;font-size:13px;color:red;width:100%;font-weight:bold;text-decoration:blink;text-align:center" > {{ varerr }}
             </td>
         </tr>
-        <tr style="color:white;">
+        <tr style="color:w;">
             <td>
                 {{ searchform.admitted_class1.label_tag }}
             </td>
@@ -35,7 +35,7 @@
         <tr>
 
             <td colspan="6">
-                <div class="box">
+                <div class="box2">
 
 
                 </div>
@@ -82,7 +82,7 @@
                 getstudents();
             });
             $("#id_studentname").change(function () {
-                autopost();
+                autopost2();
             });
         });
     </script>
@@ -119,7 +119,7 @@
     </script>
 
     <script type="text/javascript" language="javascript">
-        function autopost(){
+        function autopost2(){
             var state = $("#id_admitted_class1").val() + ':'+ $("#id_admitted_arm1").val()+':'+ $("#id_studentname").val() ;
             // alert(state);
             // var p = state.charAt(0).toUpperCase();
@@ -133,8 +133,8 @@
                 url:url,
                 data:data,
                 success:function(html) {
-                    $(".box").show();
-                    $(".box").html(html);
+                    $(".box2").show();
+                    $(".box2").html(html);
                 }
             });
             //alert("error");
@@ -163,7 +163,7 @@
                             options += '<option value="' + data[i] +'">' + data[i] + '</option>'
                         }
                         $("#id_studentname").append(options);
-                        autopost();
+                        autopost2();
                     }
 
                 })

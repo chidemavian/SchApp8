@@ -1,0 +1,311 @@
+from django.shortcuts import render_to_response
+from myproject.lesson.forms import *
+from myproject.setup.models import *
+from myproject.controllers.models import *
+from myproject.student.models import *
+from myproject.lesson.models import *
+from assessment.views import sublists
+from django.http import  Http404, HttpResponseRedirect, HttpResponse
+from django.core.serializers.json import simplejson as json
+
+
+
+def wel(request):
+    if  "userid" in request.session:
+        return render_to_response('lesson/success.html')
+    else:
+        return HttpResponseRedirect('/login/')
+
+def settopic(request):
+    if  "userid" in request.session:
+        varuser = request.session['userid']
+        varerr = ''
+        if request.method == 'POST':
+            form = settopicForm(request.POST)
+            if form.is_valid():
+                 klass = form.cleaned_data['klass']
+                 session = form.cleaned_data['session']
+                 term = form.cleaned_data['term']
+                 subject= form.cleaned_data['subject']
+                 topic=form.cleaned_data['topic']
+                 top = topic.upper()
+                 if tbltopic.objects.filter(topic=top, term = term):
+                     varerr = 'TOPIC ALREADY ENTERED'
+                   #  return HttpResponseRedirect('/lesson/set_up/')
+                     return render_to_response('lesson/setup.html',{'form':form,'varerr':varerr})#,'sett':sett
+                 if klass[0]=='J':
+                     count = tbltopic.objects.filter(klass=klass, term=term,subject=subject,session=session).count()
+                     count=count+1
+                     num=1
+                 elif klass[0]=='P':
+                     count = tbltopic.objects.filter(klass=klass, term=term,subject=subject,session=session).count()
+                     count=count+1
+                     num=2
+                 elif klass[0]=='S':
+                     count = tbltopic.objects.filter(klass=klass, term=term,subject=subject,session=session).count()
+                     count=count+1
+                     num=3
+                 less = tbltopic(session=session, term = term,klass = klass,topic = topic.upper(),subject=subject).save()
+                 form=  settopicForm()
+                 varerr = 'TOPIC ENTERED SUCCESSFULLY'
+                 return render_to_response('lesson/setup.html',{'form':form,'varerr':varerr})
+            else:
+                varerr = 'topic not entered'
+                return render_to_response('lesson/setup.html',{'form':form,'varerr':varerr})
+        else:
+            form = settopicForm()
+            return render_to_response('lesson/setup.html',{'form':form})
+    else:
+        return HttpResponseRedirect('/login/')
+
+def topajax(request):
+    if "userid" in request.session:
+        if request.is_ajax():
+            if request.method == 'POST':
+                varerr = ""
+                varuser = request.session['userid']
+                post = request.POST.copy()
+                accode = post['userid']
+                subject,klass,term = accode.split(':') #order must follow that in the autopost script in html
+                sett = tbltopic.objects.filter(klass = klass,term = term, subject = subject)
+                return render_to_response('lesson/topajax.html',{'sett':sett,'varerr':varerr, 'term':term,'klass':klass,'subject':subject})
+            else:
+                sett = ""
+            return render_to_response ('lesson/topajax.html',{'sett':sett})
+        else:
+            sett = ""
+            return render_to_response ('lesson/topajax.html',{'sett':sett})
+
+
+def deletetopiccode(request, sid):
+    if "userid" in request.session:
+        varuser = request.session['userid']
+        getdetails= tbltopic.objects.get(id = sid)
+        getdetails.delete()
+        return HttpResponseRedirect('/lesson/set_up/')
+    else:
+        return HttpResponseRedirect('/login/')
+
+def getsubajax(request):
+    if "userid" in request.session:
+        if request.is_ajax():
+            if request.method == 'POST':
+                varuser = request.session['userid']
+                post = request.POST.copy()
+                accode = post['userid']
+                subject,klass,term = accode.split(':') #order must follow that in the autopost script in html
+                sett = tbltopic.objects.filter(klass = klass,term = term, subject = subject)
+                return render_to_response('lesson/setsub.html',{'sett':sett})
+            else:
+                sett = ""
+            return render_to_response ('lesson/setsub.html',{'sett':sett})
+        else:
+            sett = ""
+            return render_to_response ('lesson/setsub.html',{'sett':sett})
+
+
+def setsub(request):
+    if "userid" in request.session:
+        varuser = request.session['userid']
+        varerr = ""
+        form = subtopicform()
+        return render_to_response('lesson/subt.html',{'form':form})
+    else:
+        return HttpResponseRedirect('/login/')
+
+
+def entercont(request):
+        if  "userid" in request.session:
+            if request.is_ajax():
+                if request.method == 'POST':
+                    varuser = request.session['userid']
+                    varerr =""
+                    post = request.POST.copy()
+                    acccode = post['userid']
+                    state=acccode
+                    getdetails = tbltopic.objects.get(id = state)
+                    return render_to_response('lesson/entersub.html',{'getdetails':getdetails,'state':acccode})
+                else:
+                    gdata = ""
+                    return render_to_response('index.html',{'gdata':gdata})
+            else:
+
+                getdetails = tblcontents.objects.filter(topic=id)
+                return render_to_response('lesson/entersub.html',{'gdata':getdetails})
+        else:
+            return HttpResponseRedirect('/login/')
+
+
+def cont(request,vid):
+    if "userid" in request.session:
+        varuser = request.session['userid']
+        varerr = ''
+        if request.method=='POST':
+            content=request.POST['content']
+            content= content.lower()
+            tr= tbltopic.objects.get(id = vid)
+            c=tblcontents.objects.filter(topic=tr)
+            for k in c:
+                if k.content == content:
+                    return HttpResponseRedirect('/lesson/setup_sub/')
+            tblcontents(content=content,topic=tr).save()
+            return HttpResponseRedirect('/lesson/setup_sub/')
+    else:
+        return HttpResponseRedirect('/login/')
+
+
+
+def filsubtop(request):
+    if "userid" in request.session:
+        if request.is_ajax():
+            if request.method == 'POST':
+                varerr = ""
+                varuser = request.session['userid']
+                post = request.POST.copy()
+                accode=post['userid']
+                state=accode
+                sublist=[]
+                subject,klass,term=accode.split(':')
+                sott = tbltopic.objects.filter(subject=subject,klass=klass,term=term).order_by('id')
+#********** obtain topic id ***********************#
+                if tbltopic.objects.filter(subject=subject,klass=klass,term=term).order_by('id').count() < 1:
+                    varerr = 'NO TOPICS ENTERED FOR  ' + subject +', '+ term + ' term'
+                    return render_to_response('lesson/subtajax.html',{'varerr':varerr,'subject':subject })
+                else:                       
+                    for j in sott:
+                        k = tblcontents.objects.filter(topic=j)
+                        cont = {'topic':j, 'content':k}
+                        sublist.append(cont)
+                return render_to_response('lesson/subtajax.html',{'subject':subject,'term':term,'sublist':sublist,'klass':klass,})
+    else:
+        return HttpResponseRedirect('/login/')
+
+def setobj(request):
+    if "userid" in request.session:
+        varuser = request.session['userid']
+        varerr = ""
+        form = setobjForm
+        return render_to_response('lesson/subobj.html',{'form':form})
+    else:
+        return HttpResponseRedirect('/login/')
+
+
+def filobj(request):
+    if "userid" in request.session:
+        if request.is_ajax():
+            if request.method == 'POST':
+                varerr = ""
+                varuser = request.session['userid']
+                post = request.POST.copy()
+                accode=post['userid']
+                state=accode
+                sublist=[]
+                oblist=[]
+                subject,klass,term=accode.split(':')
+                sott = tbltopic.objects.filter(subject=subject,klass=klass,term=term).order_by('id')
+#********** obtain topic id ***********************#
+                if tbltopic.objects.filter(subject=subject,klass=klass,term=term).order_by('id').count() < 1:
+                    varerr = 'NO TOPICS ENTERED FOR  ' + klass+ ' '+ term + '  term'+ ' '+ subject
+                    return render_to_response('lesson/subtajax.html',{'varerr':varerr,'subject':subject })
+                else:                       
+                    for j in sott:
+                        k = tblcontents.objects.filter(topic =j)
+                        for h in k:
+                            ob = tblobjectives.objects.filter(content=k)
+                            obj ={'objectives':ob,'content':h}
+                            oblist.append(obj)
+
+
+                return render_to_response('lesson/subobjajax.html',{'subject':subject,'term':term,'sublist':sublist,'klass':klass,'oblist':oblist})
+    else:
+        return HttpResponseRedirect('/login/')
+ 
+
+def setresource(request):
+    if "userid" in request.session:
+        varuser = request.session['userid']
+        varerr = ""
+        if request.method=='POST':
+            form = setobjForm(request.POST)
+            klass =request.POST['klass']
+            term = request.POST['term']
+            subject=request.POST['subject']
+            if subtopic =="":
+                ht = 'enter a subtopic'
+                return render_to_response('lesson/subobj.html',{'form':form,'varerr':ht})
+            if subtopic==subtopic:
+                ht = 'subtopic already entered'
+                return render_to_response('lesson/subobj.html',{'form':form,'varerr':ht})
+            else:
+                    top = tblcontents(subject=subject,klass=klass,term=term,topic=topic,subtopic=subtopic.upper()).save()
+                    ht = 'done'
+            return render_to_response('lesson/resos.html',{'form':form})
+        else:
+            form = setobjForm
+            return render_to_response('lesson/setir.html',{'form':form})
+    else:
+        return HttpResponseRedirect('/login/')
+
+
+
+
+def resajax(request):
+    if "userid" in request.session:
+        if request.is_ajax():
+            if request.method == 'POST':
+                varerr = ""
+                varuser = request.session['userid']
+                post = request.POST.copy()
+                accode=post['userid']
+                state=accode
+                sublist=[]
+                subject,klass,term=accode.split(':')
+                sott = tbltopic.objects.filter(subject=subject,klass=klass,term=term).order_by('id')
+#********** obtain topic id ***********************#
+                if tbltopic.objects.filter(subject=subject,klass=klass,term=term).order_by('id').count() < 1:
+                    varerr = 'NO TOPICS ENTERED FOR  ' + subject +', '+ term + ' term'
+                    return render_to_response('lesson/subtajax.html',{'varerr':varerr,'subject':subject })
+                else:                       
+                    for j in sott:
+                        k = tblir.objects.filter(topic =j)
+                        cont = {'topic':j, 'ir':k}
+                        sublist.append(cont)
+                return render_to_response('lesson/irajax.html',{'subject':subject,'term':term,'sublist':sublist,'klass':klass,})
+    else:
+        return HttpResponseRedirect('/login/')
+
+
+def setupmyplan(request):
+    if  "userid" in request.session:
+        if request.method == 'POST':
+            form = lessonplanform(request.POST)
+            if form.is_valid():
+                klass = request.POST['klass']
+                session = request.POST['session']
+                term = request.POST['term']
+                subject= request.POST['subject']
+                return render_to_response('lesson/lessonp.html',{'form':form})
+        else:
+            form = lessonplanform()
+        return render_to_response('lesson/lessonp.html',{'form':form})
+    else:
+        return HttpResponseRedirect('/login/')
+
+
+def setupmynote(request):
+    if  "userid" in request.session:
+        if request.method == 'POST':
+            return render_to_response('lesson/lessonnote.html')
+        else:
+            return render_to_response('lesson/lessonnote.html')
+    else:
+        return HttpResponseRedirect('/login/')
+
+def json_view(func):
+    def wrap(req, *args, **kwargs):
+        resp = func(req, *args, **kwargs)
+        if isinstance(resp, HttpResponse):
+            return resp
+        return HttpResponse(json.dumps(resp), mimetype="application/json")
+
+    return wrap
